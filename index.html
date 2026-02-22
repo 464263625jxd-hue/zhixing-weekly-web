@@ -41,8 +41,9 @@
     </script>
     <script>
         let GLOBAL_ISSUE_DB = [];
-        function app() {
+        function platformApp() {
             return {
+                // 核心状态
                 isLoading: true,
                 loadError: false,
                 view: 'portal',
@@ -60,6 +61,9 @@
                 darkMode: false,
                 showGlobalSearch: false,
                 globalSearchQuery: '',
+                selectedCompany: null,
+                
+                // 行业配置
                 sectorConfig: {
                     '宏观': { color: 'text-slate-600', bg: 'bg-slate-50', border: 'border-slate-200', gradient: 'from-slate-700 to-slate-900' },
                     '平台': { color: 'text-sky-600', bg: 'bg-sky-50', border: 'border-sky-200', gradient: 'from-sky-600 to-blue-800' },
@@ -68,6 +72,8 @@
                     '母婴': { color: 'text-rose-600', bg: 'bg-rose-50', border: 'border-rose-200', gradient: 'from-rose-400 to-red-600' },
                     '宠物': { color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-200', gradient: 'from-emerald-500 to-teal-700' }
                 },
+                
+                // 导航标签
                 tabs: [
                     { id: 'home', name: '本期概览' },
                     { id: 'all', name: '全部资讯' },
@@ -78,8 +84,11 @@
                     { id: '母婴', name: '母婴亲子' },
                     { id: '宠物', name: '宠物经济' }
                 ],
+                
+                // 初始化
                 async init() {
                     try {
+                        console.log('🚀 开始加载知行周刊数据...');
                         const response = await fetch('data.json');
                         if (!response.ok) throw new Error('HTTP ' + response.status);
                         const data = await response.json();
@@ -88,6 +97,7 @@
                         this.companyDB = data.companies || {};
                         GLOBAL_ISSUE_DB = this.issueDB;
                         console.log('✅ 数据加载成功:', this.issueDB.length, '期周刊');
+                        console.log('📊 公司数据:', Object.keys(this.companyDB).length, '个行业');
                         this.isLoading = false;
                         this.checkDarkMode();
                     } catch (error) {
@@ -97,6 +107,8 @@
                         this.isLoading = false;
                     }
                 },
+                
+                // 深色模式
                 checkDarkMode() {
                     const saved = localStorage.getItem('darkMode');
                     if (saved === 'true') {
@@ -109,16 +121,19 @@
                     localStorage.setItem('darkMode', this.darkMode);
                     document.documentElement.classList.toggle('dark', this.darkMode);
                 },
-                get filteredNews() {
-                    if (!this.currentIssueData || !this.currentIssueData.data) return [];
-                    let news = this.currentIssueData.data;
-                    if (this.subFilter !== 'all') news = news.filter(n => n.category === this.subFilter);
-                    if (this.searchQuery && this.searchQuery.trim()) {
-                        const q = this.searchQuery.toLowerCase().trim();
-                        news = news.filter(n => (n.title && n.title.toLowerCase().includes(q)) || (n.content && n.content.toLowerCase().includes(q)));
-                    }
-                    return news;
+                
+                // 导航方法 - 修复按钮跳转
+                goHome() {
+                    this.view = 'portal';
+                    this.currentIssueId = null;
+                    this.currentIssueData = null;
+                    this.currentIndustry = null;
+                    this.activeTab = 'home';
+                    this.subFilter = 'all';
+                    this.searchQuery = '';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 },
+                
                 selectIssue(issueId) {
                     this.currentIssueId = issueId;
                     this.currentIssueData = this.issueDB.find(i => i.id === issueId);
@@ -130,57 +145,99 @@
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                     }
                 },
-                selectNews(news) { this.selectedNews = news; },
-                goHome() {
-                    this.view = 'portal';
-                    this.currentIssueId = null;
-                    this.currentIssueData = null;
-                    this.currentIndustry = null;
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                },
+                
                 openIndustry(category) {
                     this.currentIndustry = category;
                     this.view = 'industry';
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 },
+                
                 openCorporate(category) {
                     this.currentCategory = category;
                     this.view = 'corporate';
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 },
-                exportData() {
-                    const blob = new Blob([JSON.stringify(this.issueDB, null, 2)], { type: 'application/json' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'zhixing-weekly-data.json';
-                    a.click();
-                    URL.revokeObjectURL(url);
+                
+                selectCompany(company) {
+                    this.selectedCompany = company;
                 },
+                
+                selectNews(news) {
+                    this.selectedNews = news;
+                },
+                
+                // 计算属性
+                get filteredNews() {
+                    if (!this.currentIssueData || !this.currentIssueData.data) return [];
+                    let news = this.currentIssueData.data;
+                    if (this.subFilter !== 'all') news = news.filter(n => n.category === this.subFilter);
+                    if (this.searchQuery && this.searchQuery.trim()) {
+                        const q = this.searchQuery.toLowerCase().trim();
+                        news = news.filter(n => (n.title && n.title.toLowerCase().includes(q)) || (n.content && n.content.toLowerCase().includes(q)));
+                    }
+                    return news;
+                },
+                
+                get industryTimeline() {
+                    if (!this.currentIndustry) return [];
+                    return this.issueDB.map(issue => {
+                        const news = issue.data ? issue.data.filter(item => item.category === this.currentIndustry) : [];
+                        const insight = issue.insight ? issue.insight[this.currentIndustry] : null;
+                        if (news.length === 0 && !insight) return null;
+                        return { issueId: issue.id, date: issue.date, insight: insight, news: news };
+                    }).filter(item => item !== null);
+                },
+                
+                get currentCompanies() {
+                    return this.companyDB[this.currentCategory] || [];
+                },
+                
+                // 功能方法
+                exportData() {
+                    try {
+                        const blob = new Blob([JSON.stringify(this.issueDB, null, 2)], { type: 'application/json' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'zhixing-weekly-data.json';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        alert('数据导出成功！');
+                    } catch (error) {
+                        console.error('导出失败:', error);
+                        alert('导出失败：' + error.message);
+                    }
+                },
+                
                 shareIssue(title, url) {
                     if (navigator.share) {
-                        navigator.share({ title, url }).catch(() => this.copyToClipboard(url));
+                        navigator.share({ title: title, url: url }).catch(() => this.copyToClipboard(url));
                     } else {
                         this.copyToClipboard(url);
                     }
                 },
+                
                 copyToClipboard(text) {
-                    navigator.clipboard.writeText(text).then(() => alert('已复制！')).catch(() => alert('复制失败'));
+                    navigator.clipboard.writeText(text).then(() => {
+                        alert('链接已复制到剪贴板！');
+                    }).catch(err => {
+                        console.error('复制失败:', err);
+                        prompt('请手动复制以下链接:', text);
+                    });
                 },
-                getSectorHighlight(cat) {
-                    if (!this.currentIssueData || !this.currentIssueData.data) return { main: { title: '加载中...' }, list: [], count: 0 };
-                    const items = this.currentIssueData.data.filter(i => i.category === cat);
-                    let mainIndex = items.findIndex(i => i.isAlert || ['战略','头条','新品'].includes(i.subCategory));
-                    if (mainIndex === -1) mainIndex = 0;
-                    const main = items[mainIndex] || { title: '暂无数据' };
-                    const list = items.filter((_, idx) => idx !== mainIndex).slice(0, 3);
-                    return { main, list, count: items.length };
+                
+                formatContent(text) {
+                    if (!text) return '';
+                    let cleanText = text.replace(/\*\*/g, '');
+                    return cleanText.replace(/(\d+(?:\.\d+)?(?:万 | 亿 | 亿元 | 美元|%)|202\d 年\d+ 月|TOP\d+)/g, '<span class="hl-data">$1</span>');
                 }
             }
         }
     </script>
 </head>
-<body x-data="app()" x-init="init()" :class="darkMode ? 'dark bg-gray-900' : 'bg-gray-50'" class="transition-colors duration-500 antialiased">
+<body x-data="platformApp()" x-init="init()" :class="darkMode ? 'dark bg-gray-900' : 'bg-gray-50'" class="transition-colors duration-500 antialiased">
     <!-- Loading -->
     <div x-show="isLoading" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-purple-900">
         <div class="text-center text-white">
@@ -209,7 +266,7 @@
             <!-- Navigation -->
             <nav class="bg-brand-dark/90 text-white shadow-lg sticky top-0 z-50 backdrop-blur-md border-b border-white/10">
                 <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-                    <div class="flex items-center space-x-3 cursor-pointer" @click="goHome()">
+                    <div class="flex items-center space-x-3">
                         <div class="w-8 h-8 bg-brand-accent rounded-lg flex items-center justify-center text-brand-dark font-black text-lg shadow-lg">Z</div>
                         <span class="font-bold text-xl tracking-wide">知行数字化知识库</span>
                     </div>
@@ -369,6 +426,86 @@
             </main>
         </div>
 
+        <!-- Industry View -->
+        <div x-show="view === 'industry'" class="min-h-screen bg-gray-50 dark:bg-gray-900">
+            <nav class="bg-brand-dark text-white sticky top-0 z-40 shadow-md">
+                <div class="max-w-7xl mx-auto px-4 py-3">
+                    <div class="flex items-center">
+                        <button @click="goHome()" class="bg-white/10 hover:bg-brand-accent hover:text-brand-dark p-2 rounded-lg transition-all mr-3">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                        </button>
+                        <h1 class="text-xl font-bold">📊 <span x-text="currentIndustry"></span>时间轴</h1>
+                    </div>
+                </div>
+            </nav>
+            <main class="max-w-7xl mx-auto px-4 py-6">
+                <div class="space-y-6">
+                    <template x-for="item in industryTimeline" :key="item.issueId">
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-sm font-mono text-brand-primary" x-text="item.date"></span>
+                                <button @click="selectIssue(item.issueId)" class="text-xs text-brand-accent hover:underline">查看完整期数 →</button>
+                            </div>
+                            <div x-show="item.insight" class="mb-4 p-4 bg-brand-primary/5 dark:bg-brand-primary/10 rounded-xl">
+                                <h4 class="font-bold text-brand-primary mb-2" x-text="item.insight?.title"></h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400" x-text="item.insight?.content"></p>
+                            </div>
+                            <div class="space-y-2">
+                                <template x-for="news in item.news">
+                                    <div @click="selectNews(news)" class="p-3 rounded-lg bg-gray-50 dark:bg-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                        <h5 class="font-bold text-gray-900 dark:text-white" x-text="news.title"></h5>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </main>
+        </div>
+
+        <!-- Corporate View -->
+        <div x-show="view === 'corporate'" class="min-h-screen bg-gray-50 dark:bg-gray-900">
+            <nav class="bg-brand-dark text-white sticky top-0 z-40 shadow-md">
+                <div class="max-w-7xl mx-auto px-4 py-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <button @click="goHome()" class="bg-white/10 hover:bg-brand-accent hover:text-brand-dark p-2 rounded-lg transition-all mr-3">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                            </button>
+                            <h1 class="text-xl font-bold">🏢 <span x-text="currentCategory"></span>名企</h1>
+                        </div>
+                        <div class="flex space-x-2">
+                            <template x-for="cat in ['美妆', '个护家清', '食品饮料', '母婴', '宠物']">
+                                <button @click="currentCategory = cat" :class="currentCategory === cat ? 'bg-brand-accent text-brand-dark' : 'bg-white/10 text-white'" class="px-3 py-1 rounded text-xs font-bold transition-colors" x-text="cat"></button>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <main class="max-w-7xl mx-auto px-4 py-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <template x-for="company in currentCompanies" :key="company.name">
+                        <div @click="selectCompany(company)" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all border border-gray-100 dark:border-gray-700">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-black text-lg">
+                                    <span x-text="company.name.charAt(0)"></span>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900 dark:text-white" x-text="company.name"></h3>
+                                    <p class="text-xs text-gray-500" x-text="company.code"></p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2" x-text="company.desc"></p>
+                            <div class="flex gap-2">
+                                <a :href="company.site" target="_blank" class="text-xs text-brand-primary hover:underline">官网</a>
+                                <a :href="company.ir" target="_blank" class="text-xs text-brand-primary hover:underline">投资者关系</a>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </main>
+        </div>
+
         <!-- Detail Modal -->
         <div x-show="selectedNews" x-cloak class="fixed inset-0 z-50 flex justify-center items-end sm:items-center" @click="selectedNews = null">
             <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
@@ -388,9 +525,46 @@
                         <span>来源：知行周刊整理</span>
                         <span x-text="'Issue No.' + (currentIssueData?.id || '')"></span>
                     </div>
-                    <template x-for="p in (selectedNews?.content || '').split('\n\n')">
-                        <p x-show="p.trim()" class="mb-5 text-lg leading-relaxed text-gray-700 dark:text-gray-300" x-text="p"></p>
-                    </template>
+                    <div class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed" x-html="formatContent(selectedNews?.content)"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company Modal -->
+        <div x-show="selectedCompany" x-cloak class="fixed inset-0 z-50 flex justify-center items-end sm:items-center" @click="selectedCompany = null">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+            <div class="modal-content relative bg-white dark:bg-gray-800 w-full sm:max-w-2xl sm:rounded-3xl h-[80vh] sm:h-auto sm:max-h-[80vh] flex flex-col shadow-2xl overflow-hidden" @click.stop>
+                <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-brand-primary to-brand-accent">
+                    <h3 class="text-xl font-black text-white" x-text="selectedCompany?.name"></h3>
+                    <button @click="selectedCompany = null" class="p-2 bg-white/20 rounded-full hover:bg-white/30 text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <div class="p-8 overflow-y-auto">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-black text-2xl">
+                            <span x-text="selectedCompany?.name?.charAt(0)"></span>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-black text-gray-900 dark:text-white" x-text="selectedCompany?.name"></h4>
+                            <p class="text-sm text-gray-500" x-text="selectedCompany?.code"></p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6" x-text="selectedCompany?.desc"></p>
+                    <div class="space-y-3">
+                        <a :href="selectedCompany?.site" target="_blank" class="block p-4 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-gray-900 dark:text-white">官方网站</span>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </div>
+                        </a>
+                        <a :href="selectedCompany?.ir" target="_blank" class="block p-4 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-gray-900 dark:text-white">投资者关系</span>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
