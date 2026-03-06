@@ -280,30 +280,71 @@
                 openDetail(item) { this.selectedNews = item; document.body.style.overflow = 'hidden'; },
                 closeDetail() { this.selectedNews = null; document.body.style.overflow = 'auto'; },
                 
-                // 分享功能：复制资讯链接
+                // 分享功能：复制完整资讯内容
                 async shareNews(item) {
-                    const shareUrl = window.location.href.split('#')[0];
-                    const shareText = `${item.title} - 知行周刊 No.${this.currentIssueData?.id}`;
+                    const issueId = this.currentIssueData?.id || '?';
+                    const category = item.category || '';
+                    const subCategory = item.subCategory || '';
+                    
+                    // 生成完整的分享内容
+                    const shareContent = this.generateShareContent(item, issueId, category, subCategory);
                     
                     try {
                         // 尝试使用 Clipboard API
                         if (navigator.clipboard) {
-                            await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
-                            this.showToast('✅ 链接已复制到剪贴板');
+                            await navigator.clipboard.writeText(shareContent);
+                            this.showToast('✅ 完整内容已复制到剪贴板');
                         } else {
                             // 降级方案
                             const textarea = document.createElement('textarea');
-                            textarea.value = `${shareText}\n${shareUrl}`;
+                            textarea.value = shareContent;
                             document.body.appendChild(textarea);
                             textarea.select();
                             document.execCommand('copy');
                             document.body.removeChild(textarea);
-                            this.showToast('✅ 链接已复制');
+                            this.showToast('✅ 内容已复制');
                         }
                     } catch (err) {
                         console.error('分享失败:', err);
                         this.showToast('❌ 复制失败，请手动复制');
                     }
+                },
+                
+                // 生成分享內容（格式化）
+                generateShareContent(item, issueId, category, subCategory) {
+                    const divider = '═'.repeat(40);
+                    const url = window.location.href.split('#')[0];
+                    
+                    // 清理 content 中的 markdown 格式
+                    let cleanContent = (item.content || item.summary || '').replace(/\*\*/g, '');
+                    
+                    // 分段处理长内容（每段不超过 200 字）
+                    const paragraphs = cleanContent.split(/\n\n+/);
+                    const truncatedContent = paragraphs.slice(0, 3).join('\n\n');
+                    const hasMore = paragraphs.length > 3;
+                    
+                    return `
+${divider}
+📰 知行周刊 · 精选资讯
+${divider}
+
+【标题】${item.title}
+
+【分类】${category} · ${subCategory}
+【期号】No.${issueId}
+【时间】${new Date().toLocaleDateString('zh-CN')}
+
+【摘要】
+${item.summary || cleanContent.substring(0, 200)}...
+
+【完整内容】
+${truncatedContent}${hasMore ? '\n\n...' : ''}
+
+${divider}
+🔗 查看全文：${url}
+💡 访问主页：知行周刊数字化知识库
+${divider}
+`.trim();
                 },
                 
                 // 显示提示消息
@@ -593,10 +634,11 @@
                          <div class="flex gap-2 items-center"><span class="text-[10px] font-black bg-brand-primary text-white px-2 py-1 rounded tracking-wider" x-text="selectedNews?.category"></span><span class="text-xs text-gray-500 font-bold" x-text="selectedNews?.subCategory"></span></div>
                          <div class="flex gap-2">
                              <!-- 分享按钮 -->
-                             <button @click="shareNews(selectedNews)" class="p-2 bg-brand-primary/10 rounded-full hover:bg-brand-primary/20 text-brand-primary transition-colors" title="复制链接">
-                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                             <button @click="shareNews(selectedNews)" class="flex items-center gap-1.5 px-3 py-1.5 bg-brand-primary text-white rounded-lg hover:bg-brand-primary/90 transition-colors text-xs font-medium" title="分享完整内容">
+                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
                                  </svg>
+                                 <span>分享</span>
                              </button>
                              <button @click="closeDetail()" class="p-2 bg-gray-200/50 rounded-full hover:bg-gray-300 text-gray-500 transition-colors"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
                          </div>
