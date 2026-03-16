@@ -138,7 +138,32 @@
                 },
 
                 // ==================== 计算属性（Getters）==================== (Getters) ---
-                get latestIssue() { return this.issueDB[0] || {}; },
+                get latestIssue() { return this.issueDB[0] || {}; }
+                // 预加载其他期数
+                async preloadIssues() {
+                    for (const issue of this.issueIndex.slice(1)) {
+                        if (!this.issueDB.find(i => i.id === issue.id)) {
+                            try {
+                                const res = await fetch(`issues-data/issue\${issue.id}.json?t=` + Date.now());
+                                const data = await res.json();
+                                this.issueDB.push(data);
+                            } catch (e) {
+                                console.log('预加载失败:', issue.id);
+                            }
+                        }
+                    }
+                },
+                
+                // 按需加载期数
+                async loadIssue(id) {
+                    let issue = this.issueDB.find(i => i.id === id);
+                    if (!issue) {
+                        const res = await fetch(`issues-data/issue\${id}.json?t=` + Date.now());
+                        issue = await res.json();
+                        this.issueDB.push(issue);
+                    }
+                    return issue;
+                },,
                 get pastIssues() { return this.issueDB.slice(1); },
                 get currentCompanies() { return this.companyDB[this.currentCorporateCategory] || []; },
                 
