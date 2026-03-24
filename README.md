@@ -27,34 +27,39 @@
 
 ## 📁 文件结构
 
+前端从根目录加载 `data.json`（含 `issueIds`、`_meta`），再按需请求 `issues/issue<N>.json` 各期正文。
+
 ```
-zhixing-weekly/
-├── data.json              # 主数据文件
-├── index.html             # Web展示页面
+zhixing-weekly-web/
+├── data.json              # 主索引：issueIds、元信息
+├── index.html             # 单页应用入口
 ├── favicon.svg            # 网站图标
-├── version.json           # 版本信息
+├── version.json           # 版本信息（前端用于检测更新）
 ├── README.md              # 本文件
 │
-├── sources/               # 资讯源目录
-│   ├── issue-67.docx
-│   ├── issue-68.docx
-│   └── issue-69.docx
+├── issues/                # 各期完整数据（扁平 JSON）
+│   ├── issue61.json
+│   └── …                  # issue62.json … issue69.json
 │
-├── issues/                # 往期数据目录
-│   ├── issue-67/
-│   ├── issue-68/
-│   └── issue-69/
+├── js/                    # 本地托管的前端脚本（UMD 等）
+│   └── zechariah-tracking.umd.js
 │
-├── docs/                  # 文档目录
+├── docs/                  # 文档与规范
 │   ├── FILE_MANAGEMENT.md   # 文件管理规范 ⭐
 │   ├── STANDARDIZATION.md
-│   └── WORKFLOW.md
-│
-└── archive/               # 归档目录
-    └── scripts/
+│   ├── WORKFLOW_v2.md
+│   ├── TRACKING.md
+│   └── …
+│              
+└── scripts/             # 历史脚本与归档
+        └── sync-data-from-issues-data.py  # 根据 issues/ 同步 data.json 元数据
 ```
 
 **📖 [文件管理规范](docs/FILE_MANAGEMENT.md)** - 每次更新必读！
+
+部署前若需根据 `issues/` 下文件刷新 `data.json` 中的期数与统计，可在仓库根目录执行：
+
+`python3 archive/scripts/sync-data-from-issues-data.py`
 
 ---
 
@@ -76,9 +81,9 @@ zhixing-weekly/
 ### 本地测试
 
 ```bash
-cd ~/Desktop/zhixing-weekly
+cd /path/to/zhixing-weekly-web
 python3 -m http.server 9999
-# 访问 http://localhost:9999
+# 浏览器访问 http://localhost:9999
 ```
 
 ---
@@ -125,6 +130,6 @@ python3 -m http.server 9999
 
 ---
 
-**最后更新**: 2026-03-16 09:49  
-**当前版本**: v1.3.0  
-**总期数**: 9 期
+**最后更新**: 2026-03-24  
+**当前版本**: 2026-03-24 16:47  
+**总期数**: 9 期  
