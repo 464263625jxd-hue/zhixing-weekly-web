@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """
-部署前运行：根据 issues 目录下的 issue<N>.json 自动更新根目录 data.json 与 version.json。
+部署前运行：根据 issues 目录下的 issue<N>.json 生成根目录 data.json 与 version.json。
 
-data.json：issueIds、_meta.totalIssues、_meta.totalNews、_meta.updatedAt（并移除 issues）。
+data.source.json：人工维护的源数据文件，保留 companies 与静态元信息等内容。
 
-version.json：version（与 _meta.updatedAt 同步，供前端轮询检测更新）、issueId（最新期号）、
-totalIssues、totalNews、buildTime。
+data.json：部署产物，包含 data.source.json + issueIds + _meta.totalIssues +
+_meta.totalNews + _meta.updatedAt（并移除 issues）。
 
-用法：python3 archive/scripts/sync-data-from-issues-data.py
-工作目录：项目根目录（脚本内解析项目根为 archive 的上级目录）
+version.json：部署产物，version（与 _meta.updatedAt 同步，供前端轮询检测更新）、
+issueId（最新期号）、totalIssues、totalNews、buildTime。
+
+用法：python3 scripts/sync-data-from-issues-data.py
+工作目录：项目根目录（脚本内解析项目根为 scripts 的上级目录）
 """
 
 from __future__ import annotations
@@ -19,8 +22,9 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent.parent
+ROOT = Path(__file__).resolve().parent.parent
 ISSUES_DIR = ROOT / "issues"
+SOURCE_DATA_JSON = ROOT / "data.source.json"
 DATA_JSON = ROOT / "data.json"
 VERSION_JSON = ROOT / "version.json"
 FILE_RE = re.compile(r"^issue(\d+)\.json$")
@@ -60,6 +64,26 @@ def load_issue(issue_id: int) -> dict:
         raise ValueError(f"JSON 解析失败 {file_path}: {e}") from e
 
 
+def load_source_data() -> dict:
+    if not SOURCE_DATA_JSON.is_file():
+        raise FileNotFoundError(f"缺少 {SOURCE_DATA_JSON}")
+
+    try:
+        raw = SOURCE_DATA_JSON.read_text(encoding="utf-8")
+    except OSError as e:
+        raise OSError(f"无法读取 {SOURCE_DATA_JSON}: {e}") from e
+
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"JSON 解析失败 {SOURCE_DATA_JSON}: {e}") from e
+
+    if not isinstance(data, dict):
+        raise ValueError(f"{SOURCE_DATA_JSON} 顶层必须是对象")
+
+    return data
+
+
 def main() -> None:
     ids_asc = collect_issue_ids()
 
@@ -75,10 +99,7 @@ def main() -> None:
         n = len(issue["data"]) if isinstance(issue.get("data"), list) else 0
         total_news += n
 
-    if not DATA_JSON.is_file():
-        raise FileNotFoundError(f"缺少 {DATA_JSON}")
-
-    data = json.loads(DATA_JSON.read_text(encoding="utf-8"))
+    data = load_source_data()
 
     meta = data.setdefault("_meta", {})
     meta["totalIssues"] = len(ids_asc)

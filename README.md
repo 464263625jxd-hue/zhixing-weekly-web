@@ -27,14 +27,16 @@
 
 ## 📁 文件结构
 
-前端从根目录加载 `data.json`（含 `issueIds`、`_meta`），再按需请求 `issues/issue<N>.json` 各期正文。
+前端部署后从根目录加载 `data.json`（含 `issueIds`、`_meta`），再按需请求 `issues/issue<N>.json` 各期正文。
+仓库中提交的是 `data.source.json`；`data.json` 与 `version.json` 由部署前脚本生成，不再提交到 Git。
 
 ```
 zhixing-weekly-web/
-├── data.json              # 主索引：issueIds、元信息
+├── data.source.json       # 源数据：companies、静态元信息（提交到 Git）
+├── data.json              # 部署产物：主索引（由脚本生成，Git 忽略）
 ├── index.html             # 单页应用入口
 ├── favicon.svg            # 网站图标
-├── version.json           # 版本信息（前端用于检测更新）
+├── version.json           # 部署产物：版本信息（由脚本生成，Git 忽略）
 ├── README.md              # 本文件
 │
 ├── issues/                # 各期完整数据（扁平 JSON）
@@ -51,15 +53,25 @@ zhixing-weekly-web/
 │   ├── TRACKING.md
 │   └── …
 │              
-└── scripts/             # 历史脚本与归档
-        └── sync-data-from-issues-data.py  # 根据 issues/ 同步 data.json 元数据
+└── scripts/
+        └── sync-data-from-issues-data.py  # 根据 data.source.json + issues/ 生成部署文件
 ```
 
 **📖 [文件管理规范](docs/FILE_MANAGEMENT.md)** - 每次更新必读！
 
-部署前若需根据 `issues/` 下文件刷新 `data.json` 中的期数与统计，可在仓库根目录执行：
+部署前在仓库根目录执行：
 
-`python3 archive/scripts/sync-data-from-issues-data.py`
+`python3 scripts/sync-data-from-issues-data.py`
+
+典型部署流程：
+
+```bash
+git pull
+python3 scripts/sync-data-from-issues-data.py
+# 然后由运维同步/发布静态文件
+```
+
+首次切换到该结构时，如果部署机上旧的 `data.json`、`version.json` 仍是 Git 跟踪文件且已被本地改动，需要先清理工作区，再执行上述流程。
 
 ---
 

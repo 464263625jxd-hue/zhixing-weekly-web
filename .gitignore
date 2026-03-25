@@ -29,6 +29,10 @@ test_*.html
 dist/
 build/
 
+# 部署生成文件
+/data.json
+/version.json
+
 # 依赖（如果有）
 node_modules/
 
