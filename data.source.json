@@ -1,9 +1,6 @@
 {
   "_meta": {
-    "version": "1.0",
-    "updatedAt": "2026-03-24 16:47",
-    "totalIssues": 9,
-    "totalNews": 1161
+    "version": "1.0"
   },
   "companies": {
     "美妆": [
@@ -296,16 +293,5 @@
         "ir": "http://www.yuanfeipet.com/investor"
       }
     ]
-  },
-  "issueIds": [
-    69,
-    68,
-    67,
-    66,
-    65,
-    64,
-    63,
-    62,
-    61
-  ]
+  }
 }
