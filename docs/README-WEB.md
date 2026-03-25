@@ -2,8 +2,6 @@
 
 > 基于 Alpine.js + Tailwind CSS 的单页应用
 
-**GitHub Pages**: https://464263625jxd-hue.github.io/zhixing-weekly-web/
-
 **最新版本**: v2.0.0 (2026-03-09) - 三模型优化版
 
 ---
@@ -25,21 +23,7 @@
 
 ## 🚀 快速开始
 
-### 1. 启用 GitHub Pages
-
-**步骤**：
-1. 访问：https://github.com/464263625jxd-hue/zhixing-weekly-web/settings/pages
-2. **Build and deployment**:
-   - Source: `Deploy from a branch`
-   - Branch: `main` + `/` (root)
-   - 点击 **Save**
-3. 等待 1-2 分钟
-
-**访问地址**：
-- 主页：https://464263625jxd-hue.github.io/zhixing-weekly-web/
-- 调试：https://464263625jxd-hue.github.io/zhixing-weekly-web/?debug=true
-
-### 2. 本地测试
+### 1. 本地测试
 
 ```bash
 cd ~/Desktop/zhixing-weekly-web
@@ -188,12 +172,7 @@ python3 -m http.server 9999
 # 访问 http://localhost:9999
 ```
 
-### Q2: GitHub Pages 404
-**原因**：Pages 未启用
-
-**解决**：访问仓库 Settings → Pages → 启用
-
-### Q3: 控制台报错 "Alpine is not defined"
+### Q2: 控制台报错 "Alpine is not defined"
 **原因**：CDN 加载失败
 
 **解决**：检查网络连接，刷新页面
@@ -252,8 +231,6 @@ function platformApp() {
 
 ## 🔗 相关链接
 
-- **GitHub 仓库**: https://github.com/464263625jxd-hue/zhixing-weekly-web
-- **原始仓库**: https://github.com/464263625jxd-hue/weekly-backup
 - **Gitee 镜像**: https://gitee.com/stonejin1998/zhixing-weekly-web
 
 ---
@@ -332,7 +309,7 @@ function platformApp() {
 ### v1.0.0 (2026-03-06) - 初始版本
 
 - ✅ 原始版本迁移
-- ✅ GitHub Pages 部署
+- ✅ 静态站点部署
 
 ---
 

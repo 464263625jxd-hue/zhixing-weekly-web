@@ -2,7 +2,10 @@
 
 > 基于 Alpine.js + Tailwind CSS 的单页应用
 
-**GitHub Pages**: https://464263625jxd-hue.github.io/zhixing-weekly-web/
+| 环境 | 访问地址 |
+|------|----------|
+| 测试 | https://xue.test.leqeegroup.com/weeklyweb/ |
+| 正式 | https://xue.leqeegroup.com/weeklyweb/ |
 
 **最新版本**: v1.3.0 (2026-03-16)
 
@@ -123,16 +126,6 @@ python3 -m http.server 9999
 - ✅ 智能资讯清理模块
 - ✅ 细化SubCategory分类规则
 - ✅ 版本检测+自动刷新
-
----
-
-## 🔗 相关链接
-
-| 仓库 | 用途 | 地址 |
-|------|------|------|
-| weekly | 正式仓库 | https://github.com/464263625jxd-hue/weekly |
-| weekly-backup | 备用仓库 | https://github.com/464263625jxd-hue/weekly-backup |
-| zhixing-weekly-web | GitHub Pages | https://github.com/464263625jxd-hue/zhixing-weekly-web |
 
 ---
 

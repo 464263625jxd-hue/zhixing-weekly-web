@@ -101,14 +101,11 @@ function loadWithCache(url, maxAge = 3600000) { // 1小时
 
 ### 5. CDN 加速
 
-使用 jsDelivr 加速 GitHub Pages：
+将 `data.json` 等静态资源放到 CDN 或对象存储，由边缘节点回源或同步，可减轻源站压力并缩短访问延迟。
 
 ```javascript
-// 当前
-const url = 'https://464263625jxd-hue.github.io/zhixing-weekly-web/data.json';
-
-// 优化后（jsDelivr CDN）
-const url = 'https://cdn.jsdelivr.net/gh/464263625jxd-hue/zhixing-weekly-web@main/data-lite.json';
+// 示例：使用与页面同域或 CDN 上的绝对地址
+const url = 'https://your-cdn.example.com/path/data.json';
 ```
 
 **优势**：
