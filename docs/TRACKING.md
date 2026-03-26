@@ -1,6 +1,6 @@
-# 知行周刊 Web 埋点说明
+# WeeklyWeb 埋点说明
 
-本文档记录 Zechariah（`@zecharich/Tracking`）相关配置与**测试环境** Yard 参数，便于联调与排查。前端脚本见 `js/zechariah-tracking.umd.js`，页面入口为 `index.html`。
+本文档记录 Zechariah（`@zecharich/Tracking`）相关配置与 Yard 参数，便于联调与排查。前端脚本见 `js/zechariah-tracking.umd.js`，页面入口为 `index.html`。
 
 ---
 
@@ -10,10 +10,17 @@
 |--------|-----|------|
 | `yard_name` | `weekly-web` | Yard 名称，与 Zechariah 后台/创建接口约定一致 |
 | `yard_id` | `33` | Yard 数字 ID |
-| `yard_secret` | `2f3b3054-0e9b-4191-970b-4b175aaf31da` | Yard 侧密钥字段（**不用于**前端埋点上报） |
-| **`report_key`** | **`96111436-2ee1-45c2-9dd6-4cf126738de0`** | **埋点上报使用的密钥**；对应请求里的查询参数 `yard-report-key` |
+| `report_key` | `96111436-2ee1-45c2-9dd6-4cf126738de0` | 测试环境上报使用值；对应请求里的查询参数 `yard-report-key` |
 
-前端 `@zecharich/Tracking` 的 `yardKeyTest` / `yardKeyProd` 必须填 **`report_key`**，不要填 `yard_secret`。
+## 正式环境 Yard 关键参数
+
+| 参数名 | 值 | 说明 |
+|--------|-----|------|
+| `yard_name` | `weekly-web` | Yard 名称，与 Zechariah 后台/创建接口约定一致 |
+| `yard_id` | `9` | Yard 数字 ID |
+| `report_key` | `367b6bc0-31eb-4f39-89e0-3cd89426e9c6` | 正式环境上报使用值；对应请求里的查询参数 `yard-report-key` |
+
+前端 `@zecharich/Tracking` 的 `yardKeyTest` / `yardKeyProd` 应填对应环境的上报 key；当前 `index.html` 已直接写入测试与正式 `report_key`。
 
 > **安全提示**：密钥类信息若需提交到公开仓库，建议改为仅内网文档或 CI 注入；正式环境密钥请勿与测试环境混用。
 
@@ -30,8 +37,8 @@
 `index.html` 内直接配置 **`yardKeyTest`**、**`yardKeyProd`**（均为对应环境的 **`report_key`**），并调用 `eventTrack.init`；插件根据 **`isProd`** 选用对应 key。
 
 - **`isProd`**：当前页 URL 字符串中包含 `xue.leqeegroup.com`（即正式学域）时为 `true`，否则为 `false`（走测试 key）。
-- **`yardKeyTest`**：测试环境 **`report_key`**（见上表）。
-- **`yardKeyProd`**：正式环境 **`report_key`**，在 `index.html` 中填写；未填写时若判为正式环境，埋点库会告警且无法上报。
+- **`yardKeyTest`**：测试环境上报 key。
+- **`yardKeyProd`**：正式环境上报 key。
 
 **`globalConfig`**：从浏览器 Cookie 读取并随每次埋点带上：
 
@@ -64,3 +71,4 @@
 | 2026-03-23 | 简化 `index.html`：`isProd` 依据 URL 含 `xue.leqeegroup.com`；`globalConfig` 从 Cookie `username` / `displayName` 读取 |
 | 2026-03-23 | 明确埋点使用 **`report_key`**（非 `yard_secret`），测试 `report_key` 写入文档与 `yardKeyTest` |
 | 2026-03-23 | 说明 Hash SPA 依赖 `hashchange` 全量注册；`js/zechariah-tracking.umd.js` 内已修复，升级 SDK 时需对齐 |
+| 2026-03-26 | 出于安全原因移除仓库内 `yard_secret` 明文；保留 `report_key` 并在 `index.html` 中直接配置 `yardKeyTest`、`yardKeyProd` |

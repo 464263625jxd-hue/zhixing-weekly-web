@@ -31,8 +31,8 @@
         (function () {
             if (typeof ZechariahTracking === 'undefined') return;
             var yardKeyTest = '96111436-2ee1-45c2-9dd6-4cf126738de0';
-            var yardKeyProd = '';
-            /* 测试/正式填 Zechariah 的 report_key（请求 query 为 yard-report-key）；正式部署到 xue.leqeegroup.com 时填写 yardKeyProd */
+            var yardKeyProd = '367b6bc0-31eb-4f39-89e0-3cd89426e9c6';
+            /* 测试/正式填 Zechariah 的上报 key（请求 query 为 yard-report-key） */
             var href = (typeof location !== 'undefined' && location.href) ? location.href : '';
             var isProd = href.indexOf('xue.leqeegroup.com') !== -1;
             var gc = {
