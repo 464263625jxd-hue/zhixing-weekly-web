@@ -4121,6 +4121,10 @@
           this.pageLoadTimestamp = 0;
           // 记录当前页面的 URL，用于路由变化时计算停留时长
           this.currentPageUrl = '';
+          // 最近一次虚拟 pageLoad（用于路由切换防重）
+          this.recentVirtualPageLoad = { url: '', timestamp: 0 };
+          // 虚拟 pageLoad 防重时间窗口（毫秒）
+          this.virtualPageLoadDedupeWindow = 500;
       }
       /**
        * 处理记录逻辑
@@ -4339,6 +4343,45 @@
               console.log('[EventTrack Auto] 路由变动', { eventName, routeInfo, stayTime });
           }
           this.view(eventName, routeInfo);
+          // 路由切换后补发一条虚拟页面加载事件，用于 SPA 页面访问统计（PV/受访页面）
+          if (this.autoTrackConfig?.trackPageLoad) {
+              const virtualPageUrl = routeInfo.to_page || newUrl || routeInfo.to_path || '';
+              const lastVirtualPageLoad = this.recentVirtualPageLoad;
+              const isDuplicateVirtualPageLoad = !!(virtualPageUrl &&
+                  lastVirtualPageLoad.url === virtualPageUrl &&
+                  (currentTime - lastVirtualPageLoad.timestamp) <= this.virtualPageLoadDedupeWindow);
+              if (isDuplicateVirtualPageLoad) {
+                  if (this.debug) {
+                      console.log('[EventTrack Auto] 跳过重复虚拟页面加载', {
+                          page_url: virtualPageUrl,
+                          dedupeWindow: this.virtualPageLoadDedupeWindow
+                      });
+                  }
+                  return;
+              }
+              this.recentVirtualPageLoad = {
+                  url: virtualPageUrl,
+                  timestamp: currentTime
+              };
+              const virtualPageLoadEventName = this.autoTrackConfig.pageLoad || '页面_加载完成';
+              const virtualPageLoadAttributes = {
+                  page_url: virtualPageUrl,
+                  page_title: typeof document !== 'undefined' ? document.title : '',
+                  load_time: currentTime,
+                  page_load_duration: 0,
+                  referrer: routeInfo.from_page || routeInfo.from_path || '',
+                  source_event: 'routeChange',
+                  virtual_page_load: true,
+                  event_type: 'pageLoad'
+              };
+              if (this.debug) {
+                  console.log('[EventTrack Auto] 路由变动触发虚拟页面加载', {
+                      eventName: virtualPageLoadEventName,
+                      attributes: virtualPageLoadAttributes
+                  });
+              }
+              this.view(virtualPageLoadEventName, virtualPageLoadAttributes);
+          }
       }
       /**
        * 获取元素的事件名称（优先使用 data-track 属性）
