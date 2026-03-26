@@ -1,4 +1,4 @@
-# 知行周刊 Web - 数字化知识库
+# WeeklyWeb - 数字化知识库
 
 > 基于 Alpine.js + Tailwind CSS 的单页应用
 
@@ -34,7 +34,7 @@
 仓库中提交的是 `data.source.json`；`data.json` 与 `version.json` 由部署前脚本生成，不再提交到 Git。
 
 ```
-zhixing-weekly-web/
+WeeklyWeb/
 ├── data.source.json       # 源数据：companies、静态元信息（提交到 Git）
 ├── data.json              # 部署产物：主索引（由脚本生成，Git 忽略）
 ├── index.html             # 单页应用入口
@@ -96,7 +96,11 @@ python3 scripts/sync-data-from-issues-data.py
 ### 本地测试
 
 ```bash
-cd /path/to/zhixing-weekly-web
+# 进入项目根目录（README.md 所在目录）
+# 先初始化部署/测试用数据
+python3 scripts/sync-data-from-issues-data.py
+
+# 启动本地静态服务
 python3 -m http.server 9999
 # 浏览器访问 http://localhost:9999
 ```

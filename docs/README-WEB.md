@@ -1,4 +1,4 @@
-# 知行周刊 Web - 数字化知识库
+# WeeklyWeb - 数字化知识库
 
 > 基于 Alpine.js + Tailwind CSS 的单页应用
 
@@ -26,7 +26,8 @@
 ### 1. 本地测试
 
 ```bash
-cd ~/Desktop/zhixing-weekly-web
+# 在项目根目录执行（docs/README-WEB.md 的上一级目录）
+python3 scripts/sync-data-from-issues-data.py
 python3 -m http.server 9999
 # 访问 http://localhost:9999
 ```
@@ -38,7 +39,7 @@ python3 -m http.server 9999
 ## 📁 文件结构
 
 ```
-zhixing-weekly-web/
+WeeklyWeb/
 ├── index.html          # 主页面（62KB，包含所有 JS 逻辑）
 ├── data.json           # 周刊数据（786KB，标准化格式）
 ├── favicon.svg         # 网站图标
@@ -330,17 +331,16 @@ function platformApp() {
 
 ### 1. 准备源文件
 ```bash
-cp /path/to/知行周刊 - 第六十九期.docx ~/Desktop/zhixing-weekly/sources/issue-69.docx
+cp "<源文件路径>/知行周刊-第六十九期.docx" "sources/issue-69.docx"
 ```
 
 ### 2. 创建期数目录
 ```bash
-mkdir -p ~/Desktop/zhixing-weekly/issues/issue-69
+mkdir -p issues/issue-69
 ```
 
 ### 3. 制作数据
 ```bash
-cd ~/Desktop/zhixing-weekly
 python3 scripts/make_issue.py --issue 69 --source sources/issue-69.docx
 ```
 
