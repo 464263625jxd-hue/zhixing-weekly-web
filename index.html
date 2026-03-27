@@ -17,14 +17,8 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" href="favicon.svg">
     
-    <!-- 性能优化：资源预加载 -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3/dist/js.cookie.min.js"></script>
+    <script src="js/tailwindcss.cdn.js"></script>
+    <script src="js/js.cookie.min.js"></script>
     <!-- Zechariah 埋点：详见 docs/TRACKING.md -->
     <script src="js/zechariah-tracking.umd.js"></script>
     <script>
@@ -57,9 +51,11 @@
             });
         })();
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
+    <script src="js/chart.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="js/alpinejs.cdn.min.js" defer></script>
     
     <style>
         body { font-family: 'Noto Sans SC', sans-serif; background-color: #f1f5f9; color: #0f172a; -webkit-tap-highlight-color: transparent; overflow-x: hidden; width: 100%; }
