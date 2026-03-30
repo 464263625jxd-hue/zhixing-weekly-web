@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": "1.0",
-    "updatedAt": "2026-03-30 10:47",
+    "updatedAt": "2026-03-30 10:49",
     "totalIssues": 11,
     "totalNews": 1485
   },
@@ -381,7 +381,7 @@
           "id": 7,
           "subCategory": "其他",
           "highlight": false,
-          "isAlert": false
+          "isAlert": true
         },
         {
           "category": "宏观",
@@ -401,7 +401,7 @@
           "id": 9,
           "subCategory": "其他",
           "highlight": false,
-          "isAlert": false
+          "isAlert": true
         },
         {
           "category": "宏观",
@@ -411,7 +411,7 @@
           "id": 10,
           "subCategory": "其他",
           "highlight": false,
-          "isAlert": false
+          "isAlert": true
         },
         {
           "category": "宏观",
@@ -420,7 +420,7 @@
           "summary": "美国劳工部官网显示，截至 3 月 21 日当周，首次申请失业救济人数为 21 万人，符合市场预期，较前一周的 20.5 万人小幅上升。表明尽管面临多重经济逆风，美国劳动力市场依然保持着惊人的稳定性。",
           "id": 11,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -571,7 +571,7 @@
           "id": 26,
           "subCategory": "其他",
           "highlight": false,
-          "isAlert": false
+          "isAlert": true
         },
         {
           "category": "平台",
@@ -641,7 +641,7 @@
           "id": 33,
           "subCategory": "其他",
           "highlight": false,
-          "isAlert": false
+          "isAlert": true
         },
         {
           "category": "平台",
@@ -710,7 +710,7 @@
           "summary": "MOVA 旗下 ViAX 系列割草机器人凭借全球首创双目 AI 视觉技术，登顶德国、意大利、比利时、荷兰、西班牙等亚马逊多国 Best Sellers 榜首，同时其全系列割草机器人在多国 BAUHAU...",
           "id": 40,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -761,7 +761,7 @@
           "id": 45,
           "subCategory": "其他",
           "highlight": false,
-          "isAlert": false
+          "isAlert": true
         },
         {
           "category": "平台",
@@ -800,7 +800,7 @@
           "summary": "美国邮政服务（USPS）宣布，为应对持续上涨的能源和运输成本，将首次对包裹业务引入燃油附加费，费率为 8%。该附加费将自 2026 年 4 月 26 日起生效，并持续至 2027 年 1 月 17 日...",
           "id": 49,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -861,7 +861,7 @@
           "id": 55,
           "subCategory": "其他",
           "highlight": false,
-          "isAlert": false
+          "isAlert": true
         },
         {
           "category": "零售",
@@ -880,8 +880,8 @@
           "summary": "日前，美团发布 2025 年第四季度及全年业绩。公告显示，美团全年实现收入 3649 亿元（人民币，下同），同比增长 8%。受即时零售行业\"内卷式\"竞争影响，美团业绩由盈转亏，全年净亏损 234 亿元...",
           "id": 57,
           "subCategory": "其他",
-          "highlight": false,
-          "isAlert": false
+          "highlight": true,
+          "isAlert": true
         },
         {
           "category": "零售",
@@ -890,7 +890,7 @@
           "summary": "日前有部分安卓用户近日反映，在使用美团 App 期间收到图片和视频被异常删除的提示。对此，美团官方客服回应称：\"该问题主要是安卓系统在极少数情况下，App 自动缓存清理时遇到第三方 SDK 冲突导致异...",
           "id": 58,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -960,7 +960,7 @@
           "summary": "据知情人士透露，月之暗面正初步考虑在香港进行首次公开募股。上述消息人士表示，该公司已与中金公司、高盛集团就上市合作事宜展开磋商。他们称，此次潜在 IPO 的具体时间仍未确定。消息人士称，月之暗面的相关...",
           "id": 65,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1050,7 +1050,7 @@
           "summary": "飞鹤国际发布 2025 年业绩公告，全年营收 181.1 亿元，婴幼儿配方奶粉连续七年保持中国销量第一。",
           "id": 74,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1220,7 +1220,7 @@
           "summary": "3 月 21 日，ALDI 奥乐齐在镇江润州区万达广场与京口区凤凰广场双店齐开，正式迈入\"百店俱乐部\"。奥乐齐来自德国，全球门店总数超过 13000 家，自 2019 年在中国开出首家线下门店以来，以...",
           "id": 91,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1320,7 +1320,7 @@
           "summary": "日本宠物食品协会发布的《2025 年度宠物食品消费白皮书》显示，猫粮市场不降反增 8.7%，突破 4500 亿日元。宠物食品行业已正式告别\"营养补充\"时代，全面进入\"功能医疗\"纪元。",
           "id": 101,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1350,7 +1350,7 @@
           "summary": "天元宠物成立于 2003 年，业务累计覆盖 70 多个国家和地区，截至 2025 年 10 月底获得国内专利 353 项。2024 年企业总营收达 27.6 亿元，预计 2025 年突破 31 亿元。",
           "id": 104,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1480,8 +1480,8 @@
           "summary": "3 月 24 日，雅诗兰黛集团发布声明，证实正与西班牙美妆集团 Puig 就一项潜在的业务合并事宜进行磋商。据悉，双方均在声明中表示，目前尚未就合并达成任何协议，也未做出最终决定。消息一经发布，便引起...",
           "id": 117,
           "subCategory": "其他",
-          "highlight": false,
-          "isAlert": false
+          "highlight": true,
+          "isAlert": true
         },
         {
           "category": "美妆",
@@ -1490,7 +1490,7 @@
           "summary": "3 月 22 日，歌手华晨宇与小阔集团联合创立的日化家居品牌\"重点 POINZ\"正式发布，华晨宇出任联合创始人。\n\n企查查信息显示，品牌运营主体为深圳华阔生物科技，其大股东深圳星阔生物科技为小阔集团旗...",
           "id": 118,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1500,7 +1500,7 @@
           "summary": "3 月 24 日，国际私募巨头 Advent International 宣布，已签署协议收购高端身体护理品牌 Salt & Stone 多数股权，交易预计于 4 月完成。据行业估算，交易金额超 5 ...",
           "id": 119,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1520,7 +1520,7 @@
           "summary": "3 月 24 日至 25 日，2026 年全国化妆品监督管理工作会议在江西省南昌市召开。\n\n会议披露，2025 年我国化妆品产业市场规模突破 1.1 万亿元，同比增长 2.8%，其中，国货品牌销售额占...",
           "id": 121,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1530,8 +1530,8 @@
           "summary": "近日，法国奢侈美妆品牌 Christian Louboutin 路铂廷传来渠道收缩消息。品牌微信端\"美妆臻享会\"会员小程序宣布 4 月 15 日终止运营，抖音店铺商品也已全部清空。但其抖音旗舰店客服回...",
           "id": 122,
           "subCategory": "其他",
-          "highlight": false,
-          "isAlert": false
+          "highlight": true,
+          "isAlert": true
         },
         {
           "category": "美妆",
@@ -1551,7 +1551,7 @@
           "id": 124,
           "subCategory": "其他",
           "highlight": false,
-          "isAlert": false
+          "isAlert": true
         },
         {
           "category": "美妆",
@@ -1580,7 +1580,7 @@
           "summary": "3 月 25 日，上海家化联合股份有限公司发布了 2025 年度合并财务报表。\n\n2025 年公司实现营收 63.17 亿元，同比增长 11.25%；归属于上市公司股东的净利润为 2.68 亿元；毛利...",
           "id": 127,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1590,7 +1590,7 @@
           "summary": "3 月 24 日，林清轩发布了上市以来的首份财报。财报显示，林清轩全年营业收入 24.50 亿元，同比增长 102.5%；经调整净利润 4.01 亿元，同比增长 100.1%，毛利率连续三年超 80%...",
           "id": 128,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1610,8 +1610,8 @@
           "summary": "3 月 22 日，港交所信息显示，A 股市值曾破千亿级的原料巨头天赐高新材料，于 2025 年 9 月 22 日递交的港股招股书因 6 个月有效期届满失效，赴港上市进程暂时搁置。\n\n公司主营日化材料、...",
           "id": 130,
           "subCategory": "其他",
-          "highlight": false,
-          "isAlert": false
+          "highlight": true,
+          "isAlert": true
         },
         {
           "category": "美妆",
@@ -1620,7 +1620,7 @@
           "summary": "3 月 26 日，毛戈平公布了 2025 年全年财报。报告期内，公司营收 50.5 亿元，同比增长 30%；净利润为 12.05 亿元，同比增长 36.8%；毛利率保持在 84.2%。\n\n从业务板块来...",
           "id": 131,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1630,7 +1630,7 @@
           "summary": "3 月 25 日，广州若羽臣科技股份有限公司正式公布企业 2025 年年度报告。该公司 2025 年营业收入达 34.32 亿元，同比增长 94.35%，其中归母净利润为 1.94 亿元，同比增长 8...",
           "id": 132,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1640,7 +1640,7 @@
           "summary": "3 月 26 日，橘宜集团公布了 2025 年度业绩数据。2025 年集团零售额突破 51 亿元，含税收入达 43 亿元，同比增长 22%，同时海外零售额突破 6 亿元。\n\n从业务板块来看，彩妆业务为...",
           "id": 133,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1651,7 +1651,7 @@
           "id": 134,
           "subCategory": "其他",
           "highlight": false,
-          "isAlert": false
+          "isAlert": true
         },
         {
           "category": "食品饮料",
@@ -1700,7 +1700,7 @@
           "summary": "3 月 19 日，东阿阿胶发布 2025 年年度报告，据报告，2025 年公司实现营业收入 67 亿元，同比上升 13.17%；归属于上市公司股东的净利润 17.39 亿元，同比上升 11.67%；归...",
           "id": 139,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1710,7 +1710,7 @@
           "summary": "近日，Minayo 美那有凭借「营养软糖 100% 胶原蛋白胶体（零额外胶体添加）」技术获中金企信全国首创认证。该认证背后是其自主研发的「胶原蛋白慢溶技术」——通过将水解胶原蛋白从\"添加物\"升级为软糖...",
           "id": 140,
           "subCategory": "其他",
-          "highlight": false,
+          "highlight": true,
           "isAlert": false
         },
         {
@@ -1721,7 +1721,7 @@
           "id": 141,
           "subCategory": "其他",
           "highlight": false,
-          "isAlert": false
+          "isAlert": true
         },
         {
           "category": "食品饮料",

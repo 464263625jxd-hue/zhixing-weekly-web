@@ -90,7 +90,7 @@
       "summary": "1-2 月份，全国规模以上工业企业实现利润总额 10245.6 亿元，同比增长 15.2%。1-2 月份，采矿业实现利润总额 1556.1 亿元，同比增长 9.9%；制造业实现利润总额 7321.5 ...",
       "id": 8,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -131,7 +131,7 @@
       "id": 12,
       "subCategory": "其他",
       "highlight": false,
-      "isAlert": false
+      "isAlert": true
     },
     {
       "category": "宏观",
@@ -140,7 +140,7 @@
       "summary": "1-2 月我国社会物流总额 58.6 万亿元，按可比价格计算同比增长 6.7%，增速较上年全年、上年同期分别提高 1.6 和 1.4 个百分点，回升态势较为明显。",
       "id": 13,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -170,7 +170,7 @@
       "summary": "国家能源局：截至 2 月底，全国累计发电装机容量 39.5 亿千瓦，同比增长 15.9%。",
       "id": 16,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -180,7 +180,7 @@
       "summary": "3 月 16 日-22 日，10 个重点城市新建商品房成交（签约）面积总计 188.97 万平方米，环比增长 27.9%；二手房成交（签约）面积总计 227.67 万平方米，环比增长 9%。",
       "id": 17,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -190,7 +190,7 @@
       "summary": "据上海链家研究院，2026 年 3 月 1 日至 3 月 23 日，上海市二手房已成交 2.24 万套，成交量较 2025 年同期增长 11%。",
       "id": 18,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -201,7 +201,7 @@
       "id": 19,
       "subCategory": "其他",
       "highlight": false,
-      "isAlert": false
+      "isAlert": true
     },
     {
       "category": "宏观",
@@ -210,7 +210,7 @@
       "summary": "截至 2026 年 2 月底，我国电动汽车充电基础设施（枪）总数达到 2101.0 万个，同比增长 47.8%。",
       "id": 20,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -220,7 +220,7 @@
       "summary": "中国工程机械工业协会：今年前两个月，我国工程机械产品出口额 106.86 亿美元，同比增长 33.4%。",
       "id": 21,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -231,7 +231,7 @@
       "id": 22,
       "subCategory": "其他",
       "highlight": false,
-      "isAlert": false
+      "isAlert": true
     },
     {
       "category": "宏观",
@@ -241,7 +241,7 @@
       "id": 23,
       "subCategory": "其他",
       "highlight": false,
-      "isAlert": false
+      "isAlert": true
     },
     {
       "category": "宏观",
@@ -251,7 +251,7 @@
       "id": 24,
       "subCategory": "其他",
       "highlight": false,
-      "isAlert": false
+      "isAlert": true
     },
     {
       "category": "宏观",
@@ -370,7 +370,7 @@
       "summary": "德国电商平台 Otto 公布了上一财年的业绩，并表示正在加速推进其扩张战略。在 2025/26 财年，Otto 的商品交易总额（GMV）达到 75 亿欧元，活跃客户数量为 1260 万，同比增长 4%...",
       "id": 36,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -390,7 +390,7 @@
       "summary": "拉丁美洲电商巨头美客多于 3 月 24 日宣布，将在 2026 年向巴西市场投入 570 亿巴西雷亚尔，这是公司在该国迄今为止最大规模的投资计划，相较于 2025 年的 340 亿雷亚尔，投资额增长近...",
       "id": 38,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -420,7 +420,7 @@
       "summary": "智能乐器品牌 AeroBand 宣布完成近亿元 A 轮融资，本轮融资由经纬创投领投，绿洲资本、国泰海通及老股东峰瑞资本联合参投，光源资本担任独家财务顾问。",
       "id": 41,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -430,7 +430,7 @@
       "summary": "智能庭院机器人品牌汉阳科技 Yarbo 已完成近 2 亿元新一轮融资。本轮融资由松禾资本、温润投资（温氏股份旗下）、安乃达、芯联资本、龙华资本投资，涵盖了头部财务投资机构、上市公司产业资本与地方政府引...",
       "id": 42,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -440,7 +440,7 @@
       "summary": "社交平台 Reddit 宣布推出包括轮播广告以及潮流和折扣叠加层的新型购物广告格式，并支持与电商平台 Shopify 的直接集成。数据显示，过去一年中，Reddit 上关于购物的讨论量增长了 40%。...",
       "id": 43,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -550,8 +550,8 @@
       "summary": "3 月 25 日，拼多多发布 2025 年第四季度及全年财报，增收不增利。季度层面，2025 年第四季度，公司实现营收 1239 亿元，同比增长 12%；营业利润 277 亿元，同比增长约 8%；但归...",
       "id": 54,
       "subCategory": "其他",
-      "highlight": false,
-      "isAlert": false
+      "highlight": true,
+      "isAlert": true
     },
     {
       "category": "零售",
@@ -570,7 +570,7 @@
       "summary": "快手科技发布 2025 年第四季度及全年业绩。财报显示，2025 年第四季度，快手总收入同比增长 11.8%至人民币 396 亿元。其中，包含线上营销服务和其他服务在内的核心商业收入同比增长 17.1...",
       "id": 56,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -600,7 +600,7 @@
       "summary": "近日美团闪购发布酒饮行业稳增长助力计划，将通过开放即时零售基础设施、强化全链路保真体系、投入流量扶持等，为酒饮行业各主体提供差异化即时零售切入方案。针对名酒品牌、经销商、轻资产零售品牌，分别推出官方旗...",
       "id": 59,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -610,7 +610,7 @@
       "summary": "老铺黄金发布 2025 年业绩报告，报告显示，2025 年本集团销售业绩约为 313.75 亿元，同比增长约 220.3%；营业收入为约 273.03 亿元，同比增长约 221.0%；年内利润 48....",
       "id": 60,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -650,8 +650,8 @@
       "summary": "海底捞国际控股有限公司发布截至 2025 年 12 月 31 日止年度业绩公告。2025 年公司实现收入 432.25 亿元，较 2024 年的 427.55 亿元增长 1.1%；公司拥有人应占溢利为...",
       "id": 64,
       "subCategory": "其他",
-      "highlight": false,
-      "isAlert": false
+      "highlight": true,
+      "isAlert": true
     },
     {
       "category": "零售",
@@ -670,7 +670,7 @@
       "summary": "全球最大 AI 模型 API 聚合平台 OpenRouter 最新数据显示，截至 3 月 15 日，中国 AI 大模型周调用量达 4.69 万亿 Token，连续第二周超越美国，全球调用量前三也由中国...",
       "id": 66,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -690,7 +690,7 @@
       "summary": "专注于脑机接口与具身智能机器人研发的傲意科技完成 1.5 亿元 C 轮融资，由中金资本旗下中金脑科学基金领投，多家老股东跟投。公司拥有 AI 肌电/脑电信号解析等三大核心自主知识产权技术，研发神经信号...",
       "id": 68,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -700,7 +700,7 @@
       "summary": "灵巧手及具身智能机器人产品提供商知行机器人科技（苏州）有限公司近期完成近亿元 B 轮融资。本轮融资由上市公司山东威达领投，国兴投资、芜湖科创、天泓投资、西安经发、臻泰投资和上海天使会跟投，资金将主要用...",
       "id": 69,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -710,7 +710,7 @@
       "summary": "蜜雪集团发布 2025 年度业绩公告。报告期内，公司实现营收 335.6 亿元，同比增长 35.2%；毛利 104.5 亿元，同比增长 29.7%；归母净利润 58.8 亿元，同比增长 32.7%。截...",
       "id": 70,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -720,7 +720,7 @@
       "summary": "3 月 27 日，茶百道发布 2025 年业绩公告，全年总营收 53.95 亿元，同比增长 10%；净利润 8.2 亿元，同比增长 71%；经调净利润 8.3 亿元，同比增长 29%，实现营收利润双增...",
       "id": 71,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -730,7 +730,7 @@
       "summary": "孕婴世界发布 2025 年年度财务报告。",
       "id": 72,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -740,7 +740,7 @@
       "summary": "蒙牛乳业 2025 年奶粉板块实现近双位数增长，持续巩固在婴幼儿配方奶粉市场的领先地位。",
       "id": 73,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -760,7 +760,7 @@
       "summary": "健合集团发布 2025 年业绩报告，全年总营收同比增长 10.3%，继续保持稳健增长态势。",
       "id": 75,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -780,7 +780,7 @@
       "summary": "妙可蓝多发布 2025 年年度报告，全年实现净利润 1.18 亿元。",
       "id": 77,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -790,7 +790,7 @@
       "summary": "汤臣倍健 2025 年年度报告显示，全年净利润同比增长 19.81%。",
       "id": 78,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -820,7 +820,7 @@
       "summary": "泡泡玛特国际集团发布 2025 年年度财务报告。",
       "id": 81,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -840,7 +840,7 @@
       "summary": "安踏体育 2025 年营收 802.2 亿元，同比增长 13.3%；集团经营利润 190.91 亿元，同比提升 15.0%。其中安踏品牌收入 347.54 亿元，同比增长 3.7%；FILA 斐乐品牌...",
       "id": 83,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -860,7 +860,7 @@
       "summary": "快手电商 2025 年第四季度 GMV 同比增长 12.9%至 5218 亿元。",
       "id": 85,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -870,7 +870,7 @@
       "summary": "美团发布 2025 年全年业绩，营收 3649 亿元，同比增长 8%。",
       "id": 86,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -1110,7 +1110,7 @@
       "summary": "2025 年城镇犬猫数量为 1.26 亿只，较 2024 年增长 221 万只（上升 1.8%）。其中，宠物犬的数量为 5343 万只，宠物猫的数量为 7289 万只。",
       "id": 110,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -1141,7 +1141,7 @@
       "id": 113,
       "subCategory": "其他",
       "highlight": false,
-      "isAlert": false
+      "isAlert": true
     },
     {
       "category": "宠物",
@@ -1150,7 +1150,7 @@
       "summary": "随着 00 后宠主群体的迅速增长，80 前宠主的占比进一步降低，占比不足 10%。",
       "id": 114,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -1281,7 +1281,7 @@
       "id": 127,
       "subCategory": "其他",
       "highlight": true,
-      "isAlert": false
+      "isAlert": true
     },
     {
       "category": "美妆",
@@ -1300,7 +1300,7 @@
       "summary": "3 月 26 日，上美股份发布 2025 年度业绩报告。集团全年实现营业收入 91.78 亿元，同比增长 35.1%；净利润 11.54 亿元，同比增长 43.7%。毛利率提升至 76.43%，同比增...",
       "id": 129,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -1331,7 +1331,7 @@
       "id": 132,
       "subCategory": "其他",
       "highlight": true,
-      "isAlert": false
+      "isAlert": true
     },
     {
       "category": "美妆",
@@ -1390,8 +1390,8 @@
       "summary": "3 月 12 日，太古股份有限公司（以下简称\"太古公司\"）发布 2025 年业绩报告显示，2025 年营业收入达 904.67 亿港元，较 2024 年增长 10%。旗下太古可口可乐收益总额 419....",
       "id": 138,
       "subCategory": "其他",
-      "highlight": false,
-      "isAlert": false
+      "highlight": true,
+      "isAlert": true
     },
     {
       "category": "食品饮料",
@@ -1420,7 +1420,7 @@
       "summary": "3 月 17 日，万辰集团发布 2025 年年报。官方数据显示，该年度公司实现营业收入 514.59 亿元，同比增长 59.17%；归母净利 13.44 亿元，同比增长 358%；扣非归母净利 12....",
       "id": 141,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": true
     },
     {
@@ -1440,7 +1440,7 @@
       "summary": "近日，国家市场监督管理局简易案件公示信息显示，紫燕食品（603056.SH）与安琪酵母（600298.SH）宣布签署交易协议，拟共同设立一家合营企业。根据协议，交易完成后，紫燕食品将持有合营企业 60...",
       "id": 143,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     },
     {
@@ -1450,7 +1450,7 @@
       "summary": "近日，国内医学营养领域的领军企业——玛士撒拉（上海）生物科技有限公司（以下简称\"玛士撒拉\"）宣布成功完成 1.08 亿元人民币的 B+ 轮融资。本轮融资由百联集团旗下的百联商投和百联挚高资本联合领投，...",
       "id": 144,
       "subCategory": "其他",
-      "highlight": false,
+      "highlight": true,
       "isAlert": false
     }
   ],
