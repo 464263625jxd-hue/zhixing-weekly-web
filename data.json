@@ -305,12 +305,14 @@
       "summary": "第 71 期知行周刊，共收录139条重要资讯。本周主题：AI 重塑电商·财报验证价值。热点：财报季密集发布（20+ 家企业）、AI 电商全面落地（淘宝/阿里/京东）、乳业业绩分化（飞鹤/蒙牛/伊利）、跨境政策收紧（欧盟/俄罗斯/印尼）。",
       "coverImage": "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
       "tags": [
-        "宏观政策",
-        "电商平台",
-        "美妆护肤",
-        "母婴育儿",
-        "食品饮料",
-        "宠物经济"
+        "中东冲突",
+        "AI导购",
+        "雅诗兰黛并购",
+        "美妆涨价潮",
+        "飞鹤财报",
+        "蛋白零食",
+        "宠物交易标准",
+        "乖宝全球化"
       ],
       "data": [
         {
@@ -381,7 +383,7 @@
           "id": 7,
           "subCategory": "经济",
           "highlight": false,
-          "isAlert": true
+          "isAlert": false
         },
         {
           "category": "宏观",
@@ -401,7 +403,7 @@
           "id": 9,
           "subCategory": "市场",
           "highlight": false,
-          "isAlert": true
+          "isAlert": false
         },
         {
           "category": "宏观",
@@ -641,7 +643,7 @@
           "id": 33,
           "subCategory": "跨境",
           "highlight": false,
-          "isAlert": true
+          "isAlert": false
         },
         {
           "category": "平台",
@@ -881,7 +883,7 @@
           "id": 57,
           "subCategory": "餐饮",
           "highlight": false,
-          "isAlert": true
+          "isAlert": false
         },
         {
           "category": "零售",
@@ -1081,7 +1083,7 @@
           "id": 102,
           "subCategory": "彩妆",
           "highlight": false,
-          "isAlert": true
+          "isAlert": false
         },
         {
           "category": "美妆",
@@ -1161,7 +1163,7 @@
           "id": 110,
           "subCategory": "护肤",
           "highlight": true,
-          "isAlert": true
+          "isAlert": false
         },
         {
           "category": "美妆",
@@ -1271,7 +1273,7 @@
           "id": 121,
           "subCategory": "零食",
           "highlight": false,
-          "isAlert": true
+          "isAlert": false
         },
         {
           "category": "食品饮料",
@@ -1320,7 +1322,7 @@
           "summary": "3 月 25 日，蒙牛乳业发布 2025 年度业绩报告，全年实现收入达 822.4 亿元，经营利润为 65.6 亿元，公司毛利率达 39.9%，经营活动现金流达 87.5 亿元，自由现金流达 63 亿...",
           "subCategory": "奶粉",
           "highlight": false,
-          "isAlert": true,
+          "isAlert": false,
           "id": 126
         },
         {
@@ -1459,7 +1461,7 @@
           "subCategory": "平台",
           "title": "天猫2026新战略赋能宠物行业品牌增长",
           "content": "3月26日天猫公布2026经营战略，将从用户、收益、AI能力三方面加大优质品牌投入，深度赋能宠物行业发展。天猫将加码88VIP补贴、淘金币等拓展客群，投放百亿店铺AI红包、开启广告智能跟投，并为商家搭建AI经营能力，3月底上线全链路AI生意管家。此前天猫宠物行业已实现双位数增长，88VIP高净值客群消费占比超50%，此次新战略将进一步助力宠物品牌实现成交与用户资产双爆发。",
-          "isAlert": true
+          "isAlert": false
         },
         {
           "id": "pet_002",
@@ -1491,7 +1493,7 @@
           "subCategory": "财报",
           "title": "健合集团2025宠物业务营收21.5亿增8.7%",
           "content": "3月24日健合集团发布2025财报，其宠物营养及护理用品业务营收21.5亿元，同比增8.7%，占集团总营收15%。中国市场素力高完成渠道与产品高端化调整，销售额增8.6%；北美市场增7.5%，快乐一爪涨12.8%且推出原益生菌新品。素力高中国本地化供应预计2026年底完成，宠物业务将持续深耕高端化与全球化。",
-          "isAlert": true
+          "isAlert": false
         },
         {
           "id": "pet_006",
