@@ -2,7 +2,7 @@
   "id": 71,
   "date": "2026.03.23 - 2026.03.29",
   "title": "第71期知行周刊",
-  "summary": "第71期知行周刊，共收录127条重要资讯。宏观方面，AI行业动态频出，月之暗面考虑赴港IPO。平台方面，拼多多宣布组建'新拼姆'投千亿做品牌自营。美妆方面，雅诗兰黛拟收购Puig引发关注。母婴方面，多家企业发布财报，行业集中度提升。宠物方面，宠物医疗市场规模突破500亿元。",
+  "summary": "第 71 期知行周刊，共收录142条重要资讯。",
   "coverImage": "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
   "tags": [
     "宏观政策",
@@ -1281,6 +1281,156 @@
       "highlight": false,
       "isAlert": false,
       "summary": "作为开年首场宠物行业旗舰展，点点繁星宠物服务携全新升级的一站式宠物服务平台亮相。平台提供线上与线下相结合的便捷服务，包括上门喂养、上门洗护/美容、上门摄影、宠物告别厅等，覆盖宠物全生命周期。目前已在北..."
+    },
+    {
+      "category": "食品饮料",
+      "title": "百事携全新品牌进军肉制品市场",
+      "content": "百事推出全新蛋白零食品牌「Good Warrior」，进军肉制零食市场。",
+      "summary": "百事推出全新蛋白零食品牌「Good Warrior」，进军肉制零食市场。",
+      "id": 128,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "新品"
+    },
+    {
+      "category": "食品饮料",
+      "title": "永辉超市首发好丽友推出「见手青味 好友趣」薯片新品",
+      "content": "好丽友推出「见手青味 好友趣」薯片新品，永辉超市首发。",
+      "summary": "好丽友推出「见手青味 好友趣」薯片新品，永辉超市首发。",
+      "id": 129,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "新品"
+    },
+    {
+      "category": "食品饮料",
+      "title": "菲诺推出「咖啡水」新品",
+      "content": "瞄准低因轻负担需求，菲诺推出「咖啡水」新品。",
+      "summary": "瞄准低因轻负担需求，菲诺推出「咖啡水」新品。",
+      "id": 130,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "新品"
+    },
+    {
+      "category": "食品饮料",
+      "title": "太古可口可乐发布 2025 年财报营收达 387 亿元",
+      "content": "太古可口可乐发布 2025 年年度财务报告，营收达 387 亿元。",
+      "summary": "太古可口可乐发布 2025 年年度财务报告，营收达 387 亿元。",
+      "id": 131,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "财报"
+    },
+    {
+      "category": "食品饮料",
+      "title": "东阿阿胶发布 2025 年财报营业收入同比上升 13.17%",
+      "content": "东阿阿胶发布 2025 年年度财务报告，营业收入同比上升 13.17%。",
+      "summary": "东阿阿胶发布 2025 年年度财务报告，营业收入同比上升 13.17%。",
+      "id": 132,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "财报"
+    },
+    {
+      "category": "食品饮料",
+      "title": "Minayo 美那有「胶原蛋白慢溶技术」获首创认证",
+      "content": "Minayo 美那有「胶原蛋白慢溶技术」获首创认证，突破传统软糖结构模式。",
+      "summary": "Minayo 美那有「胶原蛋白慢溶技术」获首创认证，突破传统软糖结构模式。",
+      "id": 133,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "技术"
+    },
+    {
+      "category": "食品饮料",
+      "title": "万辰集团 2025 年财报出炉净利润同比增长 358%",
+      "content": "万辰集团发布 2025 年年度财务报告，净利润同比增长 358%。",
+      "summary": "万辰集团发布 2025 年年度财务报告，净利润同比增长 358%。",
+      "id": 134,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "财报"
+    },
+    {
+      "category": "食品饮料",
+      "title": "元气森林智能柜发布\"蓝鲸计划\"",
+      "content": "元气森林智能柜发布\"蓝鲸计划\"，拓展无人零售盈利边界。",
+      "summary": "元气森林智能柜发布\"蓝鲸计划\"，拓展无人零售盈利边界。",
+      "id": 135,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "新品"
+    },
+    {
+      "category": "食品饮料",
+      "title": "紫燕食品与安琪酵母新设合营企业",
+      "content": "紫燕食品与安琪酵母新设合营企业，跨界千亿复合调味品市场。",
+      "summary": "紫燕食品与安琪酵母新设合营企业，跨界千亿复合调味品市场。",
+      "id": 136,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "企业"
+    },
+    {
+      "category": "食品饮料",
+      "title": "玛士撒拉再获亿元级 B+轮融资",
+      "content": "玛士撒拉再获亿元级 B+轮融资，加码医学营养核心产品布局。",
+      "summary": "玛士撒拉再获亿元级 B+轮融资，加码医学营养核心产品布局。",
+      "id": 137,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "市场"
+    },
+    {
+      "category": "食品饮料",
+      "title": "华乐福旗下淘吉推出「原浆果冻」新品",
+      "content": "华乐福旗下淘吉推出「原浆果冻」新品，靠颜值与质感取胜。",
+      "summary": "华乐福旗下淘吉推出「原浆果冻」新品，靠颜值与质感取胜。",
+      "id": 138,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "新品"
+    },
+    {
+      "category": "食品饮料",
+      "title": "营收达 387 亿元太古可口可乐发布 2025 年财报",
+      "content": "太古可口可乐发布 2025 年财报，营收达 387 亿元。",
+      "summary": "太古可口可乐发布 2025 年财报，营收达 387 亿元。",
+      "id": 139,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "财报"
+    },
+    {
+      "category": "食品饮料",
+      "title": "营业收入同比上升 13.17%东阿阿胶发布 2025 年财报",
+      "content": "东阿阿胶发布 2025 年财报，营业收入同比上升 13.17%。",
+      "summary": "东阿阿胶发布 2025 年财报，营业收入同比上升 13.17%。",
+      "id": 140,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "财报"
+    },
+    {
+      "category": "食品饮料",
+      "title": "突破传统软糖结构模式Minayo 美那有「胶原蛋白慢溶技术」获首创认证",
+      "content": "Minayo 美那有「胶原蛋白慢溶技术」获首创认证，突破传统软糖结构模式。",
+      "summary": "Minayo 美那有「胶原蛋白慢溶技术」获首创认证，突破传统软糖结构模式。",
+      "id": 141,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "技术"
+    },
+    {
+      "category": "食品饮料",
+      "title": "净利润同比增长 358%万辰集团 2025 年财报出炉",
+      "content": "万辰集团 2025 年财报出炉，净利润同比增长 358%。\n\n---",
+      "summary": "万辰集团 2025 年财报出炉，净利润同比增长 358%。\n\n---",
+      "id": 142,
+      "highlight": false,
+      "isAlert": false,
+      "subCategory": "财报"
     }
   ],
   "insight": {
