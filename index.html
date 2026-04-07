@@ -29,15 +29,12 @@
             /* 测试/正式填 Zechariah 的上报 key（请求 query 为 yard-report-key） */
             var href = (typeof location !== 'undefined' && location.href) ? location.href : '';
             var isProd = href.indexOf('xue.leqeegroup.com') !== -1;
-            var gc = {
-                username: (typeof Cookies !== 'undefined' && Cookies.get('username')) || '',
-                displayName: (typeof Cookies !== 'undefined' && Cookies.get('displayName')) || ''
-            };
             ZechariahTracking.eventTrack.init({
                 yardKeyTest: yardKeyTest,
                 yardKeyProd: yardKeyProd,
                 isProd: isProd,
-                globalConfig: gc,
+                setUsername: () => (typeof Cookies !== 'undefined' && Cookies.get('username')) || null,
+                setRealname: () => (typeof Cookies !== 'undefined' && Cookies.get('displayName')) || null,
                 autoTrack: {
                     trackRequest: true,
                     requestFilter: function (url) {
