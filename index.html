@@ -120,15 +120,19 @@
                 // ==================== 初始化逻辑（Initialization）====================
                 async init() {
                     try {
-                        const response = await fetch('data.json?t=' + Date.now());
-                        if (!response.ok) throw new Error('网络响应异常');
-                        const data = await response.json();
+                        // 先加载轻量版本（快速显示列表）
+                        const liteResponse = await fetch('data-lite.json?t=' + Date.now());
+                        if (!liteResponse.ok) throw new Error('网络响应异常');
+                        const liteData = await liteResponse.json();
                         
-                        // 填充数据
-                        this.issueDB = data.issues || [];
-                        this.companyDB = data.companies || {};
+                        // 填充索引数据
+                        this.issueDB = liteData.issues || [];
+                        this.companyDB = liteData.companies || {};
+                        
+                        // 预加载最新一期数据
+                        await this.loadIssueData(72);
+                        
                         GLOBAL_ISSUE_DB = this.issueDB; // 供Chart.js使用
-                        
                         this.isLoading = false;
                         
                         // 添加ESC键关闭弹窗支持
@@ -208,6 +212,27 @@
 
                 // ==================== 交互方法（Methods）==================== ---
                 loadMore() { this.displayLimit += 20; },
+                
+                // 按需加载某期详细数据
+                async loadIssueData(issueId) {
+                    // 检查是否已加载
+                    const issueIndex = this.issueDB.findIndex(i => i.id === issueId);
+                    if (issueIndex === -1) return;
+                    const issue = this.issueDB[issueIndex];
+                    if (issue.data && issue.data.length > 0) return; // 已加载
+                    
+                    try {
+                        const response = await fetch(`issues/issue-${issueId}/issue.json?t=${Date.now()}`);
+                        if (!response.ok) return;
+                        const fullIssue = await response.json();
+                        
+                        // 合并数据
+                        this.issueDB[issueIndex] = { ...issue, ...fullIssue };
+                        this.currentIssueData = this.issueDB[0]; // 更新当前期
+                    } catch (e) {
+                        console.error('加载期刊数据失败:', e);
+                    }
+                },
 
                 formatContent(text) {
                     if (!text) return '';
@@ -528,7 +553,7 @@ ${divider}
         <div class="text-center max-w-md px-6">
             <div class="text-4xl mb-4">⚠️</div>
             <h2 class="text-xl font-bold mb-2">数据加载失败</h2>
-            <p class="text-gray-400 mb-6 text-sm">请确保 data.json 文件已创建，并且与 index.html 位于同一目录下。</p>
+            <p class="text-gray-400 mb-6 text-sm">请确保 data-lite.json 文件已创建，并且与 index.html 位于同一目录下。</p>
         </div>
     </div>
 
