@@ -365,15 +365,31 @@
 
                 findNewsInIssue(issue, key) {
                     if (!issue || !issue.data) return null;
+                    
+                    // 处理标题匹配（t- 开头）
                     if (key.indexOf('t-') === 0) {
                         const t = decodeURIComponent(key.slice(2));
                         return issue.data.find(function (d) { return (d.title || '') === t; }) || null;
                     }
+                    
+                    // 尝试将 key 转为整数
                     const num = parseInt(key, 10);
                     if (!Number.isNaN(num)) {
-                        const found = issue.data.find(function (d) { return Number(d.id) === num; });
+                        // 尝试匹配整数 id
+                        const found = issue.data.find(function (d) {
+                            // 处理各种 id 格式
+                            const dId = d.id;
+                            if (typeof dId === 'number') return dId === num;
+                            if (typeof dId === 'string') {
+                                const dNum = parseInt(dId, 10);
+                                if (!Number.isNaN(dNum)) return dNum === num;
+                            }
+                            return false;
+                        });
                         if (found) return found;
                     }
+                    
+                    // 最终字符串匹配
                     return issue.data.find(function (d) { return String(d.id) === key; }) || null;
                 },
 
