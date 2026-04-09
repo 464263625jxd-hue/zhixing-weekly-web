@@ -9,10 +9,11 @@
 
 ```
 zhixing-weekly/
-├── data.json              # 主数据文件（所有期数汇总）
+├── data.source.json       # 源数据文件（提交到 Git）
+├── data.json              # 部署产物（由脚本生成，Git 忽略）
 ├── index.html             # Web展示页面
 ├── favicon.svg            # 网站图标
-├── version.json           # 版本信息
+├── version.json           # 部署产物版本信息（由脚本生成，Git 忽略）
 ├── README.md              # 项目说明
 │
 ├── sources/               # 资讯源目录
@@ -45,10 +46,11 @@ zhixing-weekly/
 
 | 文件 | 说明 | 更新时机 |
 |------|------|----------|
-| `data.json` | 主数据文件，包含所有期数 | 每期更新 |
+| `data.source.json` | 源数据文件，包含 companies 与静态元信息 | 业务数据变更时 |
+| `data.json` | 主数据文件，包含所有期数 | 部署前自动生成 |
 | `index.html` | Web展示页面 | 功能更新时 |
 | `favicon.svg` | 网站图标 | 一次性 |
-| `version.json` | 版本信息 | 每期更新 |
+| `version.json` | 版本信息 | 部署前自动生成 |
 | `README.md` | 项目说明 | 重要变更时 |
 
 ### 2. 资讯源文件（必须上传）
@@ -65,7 +67,7 @@ zhixing-weekly/
 |------|------|------|
 | `issueXX.json` | 第XX期完整数据 | `issues/issue-XX/` |
 
-**说明**：可在 `data.json` 中获取所有期数，单期文件为备份用途。
+**说明**：可在部署生成后的 `data.json` 中获取所有期数，单期文件为备份用途。
 
 ### 4. 制作过程文件（必须清理）
 
@@ -89,14 +91,16 @@ rm -f *.py  # 或归档到 archive/scripts/
 # 2. 上传资讯源文件
 cp ~/Desktop/知行周刊第XX期.docx sources/issue-XX.docx
 
-# 3. 更新核心文件
-# - data.json（自动更新）
-# - version.json（自动更新）
+# 3. 更新源数据 / 往期文件
+# - data.source.json（如 companies 或静态元信息有变更）
 # - issueXX.json（可选）
 
-# 4. 更新README（如有重要变更）
+# 4. 部署前生成静态文件
+python3 scripts/sync-data-from-issues-data.py
 
-# 5. 提交并推送
+# 5. 更新README（如有重要变更）
+
+# 6. 提交并推送
 git add -A
 git commit -m "Issue XX: 标题（资讯数）"
 git push
@@ -104,8 +108,8 @@ git push
 
 ### 文件检查清单
 
-- [ ] `data.json` 是否更新？
-- [ ] `version.json` 是否更新？
+- [ ] `data.source.json` 是否更新？
+- [ ] 部署脚本是否已生成最新 `data.json` 与 `version.json`？
 - [ ] 资讯源文件是否上传到 `sources/`？
 - [ ] 中间文件是否清理？
 - [ ] README 是否需要更新？
@@ -134,6 +138,7 @@ git push
 2. ❌ 禁止提交调试脚本到根目录
 3. ❌ 禁止提交包含敏感信息的文件
 4. ❌ 禁止删除 `sources/` 目录中的资讯源文件
+5. ❌ 禁止将部署机生成的 `data.json`、`version.json` 重新提交到 Git
 
 ---
 

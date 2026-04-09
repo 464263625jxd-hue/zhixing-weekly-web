@@ -94,7 +94,7 @@ cp ~/Desktop/zhixing-weekly/data.json ~/Desktop/zhixing-weekly-web/data.json
 ```
 
 ### 步骤 2：验证原始文件工作
-- 在 GitHub Pages 上测试原始文件
+- 在已部署的静态站点上测试原始文件
 - 确认功能正常
 
 ### 步骤 3：渐进式优化
@@ -104,7 +104,7 @@ cp ~/Desktop/zhixing-weekly/data.json ~/Desktop/zhixing-weekly-web/data.json
 4. **视觉优化** - 动画、过渡效果
 
 ### 步骤 4：部署测试
-- GitHub Pages 自动部署
+- 按团队流程发布到静态托管环境
 - 每步优化后验证功能
 
 ---
@@ -204,7 +204,7 @@ async init() {
 ## 📝 下一步行动
 
 1. **复制原始文件到 zhixing-weekly-web**
-2. **验证 GitHub Pages 部署**
+2. **验证线上静态部署**
 3. **确认功能正常**
 4. **开始渐进式优化**
 

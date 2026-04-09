@@ -1,23 +1,7 @@
 {
   "_meta": {
-    "version": "1.0",
-    "totalNews": 1567,
-    "totalIssues": 12
+    "version": "1.0"
   },
-  "issueIds": [
-    72,
-    71,
-    70,
-    69,
-    68,
-    67,
-    66,
-    65,
-    64,
-    63,
-    62,
-    61
-  ],
   "companies": {
     "美妆": [
       {
