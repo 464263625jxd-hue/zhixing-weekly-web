@@ -210,6 +210,11 @@
                     const self = this;
                     window.addEventListener('hashchange', function () {
                         if (self._routeSuppress) return;
+                        // 如果当前正在显示详情弹窗，且新 hash 也是详情页，跳过处理
+                        const { parts } = parseAppHash();
+                        if (self.selectedNews && parts[1] === 'detail') {
+                            return;  // 不关闭弹窗
+                        }
                         self.applyRouteFromHash();
                     });
                 },
@@ -225,9 +230,12 @@
                     // 首页显示详情弹窗时，需要保留 hash
                     if (this.view === 'portal') {
                         if (this.selectedNews) {
-                            const iid = this.selectedNews.issueId || this.currentIssueId || '';
+                            const iid = this.selectedNews.issueId || this.currentIssueId;
                             const nk = this.newsItemKey(this.selectedNews);
-                            return '#/portal/detail/' + iid + '/' + nk;
+                            // 只有 iid 有效时才生成 detail hash
+                            if (iid != null && iid !== '') {
+                                return '#/portal/detail/' + iid + '/' + nk;
+                            }
                         }
                         return '#/portal';
                     }
@@ -262,7 +270,8 @@
                     this._routeSuppress = true;
                     location.hash = next;
                     const self = this;
-                    queueMicrotask(function () { self._routeSuppress = false; });
+                    // 使用 setTimeout 确保 hashchange 事件在 _routeSuppress 清除前触发
+                    setTimeout(function () { self._routeSuppress = false; }, 100);
                 },
 
                 async applyRouteFromHash() {
@@ -619,6 +628,16 @@
                 },
 
                 openDetail(item) {
+                    // 确保 currentIssueData 和 currentIssueId 已设置
+                    // 如果 item 来自当前显示的期，使用 currentIssueData
+                    if (!this.currentIssueData && this.issueDB.length > 0) {
+                        this.currentIssueData = this.issueDB[0];
+                        this.currentIssueId = this.issueDB[0].id;
+                    }
+                    // 为 item 附加 issueId（如果还没有）
+                    if (item && !item.issueId && this.currentIssueId) {
+                        item.issueId = this.currentIssueId;
+                    }
                     this.selectedNews = item;
                     document.body.style.overflow = 'hidden';
                     this.syncHashToState();
