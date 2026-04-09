@@ -222,7 +222,15 @@
 
                 buildHashFromState() {
                     if (this.showGlobalSearch) return '#/search';
-                    if (this.view === 'portal') return '#/portal';
+                    // 首页显示详情弹窗时，需要保留 hash
+                    if (this.view === 'portal') {
+                        if (this.selectedNews) {
+                            const iid = this.selectedNews.issueId || this.currentIssueId || '';
+                            const nk = this.newsItemKey(this.selectedNews);
+                            return '#/portal/detail/' + iid + '/' + nk;
+                        }
+                        return '#/portal';
+                    }
                     if (this.view === 'industry') {
                         const cat = encodeURIComponent(this.currentIndustry || '');
                         if (this.selectedIndustryNews) {
@@ -261,11 +269,32 @@
                     if (this.isLoading || this.loadError) return;
                     const { parts } = parseAppHash();
                     if (parts.length === 0 || parts[0] === 'portal') {
-                        this.selectedNews = null;
                         this.selectedIndustryNews = null;
                         this.showGlobalSearch = false;
-                        document.body.style.overflow = 'auto';
                         this.view = 'portal';
+                        // 首页默认显示最新期
+                        if (!this.currentIssueData && this.issueDB.length > 0) {
+                            this.currentIssueData = this.issueDB[0];
+                            this.currentIssueId = this.issueDB[0].id;
+                        }
+                        // 处理首页详情弹窗: #/portal/detail/issueId/newsKey
+                        if (parts[1] === 'detail' && parts[2] && parts[3]) {
+                            const iid = parseInt(parts[2], 10);
+                            const nk = decodeURIComponent(parts[3]);
+                            const issue = this.issueDB.find(i => i.id === iid);
+                            if (issue) {
+                                this.currentIssueData = issue;
+                                this.currentIssueId = iid;
+                                const item = issue.data.find(d => this.newsItemKey(d) === nk);
+                                if (item) {
+                                    this.selectedNews = item;
+                                    document.body.style.overflow = 'hidden';
+                                    return;
+                                }
+                            }
+                        }
+                        this.selectedNews = null;
+                        document.body.style.overflow = 'auto';
                         return;
                     }
                     if (parts[0] === 'search') {
