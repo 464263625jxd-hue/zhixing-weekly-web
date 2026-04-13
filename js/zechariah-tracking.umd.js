@@ -4121,6 +4121,44 @@
           this.pageLoadTimestamp = 0;
           // 记录当前页面的 URL，用于路由变化时计算停留时长
           this.currentPageUrl = '';
+          // 最近一次虚拟 pageLoad（用于路由切换防重）
+          this.recentVirtualPageLoad = { url: '', timestamp: 0 };
+          // 虚拟 pageLoad 防重时间窗口（毫秒）
+          this.virtualPageLoadDedupeWindow = 500;
+          /** 与 ARMS setUsername 类似：每次上报前调用 */
+          this.setUsernameFn = null;
+          /** 每次上报前调用，写入 attributes.realname 等 */
+          this.setRealnameFn = null;
+      }
+      /**
+       * 将 setUsername / setRealname 的返回值合并进 attributes（每条上报前调用，无缓存）。
+       * 已注册回调时每次都会重新执行；当前无值时写入空字符串，便于登录后下一包即带上新值，并覆盖 globalConfig 中的旧值。
+       */
+      appendIdentityAttributes(attributes) {
+          if (this.setUsernameFn) {
+              try {
+                  const v = this.setUsernameFn();
+                  const s = v != null && String(v).trim() !== '' ? String(v).trim() : '';
+                  attributes.username = s;
+              }
+              catch (e) {
+                  if (this.debug) {
+                      console.warn('[EventTrack] setUsername 执行异常', e);
+                  }
+              }
+          }
+          if (this.setRealnameFn) {
+              try {
+                  const v = this.setRealnameFn();
+                  const s = v != null && String(v).trim() !== '' ? String(v).trim() : '';
+                  attributes.realname = s;
+              }
+              catch (e) {
+                  if (this.debug) {
+                      console.warn('[EventTrack] setRealname 执行异常', e);
+                  }
+              }
+          }
       }
       /**
        * 处理记录逻辑
@@ -4161,6 +4199,7 @@
                   // 同时设置deviceIp字段以兼容不同命名风格
                   attributes.deviceIp = this.deviceIP;
               }
+              this.appendIdentityAttributes(attributes);
               const data = {
                   event_key: eventType,
                   attributes
@@ -4339,6 +4378,45 @@
               console.log('[EventTrack Auto] 路由变动', { eventName, routeInfo, stayTime });
           }
           this.view(eventName, routeInfo);
+          // 路由切换后补发一条虚拟页面加载事件，用于 SPA 页面访问统计（PV/受访页面）
+          if (this.autoTrackConfig?.trackPageLoad) {
+              const virtualPageUrl = routeInfo.to_page || newUrl || routeInfo.to_path || '';
+              const lastVirtualPageLoad = this.recentVirtualPageLoad;
+              const isDuplicateVirtualPageLoad = !!(virtualPageUrl &&
+                  lastVirtualPageLoad.url === virtualPageUrl &&
+                  (currentTime - lastVirtualPageLoad.timestamp) <= this.virtualPageLoadDedupeWindow);
+              if (isDuplicateVirtualPageLoad) {
+                  if (this.debug) {
+                      console.log('[EventTrack Auto] 跳过重复虚拟页面加载', {
+                          page_url: virtualPageUrl,
+                          dedupeWindow: this.virtualPageLoadDedupeWindow
+                      });
+                  }
+                  return;
+              }
+              this.recentVirtualPageLoad = {
+                  url: virtualPageUrl,
+                  timestamp: currentTime
+              };
+              const virtualPageLoadEventName = this.autoTrackConfig.pageLoad || '页面_加载完成';
+              const virtualPageLoadAttributes = {
+                  page_url: virtualPageUrl,
+                  page_title: typeof document !== 'undefined' ? document.title : '',
+                  load_time: currentTime,
+                  page_load_duration: 0,
+                  referrer: routeInfo.from_page || routeInfo.from_path || '',
+                  source_event: 'routeChange',
+                  virtual_page_load: true,
+                  event_type: 'pageLoad'
+              };
+              if (this.debug) {
+                  console.log('[EventTrack Auto] 路由变动触发虚拟页面加载', {
+                      eventName: virtualPageLoadEventName,
+                      attributes: virtualPageLoadAttributes
+                  });
+              }
+              this.view(virtualPageLoadEventName, virtualPageLoadAttributes);
+          }
       }
       /**
        * 获取元素的事件名称（优先使用 data-track 属性）
@@ -4425,6 +4503,159 @@
           return false;
       }
       /**
+       * 截取可见文案长度（与原有 element_text 上限一致）
+       */
+      truncateClickLabel(s, maxLen) {
+          const t = s.trim();
+          if (!t)
+              return '';
+          return t.length > maxLen ? t.substring(0, maxLen) : t;
+      }
+      /**
+       * 优先 innerText（可见文字），其次 textContent
+       */
+      getHTMLElementVisibleText(el, maxLen) {
+          try {
+              const it = (el.innerText || '').trim();
+              if (it)
+                  return this.truncateClickLabel(it, maxLen);
+              const tc = (el.textContent || '').trim();
+              if (tc)
+                  return this.truncateClickLabel(tc, maxLen);
+          }
+          catch (e) {
+              /* ignore */
+          }
+          return '';
+      }
+      /**
+       * 图片：alt / title / 文件名
+       */
+      getImageClickLabel(el) {
+          const alt = (el.getAttribute('alt') || '').trim();
+          if (alt)
+              return `[图片] ${alt}`;
+          const title = (el.getAttribute('title') || '').trim();
+          if (title)
+              return `[图片] ${title}`;
+          const src = el.getAttribute('src') || el.getAttribute('data-src') || '';
+          if (src) {
+              try {
+                  const href = typeof window !== 'undefined' ? window.location.href : 'http://localhost/';
+                  const path = new URL(src, href).pathname;
+                  const base = path.split('/').pop() || '';
+                  if (base)
+                      return `[图片] ${base}`;
+              }
+              catch (e) {
+                  const seg = src.split('/').pop()?.split('?')[0];
+                  if (seg)
+                      return `[图片] ${seg}`;
+              }
+          }
+          return '[图片]';
+      }
+      /**
+       * SVG / 常见图标 class：生成可读占位说明
+       */
+      getSvgOrIconClickLabel(el) {
+          const svgRoot = el.tagName === 'SVG' ? el : el.closest('svg');
+          if (svgRoot) {
+              const aria = svgRoot.getAttribute('aria-label')?.trim();
+              if (aria)
+                  return `[图标] ${aria}`;
+              const titleNode = svgRoot.querySelector('title');
+              const tt = titleNode?.textContent?.trim();
+              if (tt)
+                  return `[图标] ${tt}`;
+              return '[图标]';
+          }
+          const rawClass = el.className;
+          const cls = typeof rawClass === 'string' ? rawClass : String(rawClass || '');
+          if (/\b(el-icon-|anticon|iconfont|fa-|mdi-|icon-)/i.test(cls)) {
+              const m = cls.match(/\bel-icon-([\w-]+)\b/);
+              if (m)
+                  return `[图标] ${m[1]}`;
+              const m2 = cls.match(/\bicon-([\w-]+)\b/i);
+              if (m2 && m2[1].length < 40)
+                  return `[图标] ${m2[1]}`;
+              return '[图标]';
+          }
+          return '';
+      }
+      /**
+       * 解析点击展示文案：子节点无字时向上查找；图片/图标单独标明
+       */
+      resolveClickElementText(target, clickedButton) {
+          const maxLen = 50;
+          let t = this.getHTMLElementVisibleText(target, maxLen);
+          if (t)
+              return t;
+          const aria = target.getAttribute('aria-label')?.trim();
+          if (aria)
+              return this.truncateClickLabel(aria, maxLen);
+          const title = target.getAttribute('title')?.trim();
+          if (title)
+              return this.truncateClickLabel(title, maxLen);
+          if (target.tagName === 'IMG') {
+              return this.truncateClickLabel(this.getImageClickLabel(target), maxLen);
+          }
+          const iconLabel = this.getSvgOrIconClickLabel(target);
+          if (iconLabel)
+              return this.truncateClickLabel(iconLabel, maxLen);
+          if (clickedButton && clickedButton !== target) {
+              t = this.getHTMLElementVisibleText(clickedButton, maxLen);
+              if (t)
+                  return t;
+              const ba = clickedButton.getAttribute('aria-label')?.trim();
+              if (ba)
+                  return this.truncateClickLabel(ba, maxLen);
+              if (clickedButton.tagName === 'IMG') {
+                  return this.truncateClickLabel(this.getImageClickLabel(clickedButton), maxLen);
+              }
+              const btnIcon = this.getSvgOrIconClickLabel(clickedButton);
+              if (btnIcon)
+                  return this.truncateClickLabel(btnIcon, maxLen);
+          }
+          let node = target.parentElement;
+          for (let depth = 0; node && node !== document.body && depth < 12; depth++) {
+              const tag = node.tagName;
+              if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT') {
+                  node = node.parentElement;
+                  continue;
+              }
+              t = this.getHTMLElementVisibleText(node, maxLen);
+              if (t)
+                  return t;
+              const pAria = node.getAttribute('aria-label')?.trim();
+              if (pAria)
+                  return this.truncateClickLabel(pAria, maxLen);
+              const pTitle = node.getAttribute('title')?.trim();
+              if (pTitle)
+                  return this.truncateClickLabel(pTitle, maxLen);
+              if (node.tagName === 'IMG') {
+                  return this.truncateClickLabel(this.getImageClickLabel(node), maxLen);
+              }
+              const pIcon = this.getSvgOrIconClickLabel(node);
+              if (pIcon)
+                  return this.truncateClickLabel(pIcon, maxLen);
+              const nestedSvg = node.querySelector?.('svg');
+              if (nestedSvg) {
+                  const sl = this.getSvgOrIconClickLabel(nestedSvg);
+                  if (sl)
+                      return this.truncateClickLabel(sl, maxLen);
+              }
+              node = node.parentElement;
+          }
+          if (target.closest('svg')) {
+              return '[图标]';
+          }
+          if (target.tagName === 'IMG') {
+              return '[图片]';
+          }
+          return '';
+      }
+      /**
        * 追踪点击事件
        * 记录所有点击事件，包括按钮和节点
        */
@@ -4502,14 +4733,17 @@
               }
           }
           const eventName = this.getEventName(target, defaultEventName);
+          const resolvedText = this.resolveClickElementText(target, clickedButton);
           const clickInfo = {
               element_tag: target.tagName.toLowerCase(),
-              element_id: target.id || '',
               element_class: target.className || '',
-              element_text: target.textContent?.trim().substring(0, 50) || '',
+              element_text: resolvedText,
               click_x: event.clientX,
               click_y: event.clientY
           };
+          if (target.id) {
+              clickInfo.element_id = target.id;
+          }
           // 记录 data-track 属性值（用于调试）
           const dataTrack = target.getAttribute('data-track');
           if (dataTrack) {
@@ -4519,7 +4753,7 @@
           if (clickedButton && clickedButton !== target) {
               clickInfo.clicked_button_tag = clickedButton.tagName.toLowerCase();
               clickInfo.clicked_button_class = clickedButton.className || '';
-              clickInfo.clicked_button_text = clickedButton.textContent?.trim().substring(0, 50) || '';
+              clickInfo.clicked_button_text = this.resolveClickElementText(clickedButton, null);
           }
           // 添加事件类型标识和元素类型
           clickInfo.event_type = 'click';
@@ -4951,6 +5185,7 @@
                   data.attributes.device_ip = this.deviceIP;
                   data.attributes.deviceIp = this.deviceIP;
               }
+              this.appendIdentityAttributes(data.attributes);
               // 构建请求 URL（包含 yard-report-key）
               const url = this.url;
               const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
@@ -5523,7 +5758,14 @@
        */
       init(config = {}) {
           try {
-              const { isProd: configIsProd, yardKeyTest: configYardKeyTest, yardKeyProd: configYardKeyProd, globalConfig = {}, autoTrack, router, debug = false, autoInit = true } = config;
+              const { isProd: configIsProd, yardKeyTest: configYardKeyTest, yardKeyProd: configYardKeyProd, globalConfig = {}, autoTrack, router, debug = false, autoInit = true, setUsername, setRealname } = config;
+              // 仅当调用方显式传入 setUsername / setRealname 时才更新，避免底部「自动 init」覆盖业务侧已配置的回调
+              if ('setUsername' in config) {
+                  this.setUsernameFn = typeof setUsername === 'function' ? setUsername : null;
+              }
+              if ('setRealname' in config) {
+                  this.setRealnameFn = typeof setRealname === 'function' ? setRealname : null;
+              }
               // 设置调试模式
               this.debug = debug;
               // 打印版本号（始终输出，便于检查是否是最新版本）
@@ -5719,6 +5961,26 @@
        */
       updateGlobalConfig(config) {
           Object.assign(this.globalConfig, config);
+      }
+      /**
+       * 在登录完成或 Cookie 就绪后再设置身份解析函数（无需再次 init 全量配置）。
+       * 传 `null` 可清除对应回调。
+       */
+      setUserIdentity(options) {
+          if (Object.prototype.hasOwnProperty.call(options, 'setUsername')) {
+              const fn = options.setUsername;
+              this.setUsernameFn = typeof fn === 'function' ? fn : null;
+          }
+          if (Object.prototype.hasOwnProperty.call(options, 'setRealname')) {
+              const fn = options.setRealname;
+              this.setRealnameFn = typeof fn === 'function' ? fn : null;
+          }
+          if (this.debug) {
+              console.log('[EventTrack] setUserIdentity 已更新', {
+                  hasSetUsername: !!this.setUsernameFn,
+                  hasSetRealname: !!this.setRealnameFn
+              });
+          }
       }
       /**
        * 启用/禁用自动追踪

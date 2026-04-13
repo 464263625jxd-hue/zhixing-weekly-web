@@ -17,33 +17,24 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" href="favicon.svg">
     
-    <!-- 性能优化：资源预加载 -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3/dist/js.cookie.min.js"></script>
+    <script src="js/tailwindcss.cdn.js"></script>
+    <script src="js/js.cookie.min.js"></script>
     <!-- Zechariah 埋点：详见 docs/TRACKING.md -->
     <script src="js/zechariah-tracking.umd.js"></script>
     <script>
         (function () {
             if (typeof ZechariahTracking === 'undefined') return;
             var yardKeyTest = '96111436-2ee1-45c2-9dd6-4cf126738de0';
-            var yardKeyProd = '';
-            /* 测试/正式填 Zechariah 的 report_key（请求 query 为 yard-report-key）；正式部署到 xue.leqeegroup.com 时填写 yardKeyProd */
+            var yardKeyProd = '367b6bc0-31eb-4f39-89e0-3cd89426e9c6';
+            /* 测试/正式填 Zechariah 的上报 key（请求 query 为 yard-report-key） */
             var href = (typeof location !== 'undefined' && location.href) ? location.href : '';
             var isProd = href.indexOf('xue.leqeegroup.com') !== -1;
-            var gc = {
-                username: (typeof Cookies !== 'undefined' && Cookies.get('username')) || '',
-                displayName: (typeof Cookies !== 'undefined' && Cookies.get('displayName')) || ''
-            };
             ZechariahTracking.eventTrack.init({
                 yardKeyTest: yardKeyTest,
                 yardKeyProd: yardKeyProd,
                 isProd: isProd,
-                globalConfig: gc,
+                setUsername: () => (typeof Cookies !== 'undefined' && Cookies.get('username')) || null,
+                setRealname: () => (typeof Cookies !== 'undefined' && Cookies.get('displayName')) || null,
                 autoTrack: {
                     trackRequest: true,
                     requestFilter: function (url) {
@@ -57,9 +48,11 @@
             });
         })();
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
+    <script src="js/chart.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="js/alpinejs.cdn.min.js" defer></script>
     
     <style>
         body { font-family: 'Noto Sans SC', sans-serif; background-color: #f1f5f9; color: #0f172a; -webkit-tap-highlight-color: transparent; overflow-x: hidden; width: 100%; }
@@ -217,6 +210,11 @@
                     const self = this;
                     window.addEventListener('hashchange', function () {
                         if (self._routeSuppress) return;
+                        // 如果当前正在显示详情弹窗，且新 hash 也是详情页，跳过处理
+                        const { parts } = parseAppHash();
+                        if (self.selectedNews && parts[1] === 'detail') {
+                            return;  // 不关闭弹窗
+                        }
                         self.applyRouteFromHash();
                     });
                 },
@@ -229,7 +227,18 @@
 
                 buildHashFromState() {
                     if (this.showGlobalSearch) return '#/search';
-                    if (this.view === 'portal') return '#/portal';
+                    // 首页显示详情弹窗时，需要保留 hash
+                    if (this.view === 'portal') {
+                        if (this.selectedNews) {
+                            const iid = this.selectedNews.issueId || this.currentIssueId;
+                            const nk = this.newsItemKey(this.selectedNews);
+                            // 只有 iid 有效时才生成 detail hash
+                            if (iid != null && iid !== '') {
+                                return '#/portal/detail/' + iid + '/' + nk;
+                            }
+                        }
+                        return '#/portal';
+                    }
                     if (this.view === 'industry') {
                         const cat = encodeURIComponent(this.currentIndustry || '');
                         if (this.selectedIndustryNews) {
@@ -261,18 +270,40 @@
                     this._routeSuppress = true;
                     location.hash = next;
                     const self = this;
-                    queueMicrotask(function () { self._routeSuppress = false; });
+                    // 使用 setTimeout 确保 hashchange 事件在 _routeSuppress 清除前触发
+                    setTimeout(function () { self._routeSuppress = false; }, 100);
                 },
 
                 async applyRouteFromHash() {
                     if (this.isLoading || this.loadError) return;
                     const { parts } = parseAppHash();
                     if (parts.length === 0 || parts[0] === 'portal') {
-                        this.selectedNews = null;
                         this.selectedIndustryNews = null;
                         this.showGlobalSearch = false;
-                        document.body.style.overflow = 'auto';
                         this.view = 'portal';
+                        // 首页默认显示最新期
+                        if (!this.currentIssueData && this.issueDB.length > 0) {
+                            this.currentIssueData = this.issueDB[0];
+                            this.currentIssueId = this.issueDB[0].id;
+                        }
+                        // 处理首页详情弹窗: #/portal/detail/issueId/newsKey
+                        if (parts[1] === 'detail' && parts[2] && parts[3]) {
+                            const iid = parseInt(parts[2], 10);
+                            const nk = decodeURIComponent(parts[3]);
+                            const issue = this.issueDB.find(i => i.id === iid);
+                            if (issue) {
+                                this.currentIssueData = issue;
+                                this.currentIssueId = iid;
+                                const item = issue.data.find(d => this.newsItemKey(d) === nk);
+                                if (item) {
+                                    this.selectedNews = item;
+                                    document.body.style.overflow = 'hidden';
+                                    return;
+                                }
+                            }
+                        }
+                        this.selectedNews = null;
+                        document.body.style.overflow = 'auto';
                         return;
                     }
                     if (parts[0] === 'search') {
@@ -372,15 +403,31 @@
 
                 findNewsInIssue(issue, key) {
                     if (!issue || !issue.data) return null;
+                    
+                    // 处理标题匹配（t- 开头）
                     if (key.indexOf('t-') === 0) {
                         const t = decodeURIComponent(key.slice(2));
                         return issue.data.find(function (d) { return (d.title || '') === t; }) || null;
                     }
+                    
+                    // 尝试将 key 转为整数
                     const num = parseInt(key, 10);
                     if (!Number.isNaN(num)) {
-                        const found = issue.data.find(function (d) { return Number(d.id) === num; });
+                        // 尝试匹配整数 id
+                        const found = issue.data.find(function (d) {
+                            // 处理各种 id 格式
+                            const dId = d.id;
+                            if (typeof dId === 'number') return dId === num;
+                            if (typeof dId === 'string') {
+                                const dNum = parseInt(dId, 10);
+                                if (!Number.isNaN(dNum)) return dNum === num;
+                            }
+                            return false;
+                        });
                         if (found) return found;
                     }
+                    
+                    // 最终字符串匹配
                     return issue.data.find(function (d) { return String(d.id) === key; }) || null;
                 },
 
@@ -581,6 +628,16 @@
                 },
 
                 openDetail(item) {
+                    // 确保 currentIssueData 和 currentIssueId 已设置
+                    // 如果 item 来自当前显示的期，使用 currentIssueData
+                    if (!this.currentIssueData && this.issueDB.length > 0) {
+                        this.currentIssueData = this.issueDB[0];
+                        this.currentIssueId = this.issueDB[0].id;
+                    }
+                    // 为 item 附加 issueId（如果还没有）
+                    if (item && !item.issueId && this.currentIssueId) {
+                        item.issueId = this.currentIssueId;
+                    }
                     this.selectedNews = item;
                     document.body.style.overflow = 'hidden';
                     this.syncHashToState();
@@ -1038,7 +1095,7 @@ ${divider}
 
             <div x-show="selectedNews" class="fixed inset-0 z-50 flex justify-center items-end sm:items-center" x-cloak>
                 <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm transition-opacity" @click="closeDetail()"></div>
-                <div class="modal-content relative bg-white w-full sm:max-w-3xl sm:rounded-2xl h-[95vh] sm:h-auto sm:max-h-[85vh] flex flex-col shadow-2xl overflow-hidden transform transition-all" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="translate-y-full sm:translate-y-10 sm:opacity-0" x-transition:enter-end="translate-y-0 sm:translate-y-0 sm:opacity-100">
+                <div @click.stop class="modal-content relative bg-white w-full sm:max-w-3xl sm:rounded-2xl h-[95vh] sm:h-auto sm:max-h-[85vh] flex flex-col shadow-2xl overflow-hidden transform transition-all" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="translate-y-full sm:translate-y-10 sm:opacity-0" x-transition:enter-end="translate-y-0 sm:translate-y-0 sm:opacity-100">
                     <div class="flex justify-between items-center px-5 py-4 border-b border-gray-100 bg-gray-50/80 backdrop-blur sticky top-0 z-10">
                          <div class="flex gap-2 items-center"><span class="text-[10px] font-black bg-brand-primary text-white px-2 py-1 rounded tracking-wider" x-text="selectedNews?.category"></span><span class="text-xs text-gray-500 font-bold" x-text="selectedNews?.subCategory"></span></div>
                          <div class="flex gap-2">
@@ -1124,7 +1181,7 @@ ${divider}
 
         <div x-show="selectedIndustryNews" class="fixed inset-0 z-50 flex justify-center items-end sm:items-center" x-cloak>
             <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm transition-opacity" @click="closeIndustryDetail()"></div>
-            <div class="modal-content relative bg-white w-full sm:max-w-3xl sm:rounded-2xl h-[95vh] sm:h-auto sm:max-h-[85vh] flex flex-col shadow-2xl overflow-hidden transform transition-all" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="translate-y-full sm:translate-y-10 sm:opacity-0" x-transition:enter-end="translate-y-0 sm:translate-y-0 sm:opacity-100">
+            <div @click.stop class="modal-content relative bg-white w-full sm:max-w-3xl sm:rounded-2xl h-[95vh] sm:h-auto sm:max-h-[85vh] flex flex-col shadow-2xl overflow-hidden transform transition-all" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="translate-y-full sm:translate-y-10 sm:opacity-0" x-transition:enter-end="translate-y-0 sm:translate-y-0 sm:opacity-100">
                 <div class="flex justify-between items-center px-5 py-4 border-b border-gray-100 bg-gray-50/80 backdrop-blur sticky top-0 z-10">
                      <div class="flex gap-2 items-center"><span class="text-[10px] font-black bg-brand-primary text-white px-2 py-1 rounded tracking-wider" x-text="selectedIndustryNews?.category"></span><span class="text-xs text-gray-500 font-bold" x-text="selectedIndustryNews?.subCategory"></span></div>
                      <div class="flex gap-2">
