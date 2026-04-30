@@ -978,7 +978,7 @@
     },
     {
       "id": 71,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "OpenAI",
       "title": "OpenAI正式发布GPT-5.5",
       "summary": "OpenAI发布最新一代大模型GPT-5.5，在同等输出token量下智能得分最高，token总消耗明显低于其他模型。",
@@ -986,12 +986,12 @@
       "highlight": true,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 72,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "苹果",
       "title": "苹果宣布特纳斯将接替库克担任CEO",
       "summary": "苹果任命硬件工程高级副总裁约翰·特纳斯为下一任CEO，库克将转任执行董事长。",
@@ -999,12 +999,12 @@
       "highlight": true,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 73,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "微软",
       "title": "微软宣布在澳大利亚投资180亿美元 扩大AI布局",
       "summary": "微软宣布在澳大利亚投资180亿美元，用于扩大人工智能基础设施和数据中心建设。",
@@ -1012,12 +1012,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 74,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "工信部",
       "title": "工信部将系统布局6G下一代互联网等前沿技术研发",
       "summary": "工信部表示将系统布局6G下一代互联网等前沿技术研发，推动信息通信业与垂直行业协同创新。",
@@ -1025,12 +1025,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 75,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "产业数据",
       "title": "一季度工业机器人产量同比增长33.2%",
       "summary": "一季度工业机器人、集成电路等产品产量同比分别增长33.2%、24.3%。",
@@ -1038,12 +1038,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 76,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "特斯拉",
       "title": "特斯拉第三代人形机器人Optimus V3预计年中亮相",
       "summary": "特斯拉宣布第三代人形机器人Optimus V3预计年中亮相，2026年7-8月正式投产。",
@@ -1051,12 +1051,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 77,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "腾讯",
       "title": "腾讯混元Hy3 preview发布并开源",
       "summary": "腾讯混元发布Hy3 preview语言模型并开源，总参数295B，激活参数21B，推理效率提升40%。",
@@ -1064,12 +1064,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 78,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "DeepSeek",
       "title": "DeepSeek-V4预览版正式上线 两款模型同步开源",
       "summary": "DeepSeek推出全新系列模型DeepSeek-V4预览版，拥有百万字超长上下文。",
@@ -1077,12 +1077,12 @@
       "highlight": true,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 79,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "月之暗面",
       "title": "月之暗面Kimi发布并开源Kimi K2.6模型",
       "summary": "Kimi发布并开源Kimi K2.6模型，通用Agent、代码、视觉理解等综合能力全面提升。",
@@ -1090,12 +1090,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 80,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "小米",
       "title": "小米MiMo-V2.5系列模型开启公测",
       "summary": "小米MiMo-V2.5系列大模型开启公测，涵盖V2.5、V2.5-Pro及TTS、ASR系列。",
@@ -1103,12 +1103,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 81,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "千问",
       "title": "千问加速上车 10多家车企同日宣布接入",
       "summary": "2026北京车展开幕首日，长安、东风、北汽、比亚迪、吉利等10多家车企宣布接入千问。",
@@ -1116,12 +1116,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 82,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "字节跳动",
       "title": "字节跳动发布3D生成大模型Seed3D 2.0",
       "summary": "字节跳动发布更高精度的新一代3D生成大模型Seed3D 2.0，采用MoE架构。",
@@ -1129,12 +1129,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 83,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "Meta",
       "title": "Meta监控风波 员工鼠标键盘成AI训练燃料",
       "summary": "Meta安装追踪软件记录员工鼠标移动、点击、键盘输入用于训练AI模型。",
@@ -1142,12 +1142,12 @@
       "highlight": false,
       "isAlert": true,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 84,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "阿里云",
       "title": "企业级Agent构建平台JVS Crew上线",
       "summary": "阿里云推出企业级智能体构建平台JVS Crew，企业可快速嵌入现有App获得生产级AI Agent构建能力。",
@@ -1155,12 +1155,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 85,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "百度",
       "title": "百度联盟发布星云计划 全面开放百度猎户座AI引擎",
       "summary": "百度联盟启动星云计划，向全行业开放百度猎户座AI引擎，小米、荣耀、vivo等手机厂商已加入。",
@@ -1168,12 +1168,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 86,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "千寻位置",
       "title": "千寻位置正式发布具身时空大脑产品集",
       "summary": "千寻位置发布具身时空大脑SpatiXBot产品集，覆盖人形机器人、机器狗、无人机等多类具身形态。",
@@ -1181,12 +1181,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 87,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "联想",
       "title": "ThinkPad发布AI主机 可一键部署千问大模型 较云主机三年总成本节省48%",
       "summary": "ThinkPad 2026新品发布联想AI主机，可一键部署龙虾、较云主机三年总成本可节省48%。",
@@ -1194,12 +1194,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 88,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "千问",
       "title": "千问总裁吴嘉AI办事对外开放 首家接入东方航空",
       "summary": "千问宣布对外开放AI办事能力，首家接入东方航空上线全流程AI机票服务。",
@@ -1207,12 +1207,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 89,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "理想",
       "title": "理想汽车宣布首发高德汽车出行AI Agent",
       "summary": "理想汽车将首发高德汽车出行AI Agent，合作内容包括精准理解复杂出行指令、多轮对话灵活调整路线。",
@@ -1220,12 +1220,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 90,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "具身智能",
       "title": "李力耘正式加入众擎机器人出任CTO",
       "summary": "众擎机器人宣布李力耘正式加入出任首席技术官，全面统筹具身智能技术全生命周期管理。",
@@ -1233,12 +1233,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 91,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "融资",
       "title": "Anthropic获得50亿美元战略投资 亚马逊投资",
       "summary": "Anthropic获得50亿美元战略投资，由亚马逊Amazon投资。",
@@ -1246,12 +1246,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 92,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "融资",
       "title": "自变量机器人完成近20亿元B轮融资",
       "summary": "自变量机器人完成近20亿元B轮融资，领投方为小米战投。同时被四家互联网大厂投资。",
@@ -1259,12 +1259,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 93,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "融资",
       "title": "奕行智能完成15亿元B轮融资",
       "summary": "奕行智能完成15亿元人民币B轮融资，专注于新一代通用AI计算技术的芯片设计及解决方案。",
@@ -1272,12 +1272,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 94,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "融资",
       "title": "黑湖科技完成近10亿元D轮融资 国家人工智能产业投资基金入股",
       "summary": "黑湖科技完成近10亿元D轮融资，营收年增速超60%已全面盈利。",
@@ -1285,12 +1285,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 95,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "融资",
       "title": "普渡机器人完成近10亿元融资 估值突破100亿元",
       "summary": "普渡机器人完成近10亿元新一轮融资，本轮融资后公司估值突破百亿元人民币。",
@@ -1298,12 +1298,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 96,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "融资",
       "title": "艾捷科芯获得5.5亿元战略投资 估值达40.54亿元",
       "summary": "艾捷科芯获得5.5亿元战略投资，投资方包括长鑫芯聚、彩讯股份等。",
@@ -1311,12 +1311,12 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
       "id": 97,
-      "category": "科技",
+      "category": "数码科技",
       "subCategory": "融资",
       "title": "涌跃智能Loopit完成5000万美元融资",
       "summary": "涌跃智能完成5000万美元融资，由全球头部游戏厂商Garena领投。",
@@ -1324,7 +1324,7 @@
       "highlight": false,
       "isAlert": false,
       "tags": [
-        "科技"
+        "数码科技"
       ]
     },
     {
