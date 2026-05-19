@@ -8,8 +8,8 @@
         "name": "欧莱雅集团",
         "code": "OR.PA",
         "desc": "全球知名美妆集团，拥有兰蔻、赫莲娜等顶级品牌。",
-        "site": "https://www.loreal.com/",
-        "ir": "https://www.loreal-finance.com/"
+        "site": "https://www.loreal.com/en/",
+        "ir": "https://www.loreal-finance.com/eng"
       },
       {
         "name": "雅诗兰黛",
@@ -30,35 +30,35 @@
         "code": "MC.PA",
         "desc": "全球知名奢侈品集团，美妆部门拥有迪奥、娇兰、丝芙兰。",
         "site": "https://www.lvmh.com/",
-        "ir": "https://www.lvmh.com/investors/"
+        "ir": "https://www.lvmh.com/en/investors"
       },
       {
         "name": "珀莱雅",
         "code": "603605",
         "desc": "国货美妆领军企业，主打科学护肤，大单品策略成功。",
-        "site": "https://www.proya.com/",
-        "ir": "https://www.proya.com/investor_relations.html"
+        "site": "https://www.proya-group.com/",
+        "ir": "https://www.proya-group.com/finance"
       },
       {
         "name": "贝泰妮",
         "code": "300957",
         "desc": "专注敏感肌护理，“薇诺娜”品牌市占率领先。",
         "site": "https://www.botanee.com.cn/",
-        "ir": "https://www.botanee.com.cn/investor.html"
+        "ir": "https://www.botanee.com.cn/investor-relations.html"
       },
       {
         "name": "巨子生物",
         "code": "02367",
         "desc": "重组胶原蛋白科技巨头，拥有可复美、可丽金。",
         "site": "https://www.xajuzi.com/",
-        "ir": "https://www.xajuzi.com/investor"
+        "ir": "https://ir.xajuzi.com/"
       },
       {
         "name": "上美股份",
         "code": "02145",
         "desc": "多品牌国货代表，拥有韩束、一叶子等知名品牌。",
-        "site": "http://www.chicmaxgroup.com/",
-        "ir": "http://www.chicmaxgroup.com/investor.html"
+        "site": "https://www.chicmaxgroup.com/",
+        "ir": "https://kansfund.chicmaxgroup.com/"
       }
     ],
     "个护家清": [
@@ -67,7 +67,7 @@
         "code": "PG",
         "desc": "全球日化巨头，拥有SK-II、Olay、海飞丝、帮宝适。",
         "site": "https://us.pg.com/",
-        "ir": "https://investor.pg.com/"
+        "ir": "https://www.pginvestor.com/financials/annual-reports/default.aspx"
       },
       {
         "name": "联合利华",
@@ -95,7 +95,7 @@
         "code": "06993",
         "desc": "中国洗衣液知名品牌，家庭清洁护理领域的领导者。",
         "site": "https://www.bluemoon.com.cn/",
-        "ir": "https://www.bluemoon.com.cn/investor"
+        "ir": "https://www.bluemoon.com.cn/en/investorRelations/info"
       },
       {
         "name": "恒安国际",
@@ -108,8 +108,8 @@
         "name": "维达国际",
         "code": "03331",
         "desc": "亚洲卫生用品巨头，高端生活用纸市场领先。",
-        "site": "http://www.vinda.com/",
-        "ir": "http://www.vinda.com/investor/"
+        "site": "https://www.vinda.com/en/",
+        "ir": "https://www.vinda.com/en/ir/"
       },
       {
         "name": "纳爱斯",
@@ -125,14 +125,14 @@
         "code": "600887",
         "desc": "亚洲乳业第一，全产业链布局，多品类均衡发展。",
         "site": "https://www.yili.com/",
-        "ir": "https://www.yili.com/cms/investor/index"
+        "ir": "https://www.yili.com/investors"
       },
       {
         "name": "蒙牛乳业",
         "code": "02319",
         "desc": "全球乳业十强，专注于营养健康食品的研发与生产。",
         "site": "https://www.mengniu.com.cn/",
-        "ir": "https://www.mengniu.com.cn/investor/"
+        "ir": "https://mengniuir.com/en/index.aspx"
       },
       {
         "name": "农夫山泉",
@@ -145,22 +145,22 @@
         "name": "东鹏饮料",
         "code": "605499",
         "desc": "功能饮料领军者，大单品策略成功，正加速全国化。",
-        "site": "https://www.sydp.com/",
-        "ir": "https://www.sydp.com/investor"
+        "site": "https://www.szeastroc.com/",
+        "ir": "https://www.szeastroc.com/investor/"
       },
       {
         "name": "康师傅",
         "code": "00322",
         "desc": "方便面与饮料巨头，深入渗透中国各级市场。",
         "site": "https://www.masterkong.com.cn/",
-        "ir": "https://www.masterkong.com.cn/investor/"
+        "ir": "https://www.masterkong.com.cn/investor/financial/"
       },
       {
         "name": "百威亚太",
         "code": "01876",
         "desc": "亚太区最大的啤酒公司，高端啤酒市场领导者。",
         "site": "https://www.budweiserapac.com/",
-        "ir": "https://www.budweiserapac.com/cn/investor.html"
+        "ir": "https://www.hkexnews.hk/listedco/listconews/sehk/2025/0416/2025041600363.pdf"
       },
       {
         "name": "海底捞",
@@ -174,7 +174,7 @@
         "code": "LKNCY",
         "desc": "中国最大的连锁咖啡品牌，以数字化与高性价比著称。",
         "site": "https://www.luckincoffee.com/",
-        "ir": "https://investor.luckincoffee.com/"
+        "ir": "https://investor.luckincoffee.com/financial-information/annual-reports"
       }
     ],
     "母婴": [
@@ -183,14 +183,14 @@
         "code": "06186",
         "desc": "中国婴幼儿奶粉第一品牌，拥有全产业链专属牧场。",
         "site": "https://www.feihe.com/",
-        "ir": "https://www.feihe.com/investor"
+        "ir": "https://www.feihe.com/tzzgx"
       },
       {
         "name": "孩子王",
         "code": "301078",
         "desc": "全渠道母婴商品及服务提供商，深耕单客经济。",
-        "site": "https://www.kidswant.com/",
-        "ir": "https://www.kidswant.com/ir"
+        "site": "https://www.haiziwang.com/",
+        "ir": "https://301078.irlianmeng.com/"
       },
       {
         "name": "健合集团",
@@ -218,21 +218,21 @@
         "code": "603193",
         "desc": "专注驱蚊与婴童护理，电商渠道表现强劲。",
         "site": "https://www.runben.com/",
-        "ir": "https://www.runben.com/investor"
+        "ir": "https://www.sse.com.cn/assortment/stock/list/info/announcement/index.shtml?productId=603193"
       },
       {
         "name": "贝因美",
         "code": "002570",
         "desc": "国内知名婴童食品企业，拥有多项婴幼儿配方专利。",
         "site": "http://www.beingmate.com/",
-        "ir": "http://www.beingmate.com/investor.html"
+        "ir": "https://www.beingmate.com/tzzgx"
       },
       {
         "name": "泡泡玛特",
         "code": "09992",
         "desc": "潮流文化娱乐公司，深受年轻父母和孩子喜爱的IP。",
         "site": "https://www.popmart.com/",
-        "ir": "https://ir.popmart.com/"
+        "ir": "https://www.popmart.com/cn/investor-relations"
       }
     ],
     "宠物": [
@@ -240,15 +240,15 @@
         "name": "乖宝宠物",
         "code": "301498",
         "desc": "国产宠食龙头，拥有麦富迪、弗列加特等知名品牌。",
-        "site": "http://www.gambolpet.com/",
-        "ir": "http://www.gambolpet.com/investor"
+        "site": "https://www.gambolpet.com/",
+        "ir": "https://www.cninfo.com.cn/new/disclosure/stock?stockCode=301498"
       },
       {
         "name": "中宠股份",
         "code": "002891",
         "desc": "全球宠物食品代工巨头，自有品牌顽皮快速增长。",
         "site": "http://www.wanpy.com.cn/",
-        "ir": "http://www.wanpy.com.cn/investor"
+        "ir": "https://www.cninfo.com.cn/new/disclosure/stock?stockCode=002891"
       },
       {
         "name": "佩蒂股份",
@@ -262,35 +262,35 @@
         "code": "ZTS",
         "desc": "全球最大的动物保健公司，提供药物、疫苗及诊断。",
         "site": "https://www.zoetis.com/",
-        "ir": "https://investor.zoetis.com/"
+        "ir": "https://www.zoetis.com/_assets/pdf/corporate/zoetis-2025-annual-report.pdf"
       },
       {
         "name": "瑞普生物",
         "code": "300119",
         "desc": "中国动物保健领军企业，布局宠物疫苗与药品。",
-        "site": "http://www.ringpu.com/",
-        "ir": "http://www.ringpu.com/investor"
+        "site": "https://www.ringpu.com/index.php",
+        "ir": "https://www.ringpu.com/invest.php"
       },
       {
         "name": "天元宠物",
         "code": "301335",
         "desc": "全品类宠物用品供应商，拥有强大的供应链能力。",
-        "site": "http://www.tianyuanpet.com/",
-        "ir": "http://www.tianyuanpet.com/investor"
+        "site": "https://www.tianyuanpet.com/",
+        "ir": "https://www.cninfo.com.cn/new/disclosure/stock?stockCode=301335"
       },
       {
         "name": "路斯股份",
         "code": "832419",
         "desc": "肉干类宠物零食专家，北交所上市企业。",
         "site": "http://www.luscious.cn/",
-        "ir": "http://www.luscious.cn/investor"
+        "ir": "https://www.cninfo.com.cn/new/disclosure/stock?stockCode=832419"
       },
       {
         "name": "源飞宠物",
         "code": "001222",
         "desc": "宠物牵引用具龙头，产品远销欧美市场。",
-        "site": "http://www.yuanfeipet.com/",
-        "ir": "http://www.yuanfeipet.com/investor"
+        "site": "https://www.wzyuanfei.com/",
+        "ir": "https://www.wzyuanfei.com/irm.htm"
       }
     ]
   }
