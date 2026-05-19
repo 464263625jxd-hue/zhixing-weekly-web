@@ -514,7 +514,7 @@
                 formatContent(text) {
                     if (!text) return '';
                     let cleanText = text.replace(/\*\*/g, '');
-                    return cleanText.replace(/(\d+(?:\.\d+)?(?:万|亿|亿元|美元|%)|202\d年\d+月|TOP\d+)/g, '<span class="hl-data">$1</span>');
+                    return cleanText.replace(/(\d+(?:\.\d+)?(?:万|亿|万元|亿元|亿美元|万美元|日元|欧元|英镑|%|个百分点|倍|家|条|款|片|平方米|万元\/柜)|TOP\d+)/g, '<span class="hl-data">$1</span>');
                 },
 
                 getCompanyLogoUrl(company) {
