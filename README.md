@@ -32,16 +32,16 @@
 
 ## 📁 文件结构
 
-前端部署后从根目录加载 `data.json`（含 `issueIds`、`_meta`），再按需请求 `issues/issue<N>.json` 各期正文。
-仓库中提交的是 `data.source.json`；`data.json` 与 `version.json` 由部署前脚本生成，不再提交到 Git。
+前端部署后从根目录加载 `data.json`（含 `issueIds`、`_meta`），再按需请求 `issues/issue<N>.json` 各期正文，并轮询 `version.json` 判断是否有新版本。
+仓库中提交 `data.source.json`、`data.json` 与 `version.json`；其中 `data.json` 和 `version.json` 由部署前脚本生成，提交前不要手工编辑。
 
 ```
 WeeklyWeb/
 ├── data.source.json       # 源数据：companies、静态元信息（提交到 Git）
-├── data.json              # 部署产物：主索引（由脚本生成，Git 忽略）
+├── data.json              # 部署产物：主索引（由脚本生成，提交到 Git）
 ├── index.html             # 单页应用入口
 ├── favicon.svg            # 网站图标
-├── version.json           # 部署产物：版本信息（由脚本生成，Git 忽略）
+├── version.json           # 部署产物：版本信息（由脚本生成，提交到 Git）
 ├── README.md              # 本文件
 │
 ├── issues/                # 各期完整数据（扁平 JSON）
@@ -68,15 +68,52 @@ WeeklyWeb/
 
 `python3 scripts/sync-data-from-issues-data.py`
 
+发布前质量检查：
+
+```bash
+# 检查最新一期
+python3 scripts/check-weekly-quality.py issues/issue78.json
+
+# 检查全部历史期
+python3 scripts/check-weekly-quality.py
+```
+
 典型部署流程：
 
 ```bash
 git pull
+python3 scripts/check-weekly-quality.py issues/issue78.json
 python3 scripts/sync-data-from-issues-data.py
 # 然后由运维同步/发布静态文件
 ```
 
-首次切换到该结构时，如果部署机上旧的 `data.json`、`version.json` 仍是 Git 跟踪文件且已被本地改动，需要先清理工作区，再执行上述流程。
+发布前如更新了 `issues/issue<N>.json` 或 `data.source.json`，必须重新执行同步脚本，并将更新后的 `data.json`、`version.json` 一并提交。
+
+### 单条资讯字段规范
+
+必需字段：
+
+| 字段 | 说明 |
+|------|------|
+| `id` | 单期内唯一编号 |
+| `category` | 只能使用 8 个固定板块：宏观、平台、跨境、数码科技、美妆、母婴、食品饮料、宠物 |
+| `subCategory` | 板块下的细分主题，不应与 `category` 同名 |
+| `title` | 资讯标题 |
+| `content` | 详情正文 |
+| `highlight` | 本期头条标记，每期应只有 1 条 |
+| `isAlert` | 重点关注标记，建议每期 4-9 条 |
+
+推荐字段：
+
+| 字段 | 说明 |
+|------|------|
+| `summary` | 列表摘要；缺失时前端会回退显示正文片段 |
+| `tags` | 资讯标签 |
+| `sourceTitle` | 来源名称，如 Foodaily、母婴行业观察、Mysteel |
+| `sourceUrl` | 原文链接；同一来源拆多条时可复用 |
+| `sourceDate` | 原文发布日期或覆盖周期，无法确认时留空，不要编造 |
+
+前端详情页会优先显示 `sourceTitle/sourceName/source`，有 `sourceUrl/url` 时展示“查看原文”。新期制作应尽量补齐来源链接，方便复核。
 
 ---
 
