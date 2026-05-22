@@ -143,6 +143,7 @@
                 currentCorporateCategory: '美妆',
                 selectedCompany: null,
                 selectedCorporateNews: null,
+                selectedCorporateTag: 'all',
                 
                 // ==================== 阅读器状态（Reader State）====================
                 activeTab: 'home',
@@ -525,7 +526,19 @@
                 },
                 get pastIssues() { return this.issueDB.slice(1); },
                 get currentCompanies() { return this.companyDB[this.currentCorporateCategory] || []; },
-                get selectedCompanyNews() { return this.selectedCompany ? this.companyNews(this.selectedCompany) : []; },
+                get selectedCompanyAllNews() { return this.selectedCompany ? this.companyNews(this.selectedCompany) : []; },
+                get selectedCompanyNews() {
+                    if (this.selectedCorporateTag === 'all') return this.selectedCompanyAllNews;
+                    return this.selectedCompanyAllNews.filter(item => this.corporateNewsTag(item) === this.selectedCorporateTag);
+                },
+                get selectedCompanyTagStats() {
+                    const counts = {};
+                    this.selectedCompanyAllNews.forEach(item => {
+                        const tag = this.corporateNewsTag(item);
+                        counts[tag] = (counts[tag] || 0) + 1;
+                    });
+                    return Object.keys(counts).map(name => ({ name, count: counts[name] }));
+                },
                 
                 // 行业时间轴数据
                 get industryTimeline() {
@@ -612,7 +625,11 @@
                         const representative = this.pickSectorRepresentative(sectorItems);
                         const subCount = new Set(sectorItems.map(item => item.subCategory).filter(Boolean)).size;
                         const alerts = sectorItems.filter(item => item.isAlert);
-                        const primary = alerts[0] || sectorItems.find(item => item.highlight) || representative || sectorItems[0] || null;
+                        const primary = sectorItems.find(item => item.highlight && !item.isAlert)
+                            || representative
+                            || sectorItems.find(item => !item.isAlert)
+                            || sectorItems[0]
+                            || null;
                         const secondary = sectorItems
                             .filter(item => item !== primary)
                             .filter(item => !alerts.slice(0, 2).includes(item))
@@ -789,12 +806,43 @@
                 selectCompany(company) {
                     this.selectedCompany = company;
                     this.selectedCorporateNews = null;
+                    this.selectedCorporateTag = 'all';
                     this.syncHashToState();
                 },
 
                 selectCorporateNews(item) {
                     this.selectedCorporateNews = item;
                     this.syncHashToState();
+                },
+
+                corporateNewsTag(item) {
+                    if (!item) return '其他动态';
+                    const text = `${item.title || ''}\n${item.summary || ''}\n${item.content || ''}`.toLowerCase();
+                    const hasAny = words => words.some(word => text.includes(String(word).toLowerCase()));
+                    if (item.isAlert || hasAny(['处罚', '召回', '投诉', '风波', '关停', '关闭', '下架', '暴雷', '调查', '违规', '舆情'])) return '风险舆情';
+                    if (hasAny(['代言', '代言人', '品牌大使', '官宣', '明星', '艺人', 'spokesperson', 'ambassador'])) return '代言人';
+                    if (hasAny(['财报', '营收', '净利润', '业绩', '财年', '季度', '毛利', '盈利', '亏损', '同比', '环比'])) return '财报相关';
+                    if (hasAny(['新品', '上新', '发布', '推出', '首发', '新系列', '新品类', '新产品', '限定'])) return '新品';
+                    if (hasAny(['门店', '开店', '渠道', '入驻', '旗舰店', '抖音', '天猫', '京东', '小红书', '线下', '出海', '海外', '门店数'])) return '渠道动作';
+                    if (hasAny(['联名', '直播', '营销', '活动', 'ip', '种草', '会员', '促销', '广告'])) return '营销活动';
+                    if (hasAny(['任命', '高管', 'ceo', 'cfo', '董事', '离职', '换帅', '人事', '组织架构'])) return '组织人事';
+                    if (hasAny(['融资', '投资', '收购', '并购', '股权', '战略合作', '合资', '募资'])) return '投融资';
+                    return '其他动态';
+                },
+
+                corporateTagClass(tag) {
+                    const map = {
+                        '风险舆情': 'bg-red-50 text-red-700 border-red-100',
+                        '代言人': 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-100',
+                        '财报相关': 'bg-emerald-50 text-emerald-700 border-emerald-100',
+                        '新品': 'bg-amber-50 text-amber-700 border-amber-100',
+                        '渠道动作': 'bg-sky-50 text-sky-700 border-sky-100',
+                        '营销活动': 'bg-purple-50 text-purple-700 border-purple-100',
+                        '组织人事': 'bg-slate-100 text-slate-700 border-slate-200',
+                        '投融资': 'bg-blue-50 text-blue-700 border-blue-100',
+                        '其他动态': 'bg-gray-50 text-gray-600 border-gray-100'
+                    };
+                    return map[tag] || map['其他动态'];
                 },
 
                 openIssue(id) {
@@ -825,6 +873,7 @@
                     this.currentCorporateCategory = category;
                     this.selectedCompany = null;
                     this.selectedCorporateNews = null;
+                    this.selectedCorporateTag = 'all';
                     this.view = 'corporate';
                     window.scrollTo({ top: 0, behavior: 'instant' });
                     this.syncHashToState();
@@ -834,6 +883,7 @@
                     this.currentCorporateCategory = cat;
                     this.selectedCompany = null;
                     this.selectedCorporateNews = null;
+                    this.selectedCorporateTag = 'all';
                     this.syncHashToState();
                 },
 
@@ -1766,7 +1816,13 @@ ${divider}
                         </div>
                         <div class="flex items-center justify-between mb-3">
                             <h4 class="text-sm font-black text-slate-900">周刊收录资讯</h4>
-                            <span class="text-xs text-slate-400" x-text="selectedCompanyNews.length + ' 条'"></span>
+                            <span class="text-xs text-slate-400" x-text="selectedCompanyNews.length + '/' + selectedCompanyAllNews.length + ' 条'"></span>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <button type="button" @click="selectedCorporateTag = 'all'; selectedCorporateNews = null" :class="selectedCorporateTag === 'all' ? 'bg-brand-primary text-white border-brand-primary' : 'bg-white text-slate-500 border-slate-200 hover:border-brand-light/40'" class="text-[10px] font-black border rounded-full px-2.5 py-1 transition-colors">全部 <span x-text="selectedCompanyAllNews.length"></span></button>
+                            <template x-for="tag in selectedCompanyTagStats" :key="tag.name">
+                                <button type="button" @click="selectedCorporateTag = tag.name; selectedCorporateNews = null" :class="selectedCorporateTag === tag.name ? 'bg-brand-primary text-white border-brand-primary' : corporateTagClass(tag.name)" class="text-[10px] font-black border rounded-full px-2.5 py-1 transition-colors"><span x-text="tag.name"></span> <span x-text="tag.count"></span></button>
+                            </template>
                         </div>
                         <div class="space-y-3" x-show="selectedCompanyNews.length">
                             <template x-for="item in selectedCompanyNews" :key="item.issueId + '-' + newsItemKey(item)">
@@ -1774,6 +1830,7 @@ ${divider}
                                     <div class="flex flex-wrap items-center gap-2 mb-2">
                                         <span class="text-[10px] font-black bg-brand-dark text-white px-2 py-0.5 rounded" x-text="'No.' + item.issueId"></span>
                                         <span class="text-[10px] text-slate-400" x-text="item.issueDate"></span>
+                                        <span :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${corporateTagClass(corporateNewsTag(item))}`" x-text="corporateNewsTag(item)"></span>
                                         <span x-show="markLabel(item)" :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${markClass(item)}`" x-text="markLabel(item)"></span>
                                     </div>
                                     <h5 class="text-sm font-bold text-slate-800 leading-snug line-clamp-2" x-text="item.title"></h5>
@@ -1781,7 +1838,7 @@ ${divider}
                                 </button>
                             </template>
                         </div>
-                        <div x-show="selectedCompany && selectedCompanyNews.length === 0" class="rounded-xl border border-dashed border-slate-200 p-6 text-center text-sm text-slate-400">当前历期周刊暂未匹配到该集团资讯</div>
+                        <div x-show="selectedCompany && selectedCompanyNews.length === 0" class="rounded-xl border border-dashed border-slate-200 p-6 text-center text-sm text-slate-400">当前筛选下暂无该集团资讯</div>
                     </div>
                 </aside>
                 <aside x-show="selectedCorporateNews" class="bg-white rounded-xl border border-slate-200 shadow-xl overflow-hidden lg:sticky lg:top-8 corporate-detail-panel flex flex-col" x-cloak>
@@ -1789,6 +1846,7 @@ ${divider}
                         <div class="flex flex-wrap items-center gap-2 min-w-0">
                             <span class="text-[10px] font-black bg-brand-dark text-white px-2 py-1 rounded" x-text="'No.' + selectedCorporateNews?.issueId"></span>
                             <span class="text-xs text-slate-400" x-text="selectedCorporateNews?.issueDate"></span>
+                            <span x-show="selectedCorporateNews" :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${corporateTagClass(corporateNewsTag(selectedCorporateNews))}`" x-text="corporateNewsTag(selectedCorporateNews)"></span>
                             <span x-show="markLabel(selectedCorporateNews)" :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${markClass(selectedCorporateNews)}`" x-text="markLabel(selectedCorporateNews)"></span>
                         </div>
                         <button @click="selectedCorporateNews = null" class="p-2 bg-white rounded-full hover:bg-slate-100 text-slate-400 transition-colors"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
