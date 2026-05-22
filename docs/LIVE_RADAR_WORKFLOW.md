@@ -1,6 +1,6 @@
 # 频道快讯工作流
 
-频道快讯是知行周刊首页的实时阅读入口，面向读者展示平台、跨境、产业、品牌与 AI 动态。后台可使用 `ebrun-original-news` skill 作为数据能力来源，但前台不直接展示外部来源站品牌，避免读者误解为页面复刻。
+频道快讯是知行周刊首页的实时阅读入口，面向读者展示平台、跨境、产业、品牌与 AI 动态。后台必须调用 `ebrun-original-news` skill 作为数据能力来源，但前台不直接展示外部来源站品牌，避免读者误解为页面复刻。
 
 ## 文件结构
 
@@ -29,7 +29,7 @@ liveRadar/archive/YYYY-MM-DD-HH.json
 
 默认每两小时执行一次轻量更新：
 
-1. 调用频道能力获取 6 个频道最新内容，每频道最多 10 条。
+1. 调用 `ebrun-original-news` skill，从 `references/channel-list.json` 读取频道路径，并用 `scripts/fetch_news.py` 获取 6 个频道最新内容，每频道最多 10 条。
 2. 去重同标题、同链接、同事件。
 3. 只做短摘要、频道归类、标签和 `isAlert` 判断。
 4. 写入 `liveRadar/latest.json`。
