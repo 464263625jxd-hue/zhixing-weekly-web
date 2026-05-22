@@ -56,11 +56,13 @@
     <script src="js/alpinejs.cdn.min.js" defer></script>
     
     <style>
-        body { font-family: 'Noto Sans SC', sans-serif; background-color: #f1f5f9; color: #0f172a; -webkit-tap-highlight-color: transparent; overflow-x: hidden; width: 100%; }
-        html { -webkit-overflow-scrolling: touch; }
+        :root { --scroll-progress: 0; }
+        body { font-family: 'Noto Sans SC', sans-serif; background: #f1f5f9; color: #0f172a; -webkit-tap-highlight-color: transparent; overflow-x: hidden; width: 100%; }
+        body::before { content: ""; position: fixed; inset: -22%; z-index: -1; pointer-events: none; background: radial-gradient(circle at 18% calc(8% + var(--scroll-progress) * 22%), rgba(14, 165, 233, 0.20), transparent 34%), radial-gradient(circle at 82% calc(18% + var(--scroll-progress) * 28%), rgba(245, 158, 11, 0.16), transparent 32%), linear-gradient(135deg, rgba(15, 23, 42, 0.10), rgba(241, 245, 249, 0.88) 42%, rgba(15, 23, 42, 0.08)); transform: translate3d(0, calc(var(--scroll-progress) * -34px), 0); transition: transform 120ms linear; }
+        html { -webkit-overflow-scrolling: touch; background: #f1f5f9; }
         .serif { font-family: 'Noto Serif SC', serif; }
         [x-cloak] { display: none !important; }
-        .portal-bg { background-color: #0f172a; background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%); min-height: 100vh; min-height: -webkit-fill-available; }
+        .portal-bg { background-color: #0f172a; background-image: radial-gradient(at 0% calc(0% + var(--scroll-progress) * 12%), hsla(205,72%,20%,1) 0, transparent 46%), radial-gradient(at 52% calc(0% + var(--scroll-progress) * 18%), hsla(218,42%,25%,1) 0, transparent 48%), radial-gradient(at 100% calc(0% + var(--scroll-progress) * 14%), hsla(38,74%,31%,0.72) 0, transparent 44%); min-height: 100vh; min-height: -webkit-fill-available; }
         .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -80,8 +82,10 @@
         .source-link { color: #2563eb; font-weight: 800; }
         .source-link:hover { color: #1d4ed8; text-decoration: underline; }
         .detail-drawer { box-shadow: -24px 0 48px rgba(15, 23, 42, 0.16); }
+        .ambient-surface { background: radial-gradient(circle at 8% calc(12% + var(--scroll-progress) * 16%), rgba(14, 165, 233, 0.10), transparent 30%), radial-gradient(circle at 92% calc(8% + var(--scroll-progress) * 18%), rgba(245, 158, 11, 0.12), transparent 28%), linear-gradient(180deg, rgba(248, 250, 252, 0.94), rgba(241, 245, 249, 0.98)); }
         .desktop-detail-panel { min-height: calc(100vh - 132px); max-height: calc(100vh - 132px); }
         .industry-detail-panel { min-height: calc(100vh - 96px); max-height: calc(100vh - 96px); }
+        .corporate-detail-panel { min-height: calc(100vh - 112px); max-height: calc(100vh - 112px); }
         .company-logo { filter: saturate(0.96); }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
@@ -136,6 +140,7 @@
                 currentIssueData: null,
                 currentIndustry: null,
                 currentCorporateCategory: '美妆',
+                selectedCompany: null,
                 
                 // ==================== 阅读器状态（Reader State）====================
                 activeTab: 'home',
@@ -181,6 +186,45 @@
                     { id: '跨境', name: '跨境出海' }, { id: '数码科技', name: '数码科技' },
                     { id: '美妆', name: '美妆护肤' }, { id: '食品饮料', name: '食品饮料' }, { id: '母婴', name: '母婴亲子' }, { id: '宠物', name: '宠物经济' }
                 ],
+                companyLogoOverrides: {
+                    '欧莱雅集团': 'https://cdn.simpleicons.org/loreal/111827',
+                    '雅诗兰黛': 'https://cdn.simpleicons.org/esteelauder/111827',
+                    '资生堂': 'https://cdn.simpleicons.org/shiseido/111827',
+                    'LVMH': 'https://cdn.simpleicons.org/lvmh/111827',
+                    '宝洁 (P&G)': 'https://cdn.simpleicons.org/procterandgamble/111827',
+                    '联合利华': 'https://cdn.simpleicons.org/unilever/111827',
+                    '花王集团': 'https://cdn.simpleicons.org/kao/111827',
+                    'Kenvue': 'https://cdn.simpleicons.org/kenvue/111827',
+                    '瑞幸咖啡': 'https://cdn.simpleicons.org/luckincoffee/111827',
+                    '泡泡玛特': 'https://cdn.simpleicons.org/popmart/111827',
+                    '硕腾': 'https://cdn.simpleicons.org/zoetis/111827'
+                },
+                companyAliasMap: {
+                    '欧莱雅集团': ['欧莱雅', 'L’Oréal', 'L Oreal', 'Loreal', '兰蔻', '理肤泉', '美宝莲', '巴黎欧莱雅'],
+                    '雅诗兰黛': ['雅诗兰黛', 'Estee Lauder', '海蓝之谜', 'La Mer', 'MAC', 'Tom Ford'],
+                    '资生堂': ['资生堂', 'Shiseido', 'CPB', 'NARS', '安热沙'],
+                    'LVMH': ['LVMH', '迪奥', 'Dior', '娇兰', 'Guerlain', '丝芙兰', 'Sephora'],
+                    '珀莱雅': ['珀莱雅', 'Proya', '彩棠'],
+                    '贝泰妮': ['贝泰妮', '薇诺娜', 'Winona', '瑷科缦'],
+                    '巨子生物': ['巨子生物', '可复美', '可丽金'],
+                    '上美股份': ['上美股份', '上美', '韩束', '一叶子', '红色小象'],
+                    '宝洁 (P&G)': ['宝洁', 'P&G', 'SK-II', '海飞丝', '潘婷', '汰渍'],
+                    '联合利华': ['联合利华', 'Unilever', '多芬', '清扬', '奥妙', '金纺'],
+                    '花王集团': ['花王', 'Kao', '碧柔', '妙而舒'],
+                    'Kenvue': ['Kenvue', '科赴', '强生消费', '露得清', 'Aveeno'],
+                    '瑞幸咖啡': ['瑞幸', 'Luckin'],
+                    '海底捞': ['海底捞', 'Haidilao'],
+                    '农夫山泉': ['农夫山泉', '东方树叶', '茶π'],
+                    '泡泡玛特': ['泡泡玛特', 'POP MART', 'Labubu'],
+                    'Babycare': ['Babycare', '白贝壳'],
+                    '孩子王': ['孩子王'],
+                    '好孩子': ['好孩子', 'Goodbaby'],
+                    'H&H国际': ['H&H', '合生元', 'Swisse', '健合'],
+                    '乖宝宠物': ['乖宝', '麦富迪'],
+                    '中宠股份': ['中宠', 'Wanpy', '顽皮'],
+                    '佩蒂股份': ['佩蒂'],
+                    '硕腾': ['硕腾', 'Zoetis']
+                },
 
                 // ==================== 初始化逻辑（Initialization）====================
                 async init() {
@@ -214,6 +258,7 @@
 
                         this.isLoading = false;
                         this.$nextTick(() => {
+                            this.initScrollEffects();
                             this.setupHashRouting();
                             this.applyRouteFromHash();
                             if (typeof location !== 'undefined' && (!location.hash || location.hash === '#')) {
@@ -335,6 +380,7 @@
                     if (parts[0] === 'corporate' && parts[1]) {
                         this.selectedNews = null;
                         this.selectedIndustryNews = null;
+                        this.selectedCompany = null;
                         this.currentCorporateCategory = decodeURIComponent(parts[1]);
                         this.view = 'corporate';
                         document.body.style.overflow = 'auto';
@@ -475,6 +521,7 @@
                 },
                 get pastIssues() { return this.issueDB.slice(1); },
                 get currentCompanies() { return this.companyDB[this.currentCorporateCategory] || []; },
+                get selectedCompanyNews() { return this.selectedCompany ? this.companyNews(this.selectedCompany) : []; },
                 
                 // 行业时间轴数据
                 get industryTimeline() {
@@ -560,7 +607,9 @@
                         const sectorItems = this.newsData.filter(item => item.category === stat.name);
                         const representative = this.pickSectorRepresentative(sectorItems);
                         const subCount = new Set(sectorItems.map(item => item.subCategory).filter(Boolean)).size;
-                        return { ...stat, subCount, representative };
+                        const alerts = sectorItems.filter(item => item.isAlert);
+                        const keyItems = sectorItems.filter(item => item.isAlert || item.highlight).slice(0, 3);
+                        return { ...stat, subCount, representative, alerts, alertCount: alerts.length, keyItems };
                     });
                     return items;
                 },
@@ -598,6 +647,20 @@
                     return item.sourceUrl || item.url || '';
                 },
 
+                markLabel(item) {
+                    if (!item) return '';
+                    if (item.isAlert) return '预警';
+                    if (item.highlight) return '重点';
+                    return '';
+                },
+
+                markClass(item) {
+                    if (!item) return 'hidden';
+                    if (item.isAlert) return 'bg-red-100 text-red-700 border-red-200';
+                    if (item.highlight) return 'bg-amber-100 text-amber-700 border-amber-200';
+                    return 'hidden';
+                },
+
                 pickSectorRepresentative(items) {
                     if (!items || !items.length) return null;
                     return items.find(item => !item.isAlert && !item.highlight && item.summary)
@@ -607,6 +670,7 @@
                 },
 
                 companyDomain(company) {
+                    if (!company) return '';
                     try {
                         return new URL(company.site).hostname.replace(/^www\./, '');
                     } catch (e) {
@@ -615,19 +679,22 @@
                 },
 
                 companyLogoCandidates(company) {
+                    if (!company) return [''];
                     const domain = this.companyDomain(company);
                     const urls = [];
+                    if (this.companyLogoOverrides[company.name]) urls.push(this.companyLogoOverrides[company.name]);
                     if (company.logo) urls.push(company.logo);
                     if (domain) {
+                        urls.push(`https://logo.clearbit.com/${domain}`);
                         urls.push(`https://www.google.com/s2/favicons?domain=${domain}&sz=128`);
                         urls.push(`https://icons.duckduckgo.com/ip3/${domain}.ico`);
-                        urls.push(`https://logo.clearbit.com/${domain}`);
                     }
                     urls.push(this.getFallbackLogo(company.name));
-                    return urls;
+                    return Array.from(new Set(urls));
                 },
 
                 setNextLogo(event, company) {
+                    if (!company) return;
                     const img = event.target;
                     const candidates = this.companyLogoCandidates(company);
                     const currentIndex = Number(img.dataset.logoIndex || 0);
@@ -638,6 +705,7 @@
                 },
 
                 getCompanyLogoUrl(company) {
+                    if (!company) return '';
                     return this.companyLogoCandidates(company)[0];
                 },
                 
@@ -645,6 +713,32 @@
                     const colors = { '美妆': 'ec4899', '个护家清': '8b5cf6', '食品饮料': 'f97316', '母婴': 'f43f5e', '宠物': '10b981' };
                     const color = colors[this.currentCorporateCategory] || '003366';
                     return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${color}&color=fff&size=128&length=1&font-size=0.5`;
+                },
+
+                companyAliases(company) {
+                    if (!company) return [];
+                    const aliases = this.companyAliasMap[company.name] || [];
+                    return Array.from(new Set([company.name, (company.name || '').replace(/\s*\(.+?\)\s*/g, ''), ...aliases].filter(Boolean)));
+                },
+
+                companyNews(company) {
+                    if (!company) return [];
+                    const aliases = this.companyAliases(company).map(text => String(text).toLowerCase()).filter(Boolean);
+                    const results = [];
+                    this.issueDB.forEach(issue => {
+                        ((issue && issue.data) || []).forEach(item => {
+                            const haystack = `${item.title || ''}\n${item.summary || ''}\n${item.content || ''}`.toLowerCase();
+                            if (aliases.some(alias => haystack.includes(alias))) {
+                                results.push({ ...item, issueId: issue.id, issueDate: issue.date });
+                            }
+                        });
+                    });
+                    return results.sort((a, b) => Number(b.issueId || 0) - Number(a.issueId || 0));
+                },
+
+                selectCompany(company) {
+                    this.selectedCompany = company;
+                    this.syncHashToState();
                 },
 
                 openIssue(id) {
@@ -672,6 +766,7 @@
                 
                 openCorporate(category = '美妆') {
                     this.currentCorporateCategory = category;
+                    this.selectedCompany = null;
                     this.view = 'corporate';
                     window.scrollTo({ top: 0, behavior: 'instant' });
                     this.syncHashToState();
@@ -679,6 +774,7 @@
 
                 setCorporateCategory(cat) {
                     this.currentCorporateCategory = cat;
+                    this.selectedCompany = null;
                     this.syncHashToState();
                 },
 
@@ -712,6 +808,7 @@
                 goHome() {
                     this.selectedNews = null;
                     this.selectedIndustryNews = null;
+                    this.selectedCompany = null;
                     this.showGlobalSearch = false;
                     this.view = 'portal';
                     document.body.style.overflow = 'auto';
@@ -729,6 +826,21 @@
                     this.selectedIndustryNews = null;
                     document.body.style.overflow = 'auto';
                     this.syncHashToState();
+                },
+
+                initScrollEffects() {
+                    if (this._scrollEffectsReady || typeof window === 'undefined') return;
+                    this._scrollEffectsReady = true;
+                    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    if (reduceMotion) return;
+                    const update = () => {
+                        const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+                        const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+                        document.documentElement.style.setProperty('--scroll-progress', progress.toFixed(4));
+                    };
+                    update();
+                    window.addEventListener('scroll', update, { passive: true });
+                    window.addEventListener('resize', update, { passive: true });
                 },
 
                 // --- 阅读器专用方法 ---
@@ -1112,7 +1224,7 @@ ${divider}
      VIEW 2: 阅读器（Reader View）
      包含：本期概览、赛道情报、全部资讯、详情弹窗
      ════════════════════════════════════════════════════════════ -->
-    <div id="reader-view" x-show="view === 'reader'" x-cloak class="min-h-screen bg-gray-50">
+    <div id="reader-view" x-show="view === 'reader'" x-cloak class="min-h-screen ambient-surface">
         <div class="bg-brand-dark text-white sticky top-0 z-40 shadow-md">
             <div class="bg-black/20 text-gray-400 text-[10px] sm:text-xs py-1 text-center font-mono" x-text="'Current Period: ' + currentIssueData?.date"></div>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-3 flex items-center justify-between">
@@ -1130,17 +1242,17 @@ ${divider}
 
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 pb-24">
             <div x-show="activeTab === 'home' && !searchQuery" class="space-y-8" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="md:col-span-2 bg-white rounded-xl shadow-md border border-slate-200 p-6 relative overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-5">
+                    <div class="bg-white rounded-xl shadow-md border border-slate-200 p-5 relative overflow-hidden">
                         <div class="absolute top-0 left-0 w-1 h-full bg-brand-primary"></div>
-                        <h3 class="text-lg font-bold mb-4 text-brand-primary flex items-center"><svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> 本周综述 Summary</h3>
-                        <p class="text-sm text-gray-700 leading-relaxed text-justify-custom" x-html="formatContent(zhixingInsight.content)"></p>
+                        <h3 class="text-base font-bold mb-3 text-brand-primary flex items-center"><svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> 本周综述 Summary</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed text-justify-custom max-w-[76ch]" x-html="formatContent(zhixingInsight.content)"></p>
                     </div>
-                    <div class="bg-brand-dark rounded-xl shadow-xl p-6 text-white flex flex-col justify-center relative overflow-hidden">
+                    <div class="bg-brand-dark rounded-xl shadow-xl p-5 text-white flex flex-col justify-center relative overflow-hidden">
                         <div class="absolute inset-0 bg-gradient-to-br from-brand-primary to-brand-dark opacity-80"></div>
                         <div class="relative z-10">
-                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">本周数据 Data Highlight</h3>
-                            <div class="grid grid-cols-2 gap-3 mb-5">
+                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">本周数据 Data Highlight</h3>
+                            <div class="grid grid-cols-2 gap-3 mb-4">
                                 <div><span class="text-2xl font-black text-brand-accent" x-text="currentIssueMeta.total"></span><p class="text-xs text-gray-400">条资讯</p></div>
                                 <div><span class="text-2xl font-black text-red-300" x-text="currentIssueMeta.alerts"></span><p class="text-xs text-gray-400">条预警</p></div>
                                 <div><span class="text-2xl font-black text-sky-300" x-text="currentIssueMeta.categories"></span><p class="text-xs text-gray-400">个板块</p></div>
@@ -1201,45 +1313,36 @@ ${divider}
                     </div>
                 </section>
 
-                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
-                    <div class="flex items-center justify-between gap-4 mb-5">
-                        <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center"><span class="w-1.5 h-5 bg-brand-primary mr-3 rounded"></span>板块导读 Reading Map</h3>
-                        <span class="text-xs text-gray-400">非预警代表资讯，点击进入对应板块</span>
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-5 sm:p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+                        <div>
+                            <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider flex items-center"><span class="w-1.5 h-5 bg-brand-primary mr-3 rounded"></span>本期赛道导读</h3>
+                            <p class="text-xs text-gray-500 mt-1">板块概览、预警资讯和重点入口合并展示，点击任一资讯可在当前页阅读。</p>
+                        </div>
+                        <span class="text-xs font-bold text-red-600 bg-red-50 border border-red-100 rounded-full px-3 py-1" x-text="'预警 ' + alertNews.length + ' 条'"></span>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
                         <template x-for="sector in tabOverview" :key="sector.name">
-                            <button type="button" @click="switchTab(sector.name)" class="text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-brand-light/40 hover:shadow-md transition-all p-4 focus-ring">
+                            <div class="rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-brand-light/40 hover:shadow-md transition-all p-4">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="font-black text-slate-800" x-text="sector.name"></span>
                                     <span class="text-xs font-bold text-slate-500" x-text="sector.count + ' 条'"></span>
                                 </div>
-                                <div class="flex items-center gap-2 mb-3">
+                                <div class="flex flex-wrap items-center gap-2 mb-3">
                                     <span class="text-[10px] px-2 py-0.5 rounded-full bg-white text-slate-500 font-bold" x-text="sector.subCount + ' 个主题'"></span>
                                     <span class="text-[10px] px-2 py-0.5 rounded-full bg-brand-primary/5 text-brand-primary font-bold" x-text="sector.representative?.subCategory || '动态'"></span>
+                                    <span x-show="sector.alertCount" class="text-[10px] px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-black" x-text="'预警 ' + sector.alertCount"></span>
                                 </div>
-                                <p class="text-xs text-slate-500 line-clamp-2" x-text="sector.representative?.title"></p>
-                            </button>
-                        </template>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center"><span class="w-1.5 h-6 bg-brand-primary mr-3 rounded"></span>赛道情报 Sector Intelligence</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <template x-for="cat in ['宏观', '平台', '跨境', '数码科技', '美妆', '食品饮料', '母婴', '宠物']">
-                            <div class="bg-white rounded-xl border border-slate-200 shadow-md hover:shadow-xl transition-all flex flex-col h-full overflow-hidden group">
-                                <div :class="`px-5 py-3 border-b flex justify-between items-center ${sectorStyles[cat].split(' ')[1]} border-opacity-50`">
-                                    <h4 :class="`font-black text-lg ${sectorTitles[cat]}`" x-text="cat"></h4>
-                                    <span :class="`text-xs px-2 py-0.5 rounded-full bg-white bg-opacity-60 ${sectorTitles[cat]}`" x-text="getSectorHighlight(cat).count + ' 更新'"></span>
+                                <div x-show="sector.alertCount" class="space-y-2 mb-3">
+                                    <p class="text-[10px] font-black text-red-600 tracking-widest">预警资讯</p>
+                                    <template x-for="alert in sector.alerts.slice(0, 2)" :key="alert.id || alert.title">
+                                        <button type="button" @click="openDetail(alert)" class="block w-full text-left text-xs font-bold text-slate-800 bg-white border border-red-100 rounded-lg px-3 py-2 hover:border-red-300 hover:text-red-700 focus-ring">
+                                            <span class="line-clamp-2" x-text="alert.title"></span>
+                                        </button>
+                                    </template>
                                 </div>
-                                <div class="p-5 flex-1 flex flex-col cursor-pointer" @click="switchTab(cat)">
-                                    <div class="mb-4 pb-4 border-b border-dashed border-slate-200" @click.stop="openDetail(getSectorHighlight(cat).main)">
-                                        <div class="flex items-center gap-3 mb-2"><span :class="`text-[10px] font-bold px-1.5 py-0.5 rounded border ${sectorStyles[cat]}`" x-text="getSectorHighlight(cat).main.subCategory || '重点'"></span></div>
-                                        <h5 class="text-base font-bold text-gray-900 leading-snug line-clamp-3 mb-1 group-hover:text-brand-primary transition-colors" x-text="getSectorHighlight(cat).main.title"></h5>
-                                        <p class="text-xs text-gray-500 line-clamp-3" x-text="getSectorHighlight(cat).main.content"></p>
-                                    </div>
-                                    <div class="space-y-3 mt-auto"><template x-for="sub in getSectorHighlight(cat).list"><div class="flex items-start group/item" @click.stop="openDetail(sub)"><div class="w-1.5 h-1.5 bg-gray-300 rounded-full mt-1.5 mr-2 shrink-0 group-hover/item:bg-brand-accent transition-colors"></div><p class="text-xs text-gray-600 line-clamp-1 group-hover/item:text-brand-dark transition-colors" x-text="sub.title"></p></div></template></div>
-                                </div>
+                                <button type="button" @click="openDetail(sector.representative)" class="block w-full text-left text-xs text-slate-500 line-clamp-2 hover:text-brand-primary focus-ring" x-text="sector.representative?.title"></button>
+                                <button type="button" @click="switchTab(sector.name)" class="mt-4 text-xs font-black text-brand-primary hover:text-brand-light focus-ring">查看该板块 →</button>
                             </div>
                         </template>
                     </div>
@@ -1277,7 +1380,7 @@ ${divider}
                 <div class="w-full min-w-0 space-y-4">
                     <template x-for="item in filteredNews" :key="item.id || item.title">
                         <div @click="openDetail(item)" class="bg-white p-5 rounded-xl border border-slate-100 shadow-md hover:shadow-md cursor-pointer group transition-all transform hover:-translate-x-1">
-                            <div class="flex items-center gap-2 mb-2"><span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded" x-text="item.category"></span><span class="text-[10px] text-brand-primary border border-brand-primary/20 px-1.5 rounded" x-text="item.subCategory"></span></div>
+                            <div class="flex flex-wrap items-center gap-2 mb-2"><span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded" x-text="item.category"></span><span class="text-[10px] text-brand-primary border border-brand-primary/20 px-1.5 rounded" x-text="item.subCategory"></span><span x-show="markLabel(item)" :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${markClass(item)}`" x-text="markLabel(item)"></span></div>
                             <h3 class="text-base font-bold text-gray-800 group-hover:text-brand-primary mb-2 leading-snug" x-text="item.title"></h3>
                             <p class="text-xs text-gray-500 line-clamp-2" x-text="item.summary || item.content"></p>
                         </div>
@@ -1360,7 +1463,7 @@ ${divider}
      VIEW 3: 行业聚合页（Industry Timeline）
      包含：时间轴、每期洞察、资讯聚合
      ════════════════════════════════════════════════════════════ -->
-    <div x-show="view === 'industry'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-10" x-transition:enter-end="opacity-100 translate-x-0" class="min-h-screen bg-slate-50 pb-20" x-cloak>
+    <div x-show="view === 'industry'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-10" x-transition:enter-end="opacity-100 translate-x-0" class="min-h-screen ambient-surface pb-20" x-cloak>
         <div class="relative bg-slate-900 pb-24 pt-12 overflow-hidden shadow-xl">
              <div :class="`absolute inset-0 bg-gradient-to-br ${sectorConfig[currentIndustry]?.gradient || 'from-gray-800 to-gray-900'} opacity-90`"></div>
              <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
@@ -1380,9 +1483,9 @@ ${divider}
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20">
             <template x-for="(period, index) in industryTimeline" :key="period.issueId">
-                <div class="mb-12 relative pl-8 sm:pl-0 grid grid-cols-1 gap-6" :class="selectedIndustryNews && selectedIndustryNews.issueId === period.issueId ? 'lg:grid-cols-[300px_minmax(320px,420px)_minmax(440px,1fr)]' : ''">
+                <div class="mb-12 relative pl-8 sm:pl-0 grid grid-cols-1 gap-6" :class="selectedIndustryNews && selectedIndustryNews.issueId === period.issueId ? 'lg:grid-cols-[minmax(0,1fr)_minmax(420px,520px)]' : ''">
                     <div class="hidden sm:block absolute left-0 top-0 bottom-0 w-px bg-slate-200 -ml-8 md:-ml-12"></div>
-                    <div class="min-w-0" :class="selectedIndustryNews && selectedIndustryNews.issueId === period.issueId ? 'lg:sticky lg:top-8 lg:self-start' : 'lg:col-span-full'">
+                    <div class="min-w-0 lg:col-span-full">
                         <div class="flex items-center gap-4 mb-6">
                             <div class="bg-slate-900 text-white font-black text-xl px-4 py-2 rounded-xl shadow-xl flex flex-col items-center border-2 border-white/20 z-10"><span class="text-[10px] text-gray-400 font-normal uppercase">Issue</span><span x-text="period.issueId"></span></div>
                             <div><div class="text-slate-900 font-bold text-lg" x-text="period.date"></div><div class="text-slate-500 text-xs">本期收录 <span class="font-bold text-slate-700" x-text="period.news.length"></span> 条资讯</div></div>
@@ -1390,7 +1493,7 @@ ${divider}
                         <template x-if="period.insight">
                             <div class="bg-white rounded-xl shadow-md border-l-4 border-brand-accent p-6 mb-0 hover:shadow-xl transition-shadow">
                                 <h3 class="font-bold text-slate-800 mb-4 flex items-center"><svg class="w-5 h-5 mr-2 text-brand-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> 本期深度洞察</h3>
-                                <div class="grid grid-cols-1 gap-4 text-sm" :class="selectedIndustryNews && selectedIndustryNews.issueId === period.issueId ? 'md:grid-cols-1' : 'md:grid-cols-3'">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                                     <div x-show="period.insight.risk" class="bg-red-50 p-3 rounded-xl border border-red-100"><strong class="text-red-700 block mb-1 text-xs uppercase">风险 Risk</strong><p class="text-gray-700 leading-relaxed" x-text="period.insight.risk"></p></div>
                                     <div x-show="period.insight.opportunity" class="bg-emerald-50 p-3 rounded-xl border border-emerald-100"><strong class="text-emerald-700 block mb-1 text-xs uppercase">机会 Opportunity</strong><p class="text-gray-700 leading-relaxed" x-text="period.insight.opportunity"></p></div>
                                     <div x-show="period.insight.action" class="bg-sky-50 p-3 rounded-xl border border-sky-100"><strong class="text-sky-700 block mb-1 text-xs uppercase">行动 Action</strong><p class="text-gray-700 leading-relaxed" x-text="period.insight.action"></p></div>
@@ -1398,10 +1501,10 @@ ${divider}
                             </div>
                         </template>
                     </div>
-                    <div class="grid grid-cols-1 gap-4 min-w-0" :class="selectedIndustryNews && selectedIndustryNews.issueId === period.issueId ? 'sm:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3 lg:col-span-full'">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 min-w-0" :class="selectedIndustryNews && selectedIndustryNews.issueId === period.issueId ? '' : 'lg:col-span-full'">
                         <template x-for="item in period.news">
                             <div @click="viewDetail({...item, issueId: period.issueId})" class="bg-white p-4 rounded-xl border border-slate-100 shadow-md hover:shadow-md hover:border-brand-light/30 transition-all cursor-pointer group flex flex-col h-full" :class="selectedIndustryNews && newsItemKey(selectedIndustryNews) === newsItemKey(item) && selectedIndustryNews.issueId === period.issueId ? 'ring-2 ring-brand-primary/25 border-brand-light/50' : ''">
-                                <div class="flex items-center justify-between mb-2"><span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded" x-text="item.subCategory"></span><span x-show="item.isAlert" class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span></div>
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-2"><span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded" x-text="item.subCategory"></span><span x-show="markLabel(item)" :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${markClass(item)}`" x-text="markLabel(item)"></span></div>
                                 <h4 class="text-sm font-bold text-slate-800 leading-snug mb-2 group-hover:text-brand-primary line-clamp-2 cursor-pointer" x-text="item.title"></h4>
                                 <p class="text-xs text-gray-500 line-clamp-2 mt-auto" x-text="item.summary || item.content"></p>
                             </div>
@@ -1479,7 +1582,7 @@ ${divider}
      VIEW 4: 企业雷达页（Corporate Radar）
      包含：行业切换、公司卡片、官网/财报链接
      ════════════════════════════════════════════════════════════ -->
-    <div x-show="view === 'corporate'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-10" x-transition:enter-end="opacity-100 translate-y-0" class="min-h-screen bg-slate-50 pb-20" x-cloak>
+    <div x-show="view === 'corporate'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-10" x-transition:enter-end="opacity-100 translate-y-0" class="min-h-screen ambient-surface pb-20" x-cloak>
         <div class="relative bg-brand-dark text-white pb-24 pt-12 overflow-hidden">
              <div class="absolute inset-0 bg-gradient-to-r from-brand-dark via-brand-primary to-brand-dark opacity-90"></div>
              <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between mb-8">
@@ -1491,7 +1594,7 @@ ${divider}
              
              <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                  <h1 class="text-4xl font-black mb-2">名企雷达 Corporate Radar</h1>
-                 <p class="text-gray-400 mb-8">汇集行业头部企业官方信息源，一键直达财报与公告</p>
+                 <p class="text-gray-400 mb-8">汇集行业头部企业官方信息源，并聚合周刊历期相关资讯</p>
                  <div class="flex justify-center flex-wrap gap-2">
                      <template x-for="cat in ['美妆', '个护家清', '食品饮料', '母婴', '宠物']">
                          <button type="button" @click="setCorporateCategory(cat)" :class="currentCorporateCategory === cat ? 'bg-brand-accent text-brand-dark ring-2 ring-brand-accent ring-offset-2 ring-offset-brand-dark' : 'bg-white/10 text-gray-300 hover:bg-white/20'" class="px-6 py-2 rounded-full text-sm font-bold transition-all"><span x-text="cat"></span></button>
@@ -1501,20 +1604,59 @@ ${divider}
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <template x-for="company in currentCompanies" :key="company.name">
-                    <div class="bg-white rounded-xl shadow-xl border border-slate-100 p-6 hover:shadow-2xl transition-all group flex flex-col items-center text-center">
-                        <img :src="getCompanyLogoUrl(company)" data-logo-index="0" @error="setNextLogo($event, company)" class="company-logo w-20 h-20 rounded-2xl mb-4 border border-slate-100 shadow-md bg-white object-contain p-3">
-                        <h3 class="text-lg font-bold text-gray-900 mb-1" x-text="company.name"></h3>
-                        <span class="text-xs text-gray-400 font-mono mb-3 block" x-text="company.code"></span>
-                        <p class="text-xs text-gray-500 mb-6 line-clamp-2 h-8" x-text="company.desc"></p>
-                        
-                        <div class="w-full grid grid-cols-2 gap-3 mt-auto">
-                            <a :href="company.site" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 py-2 text-xs font-bold text-gray-600 bg-gray-50 rounded-xl hover:bg-gray-100 hover:text-brand-primary transition-colors"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg> 官网</a>
-                            <a :href="company.ir" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 py-2 text-xs font-bold text-brand-primary bg-brand-light/10 rounded-xl hover:bg-brand-light/20 transition-colors"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg> 财报网站</a>
+            <div class="grid grid-cols-1 gap-6" :class="selectedCompany ? 'lg:grid-cols-[minmax(0,1fr)_minmax(420px,520px)]' : ''">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6" :class="selectedCompany ? 'xl:grid-cols-2' : 'lg:grid-cols-4'">
+                    <template x-for="company in currentCompanies" :key="company.name">
+                        <div @click="selectCompany(company)" class="bg-white rounded-xl shadow-xl border border-slate-100 p-6 hover:shadow-2xl transition-all group flex flex-col items-center text-center cursor-pointer" :class="selectedCompany?.name === company.name ? 'ring-2 ring-brand-accent border-brand-accent/50' : ''">
+                            <img :src="getCompanyLogoUrl(company)" data-logo-index="0" @error="setNextLogo($event, company)" class="company-logo w-20 h-20 rounded-2xl mb-4 border border-slate-100 shadow-md bg-white object-contain p-3">
+                            <h3 class="text-lg font-bold text-gray-900 mb-1" x-text="company.name"></h3>
+                            <span class="text-xs text-gray-400 font-mono mb-3 block" x-text="company.code"></span>
+                            <p class="text-xs text-gray-500 mb-4 line-clamp-2 min-h-8" x-text="company.desc"></p>
+                            <div class="text-[10px] font-black text-brand-primary bg-brand-light/10 rounded-full px-3 py-1 mb-5" x-text="'周刊相关 ' + companyNews(company).length + ' 条'"></div>
+
+                            <div class="w-full grid grid-cols-2 gap-3 mt-auto">
+                                <a :href="company.site" target="_blank" rel="noopener noreferrer" @click.stop class="flex items-center justify-center gap-2 py-2 text-xs font-bold text-gray-600 bg-gray-50 rounded-xl hover:bg-gray-100 hover:text-brand-primary transition-colors"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg> 官网</a>
+                                <a :href="company.ir" target="_blank" rel="noopener noreferrer" @click.stop class="flex items-center justify-center gap-2 py-2 text-xs font-bold text-brand-primary bg-brand-light/10 rounded-xl hover:bg-brand-light/20 transition-colors"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg> 财报网站</a>
+                            </div>
                         </div>
+                    </template>
+                </div>
+                <aside x-show="selectedCompany" class="bg-white rounded-xl border border-slate-200 shadow-xl overflow-hidden lg:sticky lg:top-8 corporate-detail-panel flex flex-col" x-cloak>
+                    <div class="px-5 py-4 border-b border-slate-100 bg-slate-50/90 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <img :src="selectedCompany ? getCompanyLogoUrl(selectedCompany) : ''" data-logo-index="0" @error="setNextLogo($event, selectedCompany)" class="w-12 h-12 rounded-xl border border-slate-100 bg-white object-contain p-2 shadow-sm">
+                            <div class="min-w-0">
+                                <h3 class="font-black text-slate-900 truncate" x-text="selectedCompany?.name"></h3>
+                                <p class="text-xs text-slate-400 font-mono" x-text="selectedCompany?.code"></p>
+                            </div>
+                        </div>
+                        <button @click="selectedCompany = null" class="p-2 bg-white rounded-full hover:bg-slate-100 text-slate-400 transition-colors"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
                     </div>
-                </template>
+                    <div class="p-5 overflow-y-auto">
+                        <div class="mb-5">
+                            <p class="text-xs text-slate-500 leading-relaxed" x-text="selectedCompany?.desc"></p>
+                            <div class="mt-3 flex flex-wrap gap-2"><template x-for="alias in companyAliases(selectedCompany).slice(0, 8)" :key="alias"><span class="text-[10px] font-bold text-slate-500 bg-slate-100 rounded-full px-2 py-1" x-text="alias"></span></template></div>
+                        </div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-sm font-black text-slate-900">周刊收录资讯</h4>
+                            <span class="text-xs text-slate-400" x-text="selectedCompanyNews.length + ' 条'"></span>
+                        </div>
+                        <div class="space-y-3" x-show="selectedCompanyNews.length">
+                            <template x-for="item in selectedCompanyNews" :key="item.issueId + '-' + newsItemKey(item)">
+                                <button type="button" @click="openIssue(item.issueId); setTimeout(() => openDetail(item), 120)" class="w-full text-left rounded-xl border border-slate-100 bg-slate-50 hover:bg-white hover:border-brand-light/40 p-4 transition-colors focus-ring">
+                                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                                        <span class="text-[10px] font-black bg-brand-dark text-white px-2 py-0.5 rounded" x-text="'No.' + item.issueId"></span>
+                                        <span class="text-[10px] text-slate-400" x-text="item.issueDate"></span>
+                                        <span x-show="markLabel(item)" :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${markClass(item)}`" x-text="markLabel(item)"></span>
+                                    </div>
+                                    <h5 class="text-sm font-bold text-slate-800 leading-snug line-clamp-2" x-text="item.title"></h5>
+                                    <p class="text-xs text-slate-500 line-clamp-2 mt-2" x-text="item.summary || item.content"></p>
+                                </button>
+                            </template>
+                        </div>
+                        <div x-show="selectedCompany && selectedCompanyNews.length === 0" class="rounded-xl border border-dashed border-slate-200 p-6 text-center text-sm text-slate-400">当前历期周刊暂未匹配到该集团资讯</div>
+                    </div>
+                </aside>
             </div>
             <div x-show="currentCompanies.length === 0" class="text-center py-20 text-gray-400">暂无该行业企业数据</div>
         </div>
