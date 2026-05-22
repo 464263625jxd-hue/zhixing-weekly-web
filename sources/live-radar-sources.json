@@ -1,50 +1,43 @@
 {
-  "updateInterval": "2h",
+  "updateInterval": "1d",
   "displayName": "频道快讯",
   "readerFacingName": "实时情报雷达",
-  "sourceSkillUrl": "https://clawhub.ai/ebrun-developer/ebrun-original-news",
-  "sourceSkillName": "ebrun-original-news",
-  "readerFacingSourcePolicy": "前台不展示外部来源站品牌，只展示频道、标题、摘要、时间与原文入口。",
+  "readerFacingSourcePolicy": "前台允许展示来源分组名称，用于帮助读者区分资讯来源；不展示 skill、Codex、额度、素材池、制作者流程等后台信息。",
+  "aggregationSkillName": "zhixing-weekly-live-radar",
   "quotaPolicy": {
     "defaultMode": "light",
-    "lightMode": "每两小时只做抓取、去重、短摘要、频道归类和风险标记。",
-    "fallbackMode": "如 Codex / GPT Plus 额度消耗过大，改为每天集中更新 1-2 次，或只更新推荐、未来零售、跨境电商、AI 四个高价值频道。",
-    "weeklyUse": "每周大更新时读取 liveRadar/latest.json 与历史快照，作为补充素材池，不直接替代正式 issueXX.json。"
+    "lightMode": "每天 10:15 调用已安装来源 skill，只做抓取、去重、短摘要、来源分组、二次频道归类和风险标记。",
+    "fallbackMode": "如额度或网络成本过高，保留亿邦动力与 36氪两个来源，但减少每个来源的保留条数。",
+    "weeklyUse": "每周大更新时读取 liveRadar/latest.json 与历史快照，作为补充候选，不直接替代正式 issueXX.json。"
   },
-  "channels": [
+  "sourceGroups": [
     {
-      "id": "recommend",
-      "name": "推荐",
-      "maxItems": 10
+      "id": "ebrun",
+      "name": "亿邦动力",
+      "sourceSkillUrl": "https://clawhub.ai/ebrun-developer/ebrun-original-news",
+      "sourceSkillName": "ebrun-original-news",
+      "channels": [
+        { "id": "recommend", "name": "推荐", "maxItems": 10 },
+        { "id": "future-retail", "name": "未来零售", "maxItems": 10 },
+        { "id": "cross-border", "name": "跨境电商", "maxItems": 10 },
+        { "id": "industrial-internet", "name": "产业互联网", "maxItems": 10 },
+        { "id": "brand", "name": "品牌", "maxItems": 10 },
+        { "id": "ai", "name": "AI", "maxItems": 10 }
+      ]
     },
     {
-      "id": "future-retail",
-      "name": "未来零售",
-      "scope": ["淘宝天猫", "抖音", "京东", "视频号", "美团", "快手", "拼多多", "小红书"],
-      "maxItems": 10
-    },
-    {
-      "id": "cross-border",
-      "name": "跨境电商",
-      "scope": ["亚马逊", "阿里国际", "TikTok", "Temu", "SHEIN"],
-      "maxItems": 10
-    },
-    {
-      "id": "industrial-internet",
-      "name": "产业互联网",
-      "scope": ["B2B", "产业科技", "数据要素", "产业出海", "数智供应链", "数智化采购"],
-      "maxItems": 10
-    },
-    {
-      "id": "brand",
-      "name": "品牌",
-      "scope": ["新竞争力品牌", "品牌全球化"],
-      "maxItems": 10
-    },
-    {
-      "id": "ai",
-      "name": "AI",
-      "maxItems": 10
+      "id": "36kr",
+      "name": "36氪",
+      "sourceSkillUrl": "https://clawhub.ai/36kr-com/36kr-hotlist",
+      "sourceSkillName": "36kr-hotlist",
+      "channels": [
+        { "id": "kr36-hot", "name": "热榜", "maxItems": 15 },
+        { "id": "kr36-ai-tech", "name": "AI与科技", "maxItems": 15 },
+        { "id": "kr36-business", "name": "商业公司", "maxItems": 15 },
+        { "id": "kr36-capital", "name": "创投资本", "maxItems": 15 },
+        { "id": "kr36-consumption", "name": "消费生活", "maxItems": 15 }
+      ]
     }
-  ]
+  ],
+  "futureSourcePolicy": "新增来源时增加 sourceGroups 条目，并在 scripts/update-live-radar.py 中添加 adapter；前端读取 sourceGroups 自动生成来源切换与频道切换。"
 }

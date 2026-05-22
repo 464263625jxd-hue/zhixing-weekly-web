@@ -171,7 +171,8 @@
                 selectedCompany: null,
                 selectedCorporateNews: null,
                 selectedCorporateTag: 'all',
-                selectedLiveRadarChannel: 'recommend',
+                selectedLiveRadarSource: 'ebrun',
+                selectedLiveRadarChannel: 'ebrun-recommend',
                 
                 // ==================== 阅读器状态（Reader State）====================
                 activeTab: 'home',
@@ -309,9 +310,13 @@
                         const response = await fetch('liveRadar/latest.json?t=' + Date.now());
                         if (!response.ok) throw new Error('实时情报数据未就绪');
                         this.liveRadarData = await response.json();
-                        const first = this.liveRadarChannels[0];
-                        if (first && !this.liveRadarChannelData(this.selectedLiveRadarChannel)) {
-                            this.selectedLiveRadarChannel = first.id;
+                        const firstSource = this.liveRadarSources[0];
+                        if (firstSource && !this.liveRadarSourceData(this.selectedLiveRadarSource)) {
+                            this.selectedLiveRadarSource = firstSource.id;
+                        }
+                        const firstChannel = this.liveRadarChannels[0];
+                        if (firstChannel && !this.liveRadarChannelData(this.selectedLiveRadarChannel)) {
+                            this.selectedLiveRadarChannel = firstChannel.id;
                         }
                     } catch (error) {
                         console.warn('实时情报数据加载失败:', error);
@@ -411,7 +416,7 @@
                                 const item = issue.data.find(d => this.newsItemKey(d) === nk);
                                 if (item) {
                                     this.selectedNews = item;
-                                    document.body.style.overflow = 'hidden';
+                                    document.body.style.overflow = 'auto';
                                     return;
                                 }
                             }
@@ -450,7 +455,7 @@
                             const item = issue ? this.findNewsInIssue(issue, key) : null;
                             if (item) {
                                 this.selectedIndustryNews = Object.assign({}, item, { issueId: issueId });
-                                document.body.style.overflow = 'hidden';
+                                document.body.style.overflow = 'auto';
                             } else {
                                 this.selectedIndustryNews = null;
                                 document.body.style.overflow = 'auto';
@@ -483,7 +488,7 @@
                             if (item) {
                                 this.selectedNews = item;
                                 this.selectedHomeDetailSource = 'cover';
-                                document.body.style.overflow = 'hidden';
+                                document.body.style.overflow = 'auto';
                             } else {
                                 this.selectedNews = null;
                                 document.body.style.overflow = 'auto';
@@ -596,7 +601,38 @@
                     const alerts = items.filter(item => item.isAlert).length;
                     return { total: items.length, alerts, categories };
                 },
+                get liveRadarSources() {
+                    const groups = (this.liveRadarData && this.liveRadarData.sourceGroups) || [];
+                    if (groups.length) {
+                        return groups.map(group => ({
+                            ...group,
+                            items: (group.channels || []).flatMap(channel => channel.items || [])
+                        }));
+                    }
+                    return [{ id: 'ebrun', name: '亿邦动力', description: '电商、零售、跨境与产业互联网动态', channels: (this.liveRadarData && this.liveRadarData.channels) || [], items: ((this.liveRadarData && this.liveRadarData.channels) || []).flatMap(channel => channel.items || []) }];
+                },
+                liveRadarSourceData(id) {
+                    return this.liveRadarSources.find(source => source.id === id) || null;
+                },
+                get activeLiveRadarSource() {
+                    return this.liveRadarSourceData(this.selectedLiveRadarSource) || this.liveRadarSources[0] || null;
+                },
+                selectLiveRadarSource(id) {
+                    this.selectedLiveRadarSource = id;
+                    const first = this.liveRadarChannels[0];
+                    this.selectedLiveRadarChannel = first ? first.id : '';
+                },
                 get liveRadarChannels() {
+                    const activeSource = this.activeLiveRadarSource;
+                    if (activeSource && activeSource.channels) {
+                        return activeSource.channels.map(channel => ({
+                            ...channel,
+                            sourceId: activeSource.id,
+                            sourceName: activeSource.name,
+                            id: channel.id.indexOf(activeSource.id + '-') === 0 ? channel.id : activeSource.id + '-' + channel.id,
+                            items: (channel.items || []).map(item => ({ ...item, channelName: item.channelName || channel.name, sourceName: item.sourceName || activeSource.name }))
+                        }));
+                    }
                     const channelMap = {};
                     ((this.liveRadarData && this.liveRadarData.channels) || []).forEach(channel => {
                         if (channel && channel.id) channelMap[channel.id] = channel;
@@ -625,9 +661,9 @@
                     return items.concat(items);
                 },
                 get liveRadarStats() {
-                    const total = this.liveRadarChannels.reduce((sum, channel) => sum + ((channel.items || []).length), 0);
-                    const candidates = this.liveRadarChannels.reduce((sum, channel) => sum + ((channel.items || []).filter(item => item.weeklyCandidate).length), 0);
-                    return { total, candidates, channels: this.liveRadarChannels.length };
+                    const total = this.liveRadarSources.reduce((sum, source) => sum + ((source.items || []).length), 0);
+                    const candidates = this.liveRadarSources.reduce((sum, source) => sum + ((source.items || []).filter(item => item.weeklyCandidate).length), 0);
+                    return { total, candidates, channels: this.liveRadarChannels.length, sources: this.liveRadarSources.length };
                 },
                 // 各期已在 init 中从 issues 按 issueIds 加载，此处保留占位以便扩展
                 async preloadIssues() {},
@@ -1445,8 +1481,8 @@ ${divider}
                             <p class="text-xs text-slate-300 leading-5 mb-3">实时补充阅读，聚焦最新事件和原文入口。</p>
                             <div class="grid grid-cols-3 gap-2 mb-3">
                                 <div class="rounded-lg bg-white/8 border border-white/10 px-3 py-2">
-                                    <div class="text-lg font-black text-white" x-text="liveRadarStats.channels"></div>
-                                    <div class="text-[10px] text-slate-400">频道</div>
+                                    <div class="text-lg font-black text-white" x-text="liveRadarStats.sources"></div>
+                                    <div class="text-[10px] text-slate-400">来源</div>
                                 </div>
                                 <div class="rounded-lg bg-white/8 border border-white/10 px-3 py-2">
                                     <div class="text-lg font-black text-brand-accent" x-text="liveRadarStats.total"></div>
@@ -1465,7 +1501,15 @@ ${divider}
                     </div>
 
                     <div class="bg-slate-50/95">
-                        <div class="border-b border-slate-200 bg-white px-4 sm:px-5 py-3">
+                        <div class="border-b border-slate-200 bg-white px-4 sm:px-5 py-3 space-y-3">
+                            <div class="flex gap-2 overflow-x-auto no-scrollbar">
+                                <template x-for="source in liveRadarSources" :key="source.id">
+                                    <button type="button" @click="selectLiveRadarSource(source.id)" :class="selectedLiveRadarSource === source.id ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'" class="shrink-0 rounded-full border px-3 py-1.5 text-xs font-black transition-colors">
+                                        <span x-text="source.name"></span>
+                                        <span class="ml-1 opacity-70" x-text="(source.items || []).length"></span>
+                                    </button>
+                                </template>
+                            </div>
                             <div class="flex gap-2 overflow-x-auto no-scrollbar">
                                 <template x-for="channel in liveRadarChannels" :key="channel.id">
                                     <button type="button" @click="selectedLiveRadarChannel = channel.id" :class="selectedLiveRadarChannel === channel.id ? 'bg-brand-primary text-white border-brand-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-brand-primary hover:text-brand-primary'" class="shrink-0 rounded-full border px-3 py-1.5 text-xs font-black transition-colors">
