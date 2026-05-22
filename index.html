@@ -57,14 +57,14 @@
     
     <style>
         :root { --scroll-progress: 0; }
-        body { font-family: 'Noto Sans SC', sans-serif; background: #f1f5f9; color: #0f172a; -webkit-tap-highlight-color: transparent; overflow-x: hidden; width: 100%; }
-        body::before { content: ""; position: fixed; inset: -22%; z-index: -1; pointer-events: none; background: radial-gradient(circle at 18% calc(8% + var(--scroll-progress) * 22%), rgba(14, 165, 233, 0.20), transparent 34%), radial-gradient(circle at 82% calc(18% + var(--scroll-progress) * 28%), rgba(245, 158, 11, 0.16), transparent 32%), linear-gradient(135deg, rgba(15, 23, 42, 0.10), rgba(241, 245, 249, 0.88) 42%, rgba(15, 23, 42, 0.08)); transform: translate3d(0, calc(var(--scroll-progress) * -34px), 0); transition: transform 120ms linear; }
+        body { font-family: 'Noto Sans SC', sans-serif; background: #eef3f8; color: #0f172a; -webkit-tap-highlight-color: transparent; overflow-x: hidden; width: 100%; }
+        body::before { content: ""; position: fixed; inset: -22%; z-index: -1; pointer-events: none; background: radial-gradient(circle at 18% calc(8% + var(--scroll-progress) * 18%), rgba(14, 165, 233, 0.16), transparent 32%), radial-gradient(circle at 82% calc(18% + var(--scroll-progress) * 20%), rgba(245, 158, 11, 0.12), transparent 30%), linear-gradient(135deg, rgba(15, 23, 42, 0.08), rgba(248, 250, 252, 0.92) 42%, rgba(15, 23, 42, 0.05)); transform: translate3d(0, calc(var(--scroll-progress) * -24px), 0); transition: transform 120ms linear; }
         html { -webkit-overflow-scrolling: touch; background: #f1f5f9; }
         .serif { font-family: 'Noto Serif SC', serif; }
         [x-cloak] { display: none !important; }
-        .portal-bg { background-color: #0f172a; background-image: radial-gradient(at 0% calc(0% + var(--scroll-progress) * 12%), hsla(205,72%,20%,1) 0, transparent 46%), radial-gradient(at 52% calc(0% + var(--scroll-progress) * 18%), hsla(218,42%,25%,1) 0, transparent 48%), radial-gradient(at 100% calc(0% + var(--scroll-progress) * 14%), hsla(38,74%,31%,0.72) 0, transparent 44%); min-height: 100vh; min-height: -webkit-fill-available; }
-        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .portal-bg { background-color: #eef3f8; background-image: linear-gradient(180deg, #0f172a 0, #111c31 420px, #eef3f8 421px, #eef3f8 100%); min-height: 100vh; min-height: -webkit-fill-available; }
+        .card-hover { transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1), border-color 180ms ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 18px 30px -18px rgba(15, 23, 42, 0.24); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
@@ -88,8 +88,11 @@
         .industry-detail-panel { min-height: calc(100vh - 96px); max-height: calc(100vh - 96px); }
         .corporate-detail-panel { min-height: calc(100vh - 112px); max-height: calc(100vh - 112px); }
         .company-logo { filter: saturate(0.96); }
-        .live-radar-ticker-track { animation: liveRadarTicker 42s linear infinite; }
-        .live-radar-ticker:hover .live-radar-ticker-track { animation-play-state: paused; }
+        .portal-shell { border: 1px solid rgba(148, 163, 184, 0.28); background: rgba(255,255,255,0.92); box-shadow: 0 24px 60px -44px rgba(15, 23, 42, 0.42); }
+        .section-kicker { font-size: 10px; font-weight: 900; letter-spacing: 0.12em; color: #2563eb; }
+        .live-radar-ticker { mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); }
+        .live-radar-ticker-track { animation: liveRadarTicker 118s linear infinite; }
+        .live-radar-ticker:hover .live-radar-ticker-track, .live-radar-ticker.is-paused .live-radar-ticker-track { animation-play-state: paused; }
         @keyframes liveRadarTicker {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
@@ -144,6 +147,7 @@
                 companyDB: {},
                 liveRadarData: null,
                 liveRadarLoadError: false,
+                liveRadarTickerPaused: false,
                 
                 // ==================== 导航与筛选状态（Navigation & Filter）====================
                 currentIssueId: null,
@@ -1380,26 +1384,26 @@ ${divider}
             </div>
         </nav>
 
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-            <section id="live-radar" class="rounded-2xl overflow-hidden border border-white/10 bg-slate-900/90 shadow-2xl">
-                <div class="grid grid-cols-1 xl:grid-cols-[320px_minmax(0,1fr)]">
-                    <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-brand-primary p-6 sm:p-8 text-white relative overflow-hidden">
-                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6">
+            <section id="live-radar" class="order-2 portal-shell rounded-2xl overflow-hidden">
+                <div class="grid grid-cols-1 xl:grid-cols-[240px_minmax(0,1fr)]">
+                    <div class="bg-slate-950 p-4 text-white relative overflow-hidden">
+                        <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-accent via-sky-400 to-emerald-300"></div>
                         <div class="relative z-10">
-                            <div class="inline-flex items-center gap-2 rounded-full bg-brand-accent text-brand-dark px-3 py-1 text-[10px] font-black tracking-widest mb-5">CHANNEL NEWS</div>
-                            <h3 class="text-2xl sm:text-3xl font-black leading-tight mb-3">频道快讯</h3>
-                            <p class="text-sm text-slate-300 leading-7 mb-6">多频道滚动追踪平台、跨境、产业、品牌与 AI 动态；两小时更新一次，帮助读者快速看到最新变化。</p>
-                            <div class="grid grid-cols-3 gap-2 mb-6">
-                                <div class="rounded-xl bg-white/10 border border-white/10 px-3 py-2">
-                                    <div class="text-xl font-black text-white" x-text="liveRadarStats.channels"></div>
+                            <div class="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/10 text-slate-200 px-2.5 py-1 text-[10px] font-black tracking-widest mb-3">LIVE RADAR</div>
+                            <h3 class="text-xl font-black leading-tight mb-2">频道快讯</h3>
+                            <p class="text-xs text-slate-300 leading-5 mb-3">实时补充阅读，聚焦最新事件和原文入口。</p>
+                            <div class="grid grid-cols-3 gap-2 mb-3">
+                                <div class="rounded-lg bg-white/8 border border-white/10 px-3 py-2">
+                                    <div class="text-lg font-black text-white" x-text="liveRadarStats.channels"></div>
                                     <div class="text-[10px] text-slate-400">频道</div>
                                 </div>
-                                <div class="rounded-xl bg-white/10 border border-white/10 px-3 py-2">
-                                    <div class="text-xl font-black text-brand-accent" x-text="liveRadarStats.total"></div>
+                                <div class="rounded-lg bg-white/8 border border-white/10 px-3 py-2">
+                                    <div class="text-lg font-black text-brand-accent" x-text="liveRadarStats.total"></div>
                                     <div class="text-[10px] text-slate-400">快讯</div>
                                 </div>
-                                <div class="rounded-xl bg-emerald-500/10 border border-emerald-300/10 px-3 py-2">
-                                    <div class="text-xl font-black text-emerald-300" x-text="liveRadarData?.updateInterval || '2h'"></div>
+                                <div class="rounded-lg bg-emerald-500/10 border border-emerald-300/10 px-3 py-2">
+                                    <div class="text-lg font-black text-emerald-300" x-text="liveRadarData?.updateInterval || '2h'"></div>
                                     <div class="text-[10px] text-slate-400">频率</div>
                                 </div>
                             </div>
@@ -1410,8 +1414,8 @@ ${divider}
                         </div>
                     </div>
 
-                    <div class="bg-slate-50">
-                        <div class="border-b border-slate-200 bg-white px-4 sm:px-6 py-4">
+                    <div class="bg-slate-50/95">
+                        <div class="border-b border-slate-200 bg-white px-4 sm:px-5 py-3">
                             <div class="flex gap-2 overflow-x-auto no-scrollbar">
                                 <template x-for="channel in liveRadarChannels" :key="channel.id">
                                     <button type="button" @click="selectedLiveRadarChannel = channel.id" :class="selectedLiveRadarChannel === channel.id ? 'bg-brand-primary text-white border-brand-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-brand-primary hover:text-brand-primary'" class="shrink-0 rounded-full border px-3 py-1.5 text-xs font-black transition-colors">
@@ -1422,12 +1426,18 @@ ${divider}
                             </div>
                         </div>
 
-                        <div class="p-4 sm:p-6">
-                            <div class="live-radar-ticker overflow-hidden rounded-xl border border-slate-200 bg-white mb-5" x-show="liveRadarTickerItems.length">
-                                <div class="live-radar-ticker-track flex w-max gap-3 px-3 py-3">
+                        <div class="p-4">
+                            <div class="flex items-center justify-between gap-3 mb-3">
+                                <p class="text-xs font-black text-slate-500">滚动快讯</p>
+                                <button type="button" @click="liveRadarTickerPaused = !liveRadarTickerPaused" class="focus-ring rounded-full border border-slate-200 bg-white px-3 py-1 text-[10px] font-black text-slate-500 hover:text-brand-primary hover:border-brand-primary">
+                                    <span x-text="liveRadarTickerPaused ? '继续滚动' : '暂停滚动'"></span>
+                                </button>
+                            </div>
+                            <div class="live-radar-ticker overflow-hidden rounded-lg border border-slate-200 bg-white mb-4" :class="liveRadarTickerPaused ? 'is-paused' : ''" x-show="liveRadarTickerItems.length">
+                                <div class="live-radar-ticker-track flex w-max gap-2 px-3 py-2.5">
                                     <template x-for="(item, idx) in liveRadarTickerItems" :key="idx + '-' + item.title">
-                                        <a :href="item.sourceUrl || '#'" target="_blank" rel="noopener noreferrer" class="w-[280px] sm:w-[340px] shrink-0 rounded-lg border border-slate-100 bg-slate-50 px-4 py-3 hover:border-brand-light hover:bg-white transition-colors">
-                                            <div class="flex items-center gap-2 mb-2">
+                                        <a :href="item.sourceUrl || '#'" target="_blank" rel="noopener noreferrer" class="w-[260px] sm:w-[320px] shrink-0 rounded-md border border-slate-100 bg-slate-50 px-3 py-2.5 hover:border-brand-light hover:bg-white transition-colors">
+                                            <div class="flex items-center gap-2 mb-1.5">
                                                 <span class="rounded bg-brand-primary/10 px-1.5 py-0.5 text-[10px] font-black text-brand-primary" x-text="item.channelName"></span>
                                                 <span x-show="item.isAlert" class="rounded bg-red-50 px-1.5 py-0.5 text-[10px] font-black text-red-700">需关注</span>
                                             </div>
@@ -1437,17 +1447,17 @@ ${divider}
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-5">
-                                <article class="rounded-xl border border-slate-200 bg-white p-5 min-h-[260px]">
-                                    <div class="flex items-start justify-between gap-3 mb-4">
+                            <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_280px] gap-4">
+                                <article class="rounded-xl border border-slate-200 bg-white p-4 min-h-[150px]">
+                                    <div class="flex items-start justify-between gap-3 mb-3">
                                         <div>
                                             <p class="text-[10px] font-black tracking-widest text-brand-primary mb-1" x-text="activeLiveRadarChannel?.name || '频道快讯'"></p>
-                                            <h4 class="text-xl font-black text-slate-900 leading-tight" x-text="liveRadarFeatured?.title || '等待实时情报更新'"></h4>
+                                            <h4 class="text-lg font-black text-slate-900 leading-tight" x-text="liveRadarFeatured?.title || '等待实时情报更新'"></h4>
                                         </div>
                                         <span x-show="liveRadarFeatured?.isAlert" class="shrink-0 rounded-full bg-red-50 border border-red-100 px-2 py-1 text-[10px] font-black text-red-700">需关注</span>
                                     </div>
-                                    <p class="text-sm leading-7 text-slate-600 mb-5" x-text="liveRadarFeatured?.summary || '该频道会按固定节奏刷新，帮助快速追踪平台、品牌、产业与 AI 动态。'"></p>
-                                    <div class="flex flex-wrap gap-2 mb-5">
+                                    <p class="text-sm leading-6 text-slate-600 mb-4 line-clamp-2" x-text="liveRadarFeatured?.summary || '该频道会按固定节奏刷新，帮助快速追踪平台、品牌、产业与 AI 动态。'"></p>
+                                    <div class="flex flex-wrap gap-2 mb-4">
                                         <template x-for="tag in (liveRadarFeatured?.tags || [])" :key="tag">
                                             <span class="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-bold text-slate-500" x-text="'#' + tag"></span>
                                         </template>
@@ -1459,11 +1469,11 @@ ${divider}
                                     <div class="mt-5 border-t border-slate-100 pt-4 text-xs text-slate-500" x-text="activeLiveRadarChannel?.scope"></div>
                                 </article>
 
-                                <div class="rounded-xl border border-slate-200 bg-white p-4 max-h-[360px] overflow-y-auto custom-scrollbar">
+                                <div class="rounded-xl border border-slate-200 bg-white p-3 max-h-[190px] overflow-y-auto custom-scrollbar">
                                     <p class="text-[10px] font-black text-slate-400 tracking-widest mb-3">频道列表</p>
                                     <div class="space-y-3">
                                         <template x-for="item in activeLiveRadarItems.slice(1, 8)" :key="item.id || item.title">
-                                            <a :href="item.sourceUrl || '#'" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-slate-100 bg-slate-50 px-3 py-3 hover:bg-white hover:border-brand-light transition-colors">
+                                            <a :href="item.sourceUrl || '#'" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-slate-100 bg-slate-50 px-3 py-2.5 hover:bg-white hover:border-brand-light transition-colors">
                                                 <div class="flex items-center gap-2 mb-1">
                                                     <span class="text-[10px] font-bold text-slate-400" x-text="item.sourceDate || item.publishedAt || '最新'"></span>
                                                     <span x-show="item.isAlert" class="text-[10px] font-black text-red-600">预警</span>
@@ -1475,7 +1485,7 @@ ${divider}
                                 </div>
                             </div>
 
-                            <div class="mt-5 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs leading-6 text-slate-500">
+                            <div class="mt-3 rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs leading-6 text-slate-500">
                                 频道快讯按固定节奏刷新，重点保留事件、平台、品牌、时间与原文入口，方便快速追踪后续变化。
                             </div>
                         </div>
@@ -1483,88 +1493,88 @@ ${divider}
                 </div>
             </section>
 
-            <section class="grid grid-cols-1 lg:grid-cols-[360px_minmax(0,1fr)] gap-6 items-start">
-                <a :href="issueHref(latestIssue.id)" target="_blank" rel="noopener noreferrer" class="group block rounded-2xl overflow-hidden bg-slate-900 border border-white/10 shadow-2xl hover:border-brand-accent/60 transition-colors">
-                    <div class="h-40 overflow-hidden relative">
+            <section class="order-1 grid grid-cols-1 lg:grid-cols-[390px_minmax(0,1fr)] gap-5 items-start">
+                <a :href="issueHref(latestIssue.id)" target="_blank" rel="noopener noreferrer" class="group block rounded-2xl overflow-hidden bg-slate-950 border border-white/10 shadow-2xl hover:border-brand-accent/60 transition-colors">
+                    <div class="h-32 sm:h-52 overflow-hidden relative">
                         <img :src="latestIssue.coverImage" class="w-full h-full object-cover opacity-75 group-hover:scale-[1.03] transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/35 to-transparent"></div>
                         <span class="absolute top-4 left-4 bg-brand-accent text-brand-dark text-[10px] font-black px-3 py-1 rounded-full tracking-widest">LATEST No.<span x-text="latestIssue.id"></span></span>
                     </div>
-                    <div class="p-5">
+                    <div class="p-4 sm:p-5">
                         <div class="text-brand-light font-mono text-xs mb-2" x-text="latestIssue.date"></div>
-                        <h2 class="text-2xl font-black text-white mb-3 leading-tight group-hover:text-brand-accent transition-colors" x-text="latestIssue.title"></h2>
-                        <p class="text-sm text-slate-400 leading-6 line-clamp-3 mb-5" x-text="latestIssue.summary"></p>
-                        <div class="grid grid-cols-3 gap-2 mb-5">
-                            <div class="rounded-lg bg-white/10 border border-white/10 px-3 py-2"><div class="text-lg font-black text-white" x-text="issueStats(latestIssue).total"></div><div class="text-[10px] text-slate-400">资讯</div></div>
-                            <div class="rounded-lg bg-red-500/10 border border-red-300/10 px-3 py-2"><div class="text-lg font-black text-red-200" x-text="issueStats(latestIssue).alerts"></div><div class="text-[10px] text-slate-400">预警</div></div>
-                            <div class="rounded-lg bg-sky-500/10 border border-sky-300/10 px-3 py-2"><div class="text-lg font-black text-sky-200" x-text="issueStats(latestIssue).categories"></div><div class="text-[10px] text-slate-400">板块</div></div>
+                        <h2 class="text-xl sm:text-3xl font-black text-white mb-2 sm:mb-3 leading-tight group-hover:text-brand-accent transition-colors" x-text="latestIssue.title"></h2>
+                        <p class="text-sm text-slate-300 leading-6 line-clamp-2 sm:line-clamp-3 mb-3 sm:mb-4" x-text="latestIssue.summary"></p>
+                        <div class="grid grid-cols-3 gap-2 mb-3 sm:mb-4">
+                            <div class="rounded-lg bg-white/10 border border-white/10 px-3 py-2"><div class="text-base sm:text-lg font-black text-white" x-text="issueStats(latestIssue).total"></div><div class="text-[10px] text-slate-400">资讯</div></div>
+                            <div class="rounded-lg bg-red-500/10 border border-red-300/10 px-3 py-2"><div class="text-base sm:text-lg font-black text-red-200" x-text="issueStats(latestIssue).alerts"></div><div class="text-[10px] text-slate-400">预警</div></div>
+                            <div class="rounded-lg bg-sky-500/10 border border-sky-300/10 px-3 py-2"><div class="text-base sm:text-lg font-black text-sky-200" x-text="issueStats(latestIssue).categories"></div><div class="text-[10px] text-slate-400">板块</div></div>
                         </div>
                         <div class="flex items-center text-brand-accent text-sm font-black">阅读本期 <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
                     </div>
                 </a>
 
-                <div class="rounded-2xl bg-white border border-slate-200 shadow-2xl overflow-hidden">
-                    <div class="px-5 sm:px-6 py-5 border-b border-slate-200 bg-slate-50">
+                <div class="portal-shell rounded-2xl overflow-hidden">
+                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 bg-slate-50">
                         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
                             <div>
-                                <p class="text-[10px] font-black text-brand-primary tracking-widest mb-2">CURRENT ISSUE GUIDE</p>
-                                <h3 class="text-2xl font-black text-slate-900">本期赛道导读</h3>
+                                <p class="text-[10px] font-black text-brand-primary tracking-widest mb-1 sm:mb-2">CURRENT ISSUE GUIDE</p>
+                                <h3 class="text-lg sm:text-2xl font-black text-slate-900">本期赛道导读</h3>
                             </div>
-                            <p class="text-xs text-slate-500">点击资讯将在新页面打开阅读详情</p>
+                            <p class="text-xs text-slate-500 hidden sm:block">点击资讯将在新页面打开阅读详情</p>
                         </div>
                     </div>
-                    <div class="p-5 sm:p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div class="p-4 sm:p-5 flex gap-3 overflow-x-auto no-scrollbar md:grid md:grid-cols-2 xl:grid-cols-4 md:overflow-visible">
                         <template x-for="sector in portalSectorOverview" :key="sector.name">
-                            <div :class="`rounded-xl border p-4 flex flex-col min-h-[230px] ${sectorGuideCardClass(sector.name)}`">
+                            <div :class="`w-[210px] sm:w-[240px] md:w-auto shrink-0 rounded-xl border p-3 flex flex-col min-h-[130px] sm:min-h-[160px] ${sectorGuideCardClass(sector.name)}`">
                                 <div class="flex items-center justify-between mb-2">
                                     <span :class="`font-black ${sectorGuideTextClass(sector.name)}`" x-text="sector.name"></span>
                                     <span class="text-xs font-bold text-slate-500" x-text="sector.count + ' 条'"></span>
                                 </div>
-                                <div class="flex flex-wrap gap-2 mb-3">
+                                <div class="flex flex-wrap gap-2 mb-2">
                                     <span class="text-[10px] px-2 py-0.5 rounded-full bg-white text-slate-500 font-bold" x-text="sector.subCount + ' 个主题'"></span>
                                     <span x-show="sector.alertCount" class="text-[10px] px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-black" x-text="'预警 ' + sector.alertCount"></span>
                                 </div>
-                                <a :href="issueNewsHref(sector.primary, latestIssue.id)" target="_blank" rel="noopener noreferrer" class="block rounded-lg bg-white border border-slate-200 px-3 py-3 hover:border-brand-light/60 transition-colors">
-                                    <span class="text-xs font-black text-slate-900 line-clamp-3" x-text="sector.primary?.title"></span>
+                                <a :href="issueNewsHref(sector.primary, latestIssue.id)" target="_blank" rel="noopener noreferrer" class="block rounded-lg bg-white border border-slate-200 px-3 py-2.5 hover:border-brand-light/60 transition-colors">
+                                    <span class="text-xs font-black text-slate-900 line-clamp-2" x-text="sector.primary?.title"></span>
                                 </a>
-                                <div class="mt-3 space-y-2">
-                                    <template x-for="item in sector.secondary" :key="item.id || item.title">
+                                <div class="mt-2 space-y-1.5 hidden sm:block">
+                                    <template x-for="item in sector.secondary.slice(0, 1)" :key="item.id || item.title">
                                         <a :href="issueNewsHref(item, latestIssue.id)" target="_blank" rel="noopener noreferrer" class="flex items-start gap-2 text-left text-xs text-slate-600 hover:text-brand-primary">
                                             <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-300 shrink-0"></span>
                                             <span class="line-clamp-2" x-text="item.title"></span>
                                         </a>
                                     </template>
                                 </div>
-                                <a :href="industryHref(sector.name)" target="_blank" rel="noopener noreferrer" class="mt-auto pt-4 text-xs font-black text-brand-primary hover:text-brand-light">查看赛道 →</a>
+                                <a :href="industryHref(sector.name)" target="_blank" rel="noopener noreferrer" class="mt-auto pt-3 text-xs font-black text-brand-primary hover:text-brand-light">查看赛道 →</a>
                             </div>
                         </template>
                     </div>
                 </div>
             </section>
 
-            <section id="industry" class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-6">
-                <div class="rounded-2xl border border-white/10 bg-slate-900/70 p-5 sm:p-6">
-                    <div class="flex items-center justify-between text-white border-b border-white/10 pb-4 mb-4">
+            <section id="industry" class="order-3 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-6">
+                <div class="portal-shell rounded-2xl p-5 sm:p-6">
+                    <div class="flex items-center justify-between text-slate-900 border-b border-slate-200 pb-4 mb-4">
                         <h3 class="text-lg font-black flex items-center"><span class="w-1.5 h-5 bg-brand-light mr-3 rounded"></span>行业入口</h3>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         <template x-for="(color, cat) in {'平台': 'from-sky-500 to-blue-600', '宏观': 'from-slate-500 to-slate-600', '跨境': 'from-purple-500 to-indigo-600', '数码科技': 'from-amber-500 to-yellow-600', '美妆': 'from-pink-500 to-rose-600', '食品饮料': 'from-orange-500 to-amber-600', '母婴': 'from-rose-400 to-red-500', '宠物': 'from-emerald-500 to-teal-600'}">
-                            <a :href="industryHref(cat)" target="_blank" rel="noopener noreferrer" class="bg-slate-800 hover:bg-slate-700 border border-white/5 rounded-xl p-4 flex items-center justify-between group transition-all">
-                                <span class="text-white font-bold" x-text="cat"></span>
+                            <a :href="industryHref(cat)" target="_blank" rel="noopener noreferrer" class="bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-center justify-between group transition-all">
+                                <span class="text-slate-800 font-bold" x-text="cat"></span>
                                 <div :class="`w-8 h-8 rounded-full bg-gradient-to-br ${color} flex items-center justify-center shadow-xl group-hover:scale-[1.05] transition-transform`"><svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
                             </a>
                         </template>
                     </div>
                 </div>
 
-                <div id="corporate" class="rounded-2xl border border-white/10 bg-slate-900/70 p-5 sm:p-6">
-                    <div class="flex items-center justify-between text-white border-b border-white/10 pb-4 mb-4">
+                <div id="corporate" class="portal-shell rounded-2xl p-5 sm:p-6">
+                    <div class="flex items-center justify-between text-slate-900 border-b border-slate-200 pb-4 mb-4">
                         <h3 class="text-lg font-black flex items-center text-brand-accent"><span class="w-1.5 h-5 bg-brand-accent mr-3 rounded"></span>名企雷达</h3>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
                         <template x-for="cat in ['美妆', '个护家清', '食品饮料', '母婴', '宠物']">
-                            <a :href="corporateHref(cat)" target="_blank" rel="noopener noreferrer" class="bg-slate-800 hover:bg-slate-700 border border-white/10 rounded-xl p-3 flex items-center justify-between group transition-all relative overflow-hidden">
-                                <span class="text-gray-200 font-bold z-10" x-text="cat + '名企'"></span>
+                            <a :href="corporateHref(cat)" target="_blank" rel="noopener noreferrer" class="bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center justify-between group transition-all relative overflow-hidden">
+                                <span class="text-slate-800 font-bold z-10" x-text="cat + '名企'"></span>
                                 <svg class="w-5 h-5 text-brand-accent z-10 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                             </a>
                         </template>
@@ -1572,7 +1582,7 @@ ${divider}
                 </div>
             </section>
 
-            <section class="rounded-2xl border border-white/10 bg-slate-900/70 p-5 sm:p-6">
+            <section class="order-4 rounded-2xl border border-white/10 bg-slate-900/70 p-5 sm:p-6">
                 <div class="flex items-center justify-between text-white border-b border-white/10 pb-4 mb-5">
                     <h3 class="text-lg font-black">往期回顾 Archive</h3>
                     <span class="text-xs text-slate-500">历史周刊</span>
