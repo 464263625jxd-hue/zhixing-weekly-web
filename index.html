@@ -154,6 +154,10 @@
                 
                 // ==================== 数据存储（Data Storage）====================
                 issueDB: [],
+                issueIds: [],
+                historyIssuesLoaded: false,
+                historyIssuesLoading: false,
+                historyIssuesScheduled: false,
                 companyDB: {},
                 liveRadarData: null,
                 liveRadarLoadError: false,
@@ -272,25 +276,15 @@
                         this.companyDB = data.companies || {};
                         await this.loadLiveRadar();
 
-                        let issues = [];
-                        const issueIds = data.issueIds;
-                        if (Array.isArray(issueIds) && issueIds.length > 0) {
-                            const sortedIds = [...issueIds].sort((a, b) => b - a);
-                            const loaded = await Promise.all(
-                                sortedIds.map((id) =>
-                                    fetch(`issues/issue${id}.json?t=` + Date.now()).then((r) => {
-                                        if (!r.ok) throw new Error('加载第 ' + id + ' 期失败');
-                                        return r.json();
-                                    })
-                                )
-                            );
-                            loaded.sort((a, b) => issueSortKey(b) - issueSortKey(a));
-                            issues = loaded;
+                        this.issueIds = Array.isArray(data.issueIds) ? [...data.issueIds].sort((a, b) => b - a) : [];
+                        if (this.issueIds.length > 0) {
+                            const latestIssue = await this.fetchIssue(this.issueIds[0]);
+                            this.issueDB = latestIssue ? [latestIssue] : [];
                         } else if (data.issues && data.issues.length) {
-                            issues = [...data.issues].sort((a, b) => issueSortKey(b) - issueSortKey(a));
+                            this.issueDB = [...data.issues].sort((a, b) => issueSortKey(b) - issueSortKey(a));
+                            this.issueIds = this.issueDB.map(issue => issue.id).filter(Boolean);
+                            this.historyIssuesLoaded = true;
                         }
-
-                        this.issueDB = issues;
                         GLOBAL_ISSUE_DB = this.issueDB;
 
                         this.isLoading = false;
@@ -301,6 +295,7 @@
                             if (typeof location !== 'undefined' && (!location.hash || location.hash === '#')) {
                                 this.syncHashToState();
                             }
+                            this.scheduleHistoryIssueLoad();
                         });
                     } catch (error) {
                         console.error('数据加载失败:', error);
@@ -427,6 +422,7 @@
                     }
                     if (parts[0] === 'search') {
                         this.showGlobalSearch = true;
+                        this.scheduleHistoryIssueLoad();
                         return;
                     }
                     this.showGlobalSearch = false;
@@ -436,6 +432,7 @@
                         this.selectedCompany = null;
                         this.currentCorporateCategory = decodeURIComponent(parts[1]);
                         this.view = 'corporate';
+                        this.scheduleHistoryIssueLoad();
                         document.body.style.overflow = 'auto';
                         window.scrollTo({ top: 0, behavior: 'instant' });
                         return;
@@ -444,6 +441,7 @@
                         const category = decodeURIComponent(parts[1]);
                         this.currentIndustry = category;
                         this.view = 'industry';
+                        this.scheduleHistoryIssueLoad();
                         this.selectedNews = null;
                         if (parts[2] === 'detail' && parts[3] && parts[4]) {
                             const issueId = parseInt(parts[3], 10);
@@ -519,6 +517,44 @@
                         return await this.loadIssue(issueId);
                     } catch (e) {
                         return null;
+                    }
+                },
+
+                async fetchIssue(id) {
+                    const response = await fetch(`issues/issue${id}.json?t=` + Date.now());
+                    if (!response.ok) throw new Error('加载第 ' + id + ' 期失败');
+                    return await response.json();
+                },
+
+                scheduleHistoryIssueLoad() {
+                    if (this.historyIssuesLoaded || this.historyIssuesLoading || this.historyIssuesScheduled || this.issueIds.length <= 1) return;
+                    this.historyIssuesScheduled = true;
+                    const run = () => {
+                        this.historyIssuesScheduled = false;
+                        this.loadRemainingIssues();
+                    };
+                    window.setTimeout(run, 4200);
+                },
+
+                async loadRemainingIssues() {
+                    if (this.historyIssuesLoaded || this.historyIssuesLoading) return;
+                    this.historyIssuesLoading = true;
+                    try {
+                        const loadedIds = new Set(this.issueDB.map(issue => Number(issue.id)));
+                        const remaining = this.issueIds.filter(id => !loadedIds.has(Number(id)));
+                        const loaded = await Promise.all(
+                            remaining.map(id => this.fetchIssue(id).catch(error => {
+                                console.warn('历史期加载失败:', id, error);
+                                return null;
+                            }))
+                        );
+                        this.issueDB = this.issueDB
+                            .concat(loaded.filter(Boolean))
+                            .sort((a, b) => issueSortKey(b) - issueSortKey(a));
+                        GLOBAL_ISSUE_DB = this.issueDB;
+                        this.historyIssuesLoaded = true;
+                    } finally {
+                        this.historyIssuesLoading = false;
                     }
                 },
 
@@ -600,9 +636,10 @@
                 async loadIssue(id) {
                     let issue = this.issueDB.find(i => i.id === id);
                     if (!issue) {
-                        const res = await fetch(`issues/issue${id}.json?t=` + Date.now());
-                        issue = await res.json();
+                        issue = await this.fetchIssue(id);
                         this.issueDB.push(issue);
+                        this.issueDB.sort((a, b) => issueSortKey(b) - issueSortKey(a));
+                        GLOBAL_ISSUE_DB = this.issueDB;
                     }
                     return issue;
                 },
@@ -982,6 +1019,7 @@
                     this.selectedIndustryNews = null;
                     this.currentIndustry = category;
                     this.view = 'industry';
+                    this.scheduleHistoryIssueLoad();
                     window.scrollTo({ top: 0, behavior: 'instant' });
                     this.syncHashToState();
                 },
@@ -992,6 +1030,7 @@
                     this.selectedCorporateNews = null;
                     this.selectedCorporateTag = 'all';
                     this.view = 'corporate';
+                    this.scheduleHistoryIssueLoad();
                     window.scrollTo({ top: 0, behavior: 'instant' });
                     this.syncHashToState();
                 },
@@ -1010,6 +1049,7 @@
                         this.lastRouteBeforeSearch = (h && h !== '#') ? h : '#/portal';
                     }
                     this.showGlobalSearch = true;
+                    this.scheduleHistoryIssueLoad();
                     this.syncHashToState();
                 },
 
@@ -1457,7 +1497,7 @@ ${divider}
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_280px] gap-4">
+                            <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] gap-4">
                                 <article class="rounded-xl border border-slate-200 bg-white p-4 min-h-[150px]">
                                     <div class="flex items-start justify-between gap-3 mb-3">
                                         <div>
@@ -1479,7 +1519,7 @@ ${divider}
                                     <div class="mt-5 border-t border-slate-100 pt-4 text-xs text-slate-500" x-text="activeLiveRadarChannel?.scope"></div>
                                 </article>
 
-                                <div class="rounded-xl border border-slate-200 bg-white p-3 max-h-[190px] overflow-y-auto custom-scrollbar">
+                                <div class="rounded-xl border border-slate-200 bg-white p-3 max-h-[300px] lg:max-h-[360px] overflow-y-auto custom-scrollbar">
                                     <p class="text-[10px] font-black text-slate-400 tracking-widest mb-3">频道列表</p>
                                     <div class="space-y-3">
                                         <template x-for="item in activeLiveRadarItems.slice(1, 8)" :key="item.id || item.title">
@@ -1919,6 +1959,7 @@ ${divider}
                  <div class="flex items-center gap-4 mb-2"><span class="px-3 py-1 rounded-full border border-white/30 text-white/80 text-xs font-mono backdrop-blur">SECTOR INTELLIGENCE</span></div>
                  <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight mb-4 flex items-center"><span x-text="currentIndustry + '情报局'"></span></h1>
                  <p class="text-gray-300 max-w-2xl text-lg">汇集该赛道所有历史周刊的深度洞察与关键资讯，助您把握长周期行业脉搏。</p>
+                 <p x-show="!historyIssuesLoaded" class="mt-3 inline-flex rounded-full bg-white/10 border border-white/15 px-3 py-1 text-xs font-bold text-slate-200">历史期刊正在后台补齐，当前先展示最新内容</p>
              </div>
         </div>
 
@@ -2036,6 +2077,7 @@ ${divider}
              <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                  <h1 class="text-4xl font-black mb-2">名企雷达 Corporate Radar</h1>
                  <p class="text-gray-400 mb-8">汇集行业头部企业官方信息源，并聚合周刊历期相关资讯</p>
+                 <p x-show="!historyIssuesLoaded" class="-mt-5 mb-5 text-xs font-bold text-slate-400">历史期刊正在后台补齐，企业相关资讯会继续增加</p>
                  <div class="flex justify-center flex-wrap gap-2">
                      <template x-for="cat in ['美妆', '个护家清', '食品饮料', '母婴', '宠物']">
                          <button type="button" @click="setCorporateCategory(cat)" :class="currentCorporateCategory === cat ? 'bg-brand-accent text-brand-dark ring-2 ring-brand-accent ring-offset-2 ring-offset-brand-dark' : 'bg-white/10 text-gray-300 hover:bg-white/20'" class="px-6 py-2 rounded-full text-sm font-bold transition-all"><span x-text="cat"></span></button>
