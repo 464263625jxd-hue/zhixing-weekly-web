@@ -1,0 +1,50 @@
+{
+  "updateInterval": "2h",
+  "displayName": "频道快讯",
+  "readerFacingName": "实时情报雷达",
+  "sourceSkillUrl": "https://clawhub.ai/ebrun-developer/ebrun-original-news",
+  "sourceSkillName": "ebrun-original-news",
+  "readerFacingSourcePolicy": "前台不展示外部来源站品牌，只展示频道、标题、摘要、时间与原文入口。",
+  "quotaPolicy": {
+    "defaultMode": "light",
+    "lightMode": "每两小时只做抓取、去重、短摘要、频道归类和风险标记。",
+    "fallbackMode": "如 Codex / GPT Plus 额度消耗过大，改为每天集中更新 1-2 次，或只更新推荐、未来零售、跨境电商、AI 四个高价值频道。",
+    "weeklyUse": "每周大更新时读取 liveRadar/latest.json 与历史快照，作为补充素材池，不直接替代正式 issueXX.json。"
+  },
+  "channels": [
+    {
+      "id": "recommend",
+      "name": "推荐",
+      "maxItems": 10
+    },
+    {
+      "id": "future-retail",
+      "name": "未来零售",
+      "scope": ["淘宝天猫", "抖音", "京东", "视频号", "美团", "快手", "拼多多", "小红书"],
+      "maxItems": 10
+    },
+    {
+      "id": "cross-border",
+      "name": "跨境电商",
+      "scope": ["亚马逊", "阿里国际", "TikTok", "Temu", "SHEIN"],
+      "maxItems": 10
+    },
+    {
+      "id": "industrial-internet",
+      "name": "产业互联网",
+      "scope": ["B2B", "产业科技", "数据要素", "产业出海", "数智供应链", "数智化采购"],
+      "maxItems": 10
+    },
+    {
+      "id": "brand",
+      "name": "品牌",
+      "scope": ["新竞争力品牌", "品牌全球化"],
+      "maxItems": 10
+    },
+    {
+      "id": "ai",
+      "name": "AI",
+      "maxItems": 10
+    }
+  ]
+}

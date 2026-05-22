@@ -88,8 +88,15 @@
         .industry-detail-panel { min-height: calc(100vh - 96px); max-height: calc(100vh - 96px); }
         .corporate-detail-panel { min-height: calc(100vh - 112px); max-height: calc(100vh - 112px); }
         .company-logo { filter: saturate(0.96); }
+        .live-radar-ticker-track { animation: liveRadarTicker 42s linear infinite; }
+        .live-radar-ticker:hover .live-radar-ticker-track { animation-play-state: paused; }
+        @keyframes liveRadarTicker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+            .live-radar-ticker-track { animation: none !important; transform: none !important; }
         }
         @media (max-width: 640px) { .modal-content { height: 86vh; height: 86dvh; max-height: 86dvh; border-radius: 18px 18px 0 0; padding-bottom: env(safe-area-inset-bottom); } }
         nav { padding-top: env(safe-area-inset-top); }
@@ -135,6 +142,8 @@
                 // ==================== 数据存储（Data Storage）====================
                 issueDB: [],
                 companyDB: {},
+                liveRadarData: null,
+                liveRadarLoadError: false,
                 
                 // ==================== 导航与筛选状态（Navigation & Filter）====================
                 currentIssueId: null,
@@ -144,6 +153,7 @@
                 selectedCompany: null,
                 selectedCorporateNews: null,
                 selectedCorporateTag: 'all',
+                selectedLiveRadarChannel: 'recommend',
                 
                 // ==================== 阅读器状态（Reader State）====================
                 activeTab: 'home',
@@ -229,6 +239,14 @@
                     '佩蒂股份': ['佩蒂'],
                     '硕腾': ['硕腾', 'Zoetis']
                 },
+                liveRadarChannelMeta: [
+                    { id: 'recommend', name: '推荐', scope: '全站重点' },
+                    { id: 'future-retail', name: '未来零售', scope: '淘宝天猫 / 抖音 / 京东 / 视频号 / 美团 / 快手 / 拼多多 / 小红书' },
+                    { id: 'cross-border', name: '跨境电商', scope: '亚马逊 / 阿里国际 / TikTok / Temu / SHEIN' },
+                    { id: 'industrial-internet', name: '产业互联网', scope: 'B2B / 产业科技 / 数据要素 / 产业出海 / 数智供应链 / 数智化采购' },
+                    { id: 'brand', name: '品牌', scope: '新竞争力品牌 / 品牌全球化' },
+                    { id: 'ai', name: 'AI', scope: 'AI 应用 / 智能体 / 工具与产业落地' }
+                ],
 
                 // ==================== 初始化逻辑（Initialization）====================
                 async init() {
@@ -238,6 +256,7 @@
                         const data = await response.json();
 
                         this.companyDB = data.companies || {};
+                        await this.loadLiveRadar();
 
                         let issues = [];
                         const issueIds = data.issueIds;
@@ -273,6 +292,22 @@
                         console.error('数据加载失败:', error);
                         this.loadError = true;
                         this.isLoading = false;
+                    }
+                },
+
+                async loadLiveRadar() {
+                    try {
+                        const response = await fetch('liveRadar/latest.json?t=' + Date.now());
+                        if (!response.ok) throw new Error('实时情报数据未就绪');
+                        this.liveRadarData = await response.json();
+                        const first = this.liveRadarChannels[0];
+                        if (first && !this.liveRadarChannelData(this.selectedLiveRadarChannel)) {
+                            this.selectedLiveRadarChannel = first.id;
+                        }
+                    } catch (error) {
+                        console.warn('实时情报数据加载失败:', error);
+                        this.liveRadarLoadError = true;
+                        this.liveRadarData = { updatedAt: '', nextRun: '', channels: [] };
                     }
                 },
 
@@ -511,6 +546,39 @@
                     const alerts = items.filter(item => item.isAlert).length;
                     return { total: items.length, alerts, categories };
                 },
+                get liveRadarChannels() {
+                    const channelMap = {};
+                    ((this.liveRadarData && this.liveRadarData.channels) || []).forEach(channel => {
+                        if (channel && channel.id) channelMap[channel.id] = channel;
+                    });
+                    return this.liveRadarChannelMeta.map(meta => ({
+                        ...meta,
+                        ...(channelMap[meta.id] || {}),
+                        items: (channelMap[meta.id] && channelMap[meta.id].items) || []
+                    }));
+                },
+                liveRadarChannelData(id) {
+                    return this.liveRadarChannels.find(channel => channel.id === id) || null;
+                },
+                get activeLiveRadarChannel() {
+                    return this.liveRadarChannelData(this.selectedLiveRadarChannel) || this.liveRadarChannels[0] || null;
+                },
+                get activeLiveRadarItems() {
+                    return (this.activeLiveRadarChannel && this.activeLiveRadarChannel.items) || [];
+                },
+                get liveRadarFeatured() {
+                    return this.activeLiveRadarItems[0] || null;
+                },
+                get liveRadarTickerItems() {
+                    const items = this.liveRadarChannels.flatMap(channel => (channel.items || []).slice(0, 3).map(item => ({ ...item, channelName: channel.name })));
+                    if (!items.length) return [];
+                    return items.concat(items);
+                },
+                get liveRadarStats() {
+                    const total = this.liveRadarChannels.reduce((sum, channel) => sum + ((channel.items || []).length), 0);
+                    const candidates = this.liveRadarChannels.reduce((sum, channel) => sum + ((channel.items || []).filter(item => item.weeklyCandidate).length), 0);
+                    return { total, candidates, channels: this.liveRadarChannels.length };
+                },
                 // 各期已在 init 中从 issues 按 issueIds 加载，此处保留占位以便扩展
                 async preloadIssues() {},
                 
@@ -619,9 +687,48 @@
                 get filteredNews() { return this.allMatchingNews.slice(0, this.displayLimit); },
                 get hasMore() { return this.displayLimit < this.allMatchingNews.length; },
                 get tabOverview() {
-                    if (!this.newsData.length) return [];
-                    const items = this.categoryStats.map(stat => {
-                        const sectorItems = this.newsData.filter(item => item.category === stat.name);
+                    return this.sectorOverviewForIssue(this.currentIssueData);
+                },
+                get portalSectorOverview() {
+                    return this.sectorOverviewForIssue(this.latestIssue);
+                },
+
+                // ==================== 交互方法（Methods）==================== ---
+                loadMore() { this.displayLimit += 20; },
+
+                appBaseHref() {
+                    if (typeof location === 'undefined') return '';
+                    return location.href.split('#')[0];
+                },
+
+                hashHref(path) {
+                    return this.appBaseHref() + '#' + path;
+                },
+
+                issueHref(issueId) {
+                    return this.hashHref('/reader/' + issueId + '/home');
+                },
+
+                issueNewsHref(item, issueId) {
+                    const id = issueId || item?.issueId || this.latestIssue?.id || this.currentIssueId;
+                    return this.hashHref('/reader/' + id + '/detail/' + this.newsItemKey(item));
+                },
+
+                industryHref(cat) {
+                    return this.hashHref('/industry/' + encodeURIComponent(cat || ''));
+                },
+
+                corporateHref(cat) {
+                    return this.hashHref('/corporate/' + encodeURIComponent(cat || '美妆'));
+                },
+
+                sectorOverviewForIssue(issue) {
+                    const data = (issue && issue.data) || [];
+                    if (!data.length) return [];
+                    const order = ['宏观', '平台', '跨境', '数码科技', '美妆', '食品饮料', '母婴', '宠物'];
+                    return order.map(name => {
+                        const sectorItems = data.filter(item => item.category === name);
+                        if (!sectorItems.length) return null;
                         const representative = this.pickSectorRepresentative(sectorItems);
                         const subCount = new Set(sectorItems.map(item => item.subCategory).filter(Boolean)).size;
                         const alerts = sectorItems.filter(item => item.isAlert);
@@ -633,14 +740,10 @@
                         const secondary = sectorItems
                             .filter(item => item !== primary)
                             .filter(item => !alerts.slice(0, 2).includes(item))
-                            .slice(0, 3);
-                        return { ...stat, subCount, representative, alerts, alertCount: alerts.length, primary, secondary };
-                    });
-                    return items;
+                            .slice(0, 2);
+                        return { name, count: sectorItems.length, subCount, representative, alerts, alertCount: alerts.length, primary, secondary };
+                    }).filter(Boolean);
                 },
-
-                // ==================== 交互方法（Methods）==================== ---
-                loadMore() { this.displayLimit += 20; },
 
                 adjustArticleFont(delta) {
                     const next = this.articleFontSize + delta;
@@ -1258,14 +1361,15 @@ ${divider}
                 <div class="flex items-center space-x-2 md:space-x-6">
                     <div class="hidden md:flex items-center space-x-1">
                         <a href="#" @click.prevent="goHome()" class="px-3 py-2 text-sm font-bold text-white hover:text-brand-accent transition-colors">首页</a>
+                        <a href="#live-radar" @click.prevent="document.getElementById('live-radar')?.scrollIntoView({behavior: 'smooth', block: 'start'})" class="px-3 py-2 text-sm font-bold text-white hover:text-brand-accent transition-colors">快讯</a>
                         <div class="h-4 w-px bg-white/20 mx-2"></div>
                         <span class="text-xs text-gray-500 font-mono mr-1">情报</span>
                         <template x-for="cat in ['宏观', '平台', '跨境', '数码科技', '美妆', '食品饮料', '母婴', '宠物']">
-                            <a href="#" @click.prevent="openIndustry(cat)" class="px-2 py-2 text-xs font-medium text-gray-300 hover:text-white hover:bg-white/15 active:scale-95 rounded-md transition-all" x-text="cat"></a>
+                            <a :href="industryHref(cat)" target="_blank" rel="noopener noreferrer" class="px-2 py-2 text-xs font-medium text-gray-300 hover:text-white hover:bg-white/15 active:scale-95 rounded-md transition-all" x-text="cat"></a>
                         </template>
                         <div class="h-4 w-px bg-white/20 mx-2"></div>
                         <span class="text-xs text-gray-500 font-mono mr-1">名企</span>
-                        <a href="#" @click.prevent="openCorporate('美妆')" class="px-2 py-2 text-xs font-medium text-brand-accent hover:text-white hover:bg-white/15 active:scale-95 rounded-md transition-all flex items-center gap-1">
+                        <a :href="corporateHref('美妆')" target="_blank" rel="noopener noreferrer" class="px-2 py-2 text-xs font-medium text-brand-accent hover:text-white hover:bg-white/15 active:scale-95 rounded-md transition-all flex items-center gap-1">
                             <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                             企业雷达
                         </a>
@@ -1276,76 +1380,216 @@ ${divider}
             </div>
         </nav>
 
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <!-- Hero -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16 items-start">
-                <div class="relative group cursor-pointer" @click="openIssue(latestIssue.id)">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-brand-accent via-brand-light to-brand-accent rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
-                    <div class="relative h-full bg-slate-900 rounded-2xl overflow-hidden ring-1 ring-white/10 flex flex-col hover-lift">
-                        <div class="h-64 sm:h-80 overflow-hidden relative">
-                            <img :src="latestIssue.coverImage" class="w-full h-full object-cover group-hover:scale-[1.02] group-hover:-translate-y-1 transition-all duration-300 ease-out">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
-                            <div class="absolute top-4 left-4"><span class="bg-brand-accent text-brand-dark text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-xl">LATEST ISSUE No.<span x-text="latestIssue.id"></span></span></div>
-                        </div>
-                        <div class="p-8 flex-1 flex flex-col">
-                            <div class="text-brand-light font-mono text-sm mb-2" x-text="latestIssue.date"></div>
-                            <h2 class="text-3xl font-black text-white mb-4 leading-tight group-hover:text-brand-accent transition-colors" x-text="latestIssue.title"></h2>
-                            <p class="text-gray-400 text-lg mb-6 leading-relaxed line-clamp-3" x-text="latestIssue.summary"></p>
-                            <div class="grid grid-cols-3 gap-3 mb-6">
-                                <div class="rounded-xl bg-white/10 border border-white/10 px-3 py-2"><div class="text-xl font-black text-white" x-text="issueStats(latestIssue).total"></div><div class="text-[10px] text-gray-400">资讯</div></div>
-                                <div class="rounded-xl bg-red-500/10 border border-red-300/10 px-3 py-2"><div class="text-xl font-black text-red-200" x-text="issueStats(latestIssue).alerts"></div><div class="text-[10px] text-gray-400">预警</div></div>
-                                <div class="rounded-xl bg-sky-500/10 border border-sky-300/10 px-3 py-2"><div class="text-xl font-black text-sky-200" x-text="issueStats(latestIssue).categories"></div><div class="text-[10px] text-gray-400">板块</div></div>
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+            <section id="live-radar" class="rounded-2xl overflow-hidden border border-white/10 bg-slate-900/90 shadow-2xl">
+                <div class="grid grid-cols-1 xl:grid-cols-[320px_minmax(0,1fr)]">
+                    <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-brand-primary p-6 sm:p-8 text-white relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+                        <div class="relative z-10">
+                            <div class="inline-flex items-center gap-2 rounded-full bg-brand-accent text-brand-dark px-3 py-1 text-[10px] font-black tracking-widest mb-5">CHANNEL NEWS</div>
+                            <h3 class="text-2xl sm:text-3xl font-black leading-tight mb-3">频道快讯</h3>
+                            <p class="text-sm text-slate-300 leading-7 mb-6">多频道滚动追踪平台、跨境、产业、品牌与 AI 动态；两小时更新一次，帮助读者快速看到最新变化。</p>
+                            <div class="grid grid-cols-3 gap-2 mb-6">
+                                <div class="rounded-xl bg-white/10 border border-white/10 px-3 py-2">
+                                    <div class="text-xl font-black text-white" x-text="liveRadarStats.channels"></div>
+                                    <div class="text-[10px] text-slate-400">频道</div>
+                                </div>
+                                <div class="rounded-xl bg-white/10 border border-white/10 px-3 py-2">
+                                    <div class="text-xl font-black text-brand-accent" x-text="liveRadarStats.total"></div>
+                                    <div class="text-[10px] text-slate-400">快讯</div>
+                                </div>
+                                <div class="rounded-xl bg-emerald-500/10 border border-emerald-300/10 px-3 py-2">
+                                    <div class="text-xl font-black text-emerald-300" x-text="liveRadarData?.updateInterval || '2h'"></div>
+                                    <div class="text-[10px] text-slate-400">频率</div>
+                                </div>
                             </div>
-                            <div class="flex flex-wrap gap-3 mb-6"><template x-for="tag in latestIssue.tags"><span class="text-xs text-slate-300 bg-white/10 px-2 py-1 rounded border border-white/5" x-text="'#'+tag"></span></template></div>
-                            <div class="mt-auto flex items-center text-brand-accent font-bold group-hover:translate-x-2 transition-transform">阅读本期 <svg class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
+                            <div class="text-xs text-slate-400 space-y-1">
+                                <div>最近更新：<span class="text-slate-200" x-text="liveRadarData?.updatedAt || '等待首次更新'"></span></div>
+                                <div>下次计划：<span class="text-slate-200" x-text="liveRadarData?.nextRun || '按两小时节奏执行'"></span></div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="space-y-10">
-                    <div id="industry">
-                        <div class="flex items-center justify-between text-white border-b border-white/10 pb-4 mb-4"><h3 class="text-xl font-bold flex items-center"><span class="w-1.5 h-6 bg-brand-light mr-3 rounded"></span>行业直通车 Industry Access</h3></div>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <template x-for="(color, cat) in {'平台': 'from-sky-500 to-blue-600', '宏观': 'from-slate-500 to-slate-600', '跨境': 'from-purple-500 to-indigo-600', '数码科技': 'from-amber-500 to-yellow-600', '美妆': 'from-pink-500 to-rose-600', '食品饮料': 'from-orange-500 to-amber-600', '母婴': 'from-rose-400 to-red-500', '宠物': 'from-emerald-500 to-teal-600'}">
-                                <div @click="openIndustry(cat)" class="cursor-pointer bg-slate-800 hover:bg-slate-700 border border-white/5 rounded-2xl p-4 flex items-center justify-between group transition-all">
-                                    <span class="text-white font-bold" x-text="cat"></span>
-                                    <div :class="`w-8 h-8 rounded-full bg-gradient-to-br ${color} flex items-center justify-center shadow-xl group-hover:scale-[1.05] group-hover:-translate-y-0.5 transition-transform`"><svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+                    <div class="bg-slate-50">
+                        <div class="border-b border-slate-200 bg-white px-4 sm:px-6 py-4">
+                            <div class="flex gap-2 overflow-x-auto no-scrollbar">
+                                <template x-for="channel in liveRadarChannels" :key="channel.id">
+                                    <button type="button" @click="selectedLiveRadarChannel = channel.id" :class="selectedLiveRadarChannel === channel.id ? 'bg-brand-primary text-white border-brand-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-brand-primary hover:text-brand-primary'" class="shrink-0 rounded-full border px-3 py-1.5 text-xs font-black transition-colors">
+                                        <span x-text="channel.name"></span>
+                                        <span class="ml-1 opacity-70" x-text="(channel.items || []).length"></span>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div class="p-4 sm:p-6">
+                            <div class="live-radar-ticker overflow-hidden rounded-xl border border-slate-200 bg-white mb-5" x-show="liveRadarTickerItems.length">
+                                <div class="live-radar-ticker-track flex w-max gap-3 px-3 py-3">
+                                    <template x-for="(item, idx) in liveRadarTickerItems" :key="idx + '-' + item.title">
+                                        <a :href="item.sourceUrl || '#'" target="_blank" rel="noopener noreferrer" class="w-[280px] sm:w-[340px] shrink-0 rounded-lg border border-slate-100 bg-slate-50 px-4 py-3 hover:border-brand-light hover:bg-white transition-colors">
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <span class="rounded bg-brand-primary/10 px-1.5 py-0.5 text-[10px] font-black text-brand-primary" x-text="item.channelName"></span>
+                                                <span x-show="item.isAlert" class="rounded bg-red-50 px-1.5 py-0.5 text-[10px] font-black text-red-700">需关注</span>
+                                            </div>
+                                            <p class="text-xs font-black text-slate-800 leading-snug line-clamp-2" x-text="item.title"></p>
+                                        </a>
+                                    </template>
                                 </div>
-                            </template>
-                        </div>
-                    </div>
+                            </div>
 
-                    <div id="corporate">
-                        <div class="flex items-center justify-between text-white border-b border-white/10 pb-4 mb-4"><h3 class="text-xl font-bold flex items-center text-brand-accent"><span class="w-1.5 h-6 bg-brand-accent mr-3 rounded"></span>名企雷达 Corporate Radar</h3></div>
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                            <template x-for="cat in ['美妆', '个护家清', '食品饮料', '母婴', '宠物']">
-                                <div @click="openCorporate(cat)" class="cursor-pointer bg-gradient-to-br from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 border border-white/10 rounded-2xl p-4 flex items-center justify-between group transition-all relative overflow-hidden">
-                                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
-                                    <span class="text-gray-200 font-bold z-10" x-text="cat + '名企'"></span>
-                                    <svg class="w-5 h-5 text-brand-accent z-10 group-hover:scale-125 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-5">
+                                <article class="rounded-xl border border-slate-200 bg-white p-5 min-h-[260px]">
+                                    <div class="flex items-start justify-between gap-3 mb-4">
+                                        <div>
+                                            <p class="text-[10px] font-black tracking-widest text-brand-primary mb-1" x-text="activeLiveRadarChannel?.name || '频道快讯'"></p>
+                                            <h4 class="text-xl font-black text-slate-900 leading-tight" x-text="liveRadarFeatured?.title || '等待实时情报更新'"></h4>
+                                        </div>
+                                        <span x-show="liveRadarFeatured?.isAlert" class="shrink-0 rounded-full bg-red-50 border border-red-100 px-2 py-1 text-[10px] font-black text-red-700">需关注</span>
+                                    </div>
+                                    <p class="text-sm leading-7 text-slate-600 mb-5" x-text="liveRadarFeatured?.summary || '该频道会按固定节奏刷新，帮助快速追踪平台、品牌、产业与 AI 动态。'"></p>
+                                    <div class="flex flex-wrap gap-2 mb-5">
+                                        <template x-for="tag in (liveRadarFeatured?.tags || [])" :key="tag">
+                                            <span class="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-bold text-slate-500" x-text="'#' + tag"></span>
+                                        </template>
+                                    </div>
+                                    <a x-show="liveRadarFeatured?.sourceUrl" :href="liveRadarFeatured?.sourceUrl" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-black text-brand-primary hover:text-brand-light">
+                                        查看原文
+                                        <svg class="ml-1.5 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                                    </a>
+                                    <div class="mt-5 border-t border-slate-100 pt-4 text-xs text-slate-500" x-text="activeLiveRadarChannel?.scope"></div>
+                                </article>
 
-                    <div>
-                        <div class="flex items-center justify-between text-white border-b border-white/10 pb-4 mb-4"><h3 class="text-xl font-bold">往期回顾 Archive</h3></div>
-                        <!-- 优化后的滚动容器 -->
-                        <div class="space-y-4 max-h-[600px] overflow-y-auto custom-scrollbar pr-2">
-                            <template x-for="issue in pastIssues" :key="issue.id">
-                                <div @click="openIssue(issue.id)" class="bg-slate-800/50 rounded-2xl p-4 flex gap-4 border border-white/5 hover:border-brand-accent/50 hover:bg-slate-800 transition-all cursor-pointer group">
-                                    <div class="w-20 h-20 rounded-2xl overflow-hidden shrink-0"><img :src="issue.coverImage" class="w-full h-full object-cover group-hover:scale-[1.05] group-hover:-translate-y-0.5 transition-transform duration-500 opacity-80 group-hover:opacity-100"></div>
-                                    <div class="flex-1 min-w-0 flex flex-col justify-center">
-                                        <div class="flex justify-between items-center mb-1"><span class="text-xs font-mono text-gray-500">No.<span x-text="issue.id"></span></span><span class="text-[10px] text-gray-600 border border-gray-700 px-1.5 rounded" x-text="issue.date"></span></div>
-                                        <h4 class="text-white font-bold mb-1 line-clamp-1 group-hover:text-brand-light" x-text="issue.title"></h4>
-                                        <p class="text-xs text-gray-500 line-clamp-1" x-text="issue.summary"></p>
+                                <div class="rounded-xl border border-slate-200 bg-white p-4 max-h-[360px] overflow-y-auto custom-scrollbar">
+                                    <p class="text-[10px] font-black text-slate-400 tracking-widest mb-3">频道列表</p>
+                                    <div class="space-y-3">
+                                        <template x-for="item in activeLiveRadarItems.slice(1, 8)" :key="item.id || item.title">
+                                            <a :href="item.sourceUrl || '#'" target="_blank" rel="noopener noreferrer" class="block rounded-lg border border-slate-100 bg-slate-50 px-3 py-3 hover:bg-white hover:border-brand-light transition-colors">
+                                                <div class="flex items-center gap-2 mb-1">
+                                                    <span class="text-[10px] font-bold text-slate-400" x-text="item.sourceDate || item.publishedAt || '最新'"></span>
+                                                    <span x-show="item.isAlert" class="text-[10px] font-black text-red-600">预警</span>
+                                                </div>
+                                                <p class="text-xs font-black text-slate-800 line-clamp-2" x-text="item.title"></p>
+                                            </a>
+                                        </template>
                                     </div>
                                 </div>
-                            </template>
+                            </div>
+
+                            <div class="mt-5 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs leading-6 text-slate-500">
+                                频道快讯按固定节奏刷新，重点保留事件、平台、品牌、时间与原文入口，方便快速追踪后续变化。
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-[360px_minmax(0,1fr)] gap-6 items-start">
+                <a :href="issueHref(latestIssue.id)" target="_blank" rel="noopener noreferrer" class="group block rounded-2xl overflow-hidden bg-slate-900 border border-white/10 shadow-2xl hover:border-brand-accent/60 transition-colors">
+                    <div class="h-40 overflow-hidden relative">
+                        <img :src="latestIssue.coverImage" class="w-full h-full object-cover opacity-75 group-hover:scale-[1.03] transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/35 to-transparent"></div>
+                        <span class="absolute top-4 left-4 bg-brand-accent text-brand-dark text-[10px] font-black px-3 py-1 rounded-full tracking-widest">LATEST No.<span x-text="latestIssue.id"></span></span>
+                    </div>
+                    <div class="p-5">
+                        <div class="text-brand-light font-mono text-xs mb-2" x-text="latestIssue.date"></div>
+                        <h2 class="text-2xl font-black text-white mb-3 leading-tight group-hover:text-brand-accent transition-colors" x-text="latestIssue.title"></h2>
+                        <p class="text-sm text-slate-400 leading-6 line-clamp-3 mb-5" x-text="latestIssue.summary"></p>
+                        <div class="grid grid-cols-3 gap-2 mb-5">
+                            <div class="rounded-lg bg-white/10 border border-white/10 px-3 py-2"><div class="text-lg font-black text-white" x-text="issueStats(latestIssue).total"></div><div class="text-[10px] text-slate-400">资讯</div></div>
+                            <div class="rounded-lg bg-red-500/10 border border-red-300/10 px-3 py-2"><div class="text-lg font-black text-red-200" x-text="issueStats(latestIssue).alerts"></div><div class="text-[10px] text-slate-400">预警</div></div>
+                            <div class="rounded-lg bg-sky-500/10 border border-sky-300/10 px-3 py-2"><div class="text-lg font-black text-sky-200" x-text="issueStats(latestIssue).categories"></div><div class="text-[10px] text-slate-400">板块</div></div>
+                        </div>
+                        <div class="flex items-center text-brand-accent text-sm font-black">阅读本期 <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
+                    </div>
+                </a>
+
+                <div class="rounded-2xl bg-white border border-slate-200 shadow-2xl overflow-hidden">
+                    <div class="px-5 sm:px-6 py-5 border-b border-slate-200 bg-slate-50">
+                        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
+                            <div>
+                                <p class="text-[10px] font-black text-brand-primary tracking-widest mb-2">CURRENT ISSUE GUIDE</p>
+                                <h3 class="text-2xl font-black text-slate-900">本期赛道导读</h3>
+                            </div>
+                            <p class="text-xs text-slate-500">点击资讯将在新页面打开阅读详情</p>
+                        </div>
+                    </div>
+                    <div class="p-5 sm:p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                        <template x-for="sector in portalSectorOverview" :key="sector.name">
+                            <div :class="`rounded-xl border p-4 flex flex-col min-h-[230px] ${sectorGuideCardClass(sector.name)}`">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span :class="`font-black ${sectorGuideTextClass(sector.name)}`" x-text="sector.name"></span>
+                                    <span class="text-xs font-bold text-slate-500" x-text="sector.count + ' 条'"></span>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-white text-slate-500 font-bold" x-text="sector.subCount + ' 个主题'"></span>
+                                    <span x-show="sector.alertCount" class="text-[10px] px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-black" x-text="'预警 ' + sector.alertCount"></span>
+                                </div>
+                                <a :href="issueNewsHref(sector.primary, latestIssue.id)" target="_blank" rel="noopener noreferrer" class="block rounded-lg bg-white border border-slate-200 px-3 py-3 hover:border-brand-light/60 transition-colors">
+                                    <span class="text-xs font-black text-slate-900 line-clamp-3" x-text="sector.primary?.title"></span>
+                                </a>
+                                <div class="mt-3 space-y-2">
+                                    <template x-for="item in sector.secondary" :key="item.id || item.title">
+                                        <a :href="issueNewsHref(item, latestIssue.id)" target="_blank" rel="noopener noreferrer" class="flex items-start gap-2 text-left text-xs text-slate-600 hover:text-brand-primary">
+                                            <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-300 shrink-0"></span>
+                                            <span class="line-clamp-2" x-text="item.title"></span>
+                                        </a>
+                                    </template>
+                                </div>
+                                <a :href="industryHref(sector.name)" target="_blank" rel="noopener noreferrer" class="mt-auto pt-4 text-xs font-black text-brand-primary hover:text-brand-light">查看赛道 →</a>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </section>
+
+            <section id="industry" class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-6">
+                <div class="rounded-2xl border border-white/10 bg-slate-900/70 p-5 sm:p-6">
+                    <div class="flex items-center justify-between text-white border-b border-white/10 pb-4 mb-4">
+                        <h3 class="text-lg font-black flex items-center"><span class="w-1.5 h-5 bg-brand-light mr-3 rounded"></span>行业入口</h3>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <template x-for="(color, cat) in {'平台': 'from-sky-500 to-blue-600', '宏观': 'from-slate-500 to-slate-600', '跨境': 'from-purple-500 to-indigo-600', '数码科技': 'from-amber-500 to-yellow-600', '美妆': 'from-pink-500 to-rose-600', '食品饮料': 'from-orange-500 to-amber-600', '母婴': 'from-rose-400 to-red-500', '宠物': 'from-emerald-500 to-teal-600'}">
+                            <a :href="industryHref(cat)" target="_blank" rel="noopener noreferrer" class="bg-slate-800 hover:bg-slate-700 border border-white/5 rounded-xl p-4 flex items-center justify-between group transition-all">
+                                <span class="text-white font-bold" x-text="cat"></span>
+                                <div :class="`w-8 h-8 rounded-full bg-gradient-to-br ${color} flex items-center justify-center shadow-xl group-hover:scale-[1.05] transition-transform`"><svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+                            </a>
+                        </template>
+                    </div>
+                </div>
+
+                <div id="corporate" class="rounded-2xl border border-white/10 bg-slate-900/70 p-5 sm:p-6">
+                    <div class="flex items-center justify-between text-white border-b border-white/10 pb-4 mb-4">
+                        <h3 class="text-lg font-black flex items-center text-brand-accent"><span class="w-1.5 h-5 bg-brand-accent mr-3 rounded"></span>名企雷达</h3>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+                        <template x-for="cat in ['美妆', '个护家清', '食品饮料', '母婴', '宠物']">
+                            <a :href="corporateHref(cat)" target="_blank" rel="noopener noreferrer" class="bg-slate-800 hover:bg-slate-700 border border-white/10 rounded-xl p-3 flex items-center justify-between group transition-all relative overflow-hidden">
+                                <span class="text-gray-200 font-bold z-10" x-text="cat + '名企'"></span>
+                                <svg class="w-5 h-5 text-brand-accent z-10 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                            </a>
+                        </template>
+                    </div>
+                </div>
+            </section>
+
+            <section class="rounded-2xl border border-white/10 bg-slate-900/70 p-5 sm:p-6">
+                <div class="flex items-center justify-between text-white border-b border-white/10 pb-4 mb-5">
+                    <h3 class="text-lg font-black">往期回顾 Archive</h3>
+                    <span class="text-xs text-slate-500">历史周刊</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    <template x-for="issue in pastIssues.slice(0, 9)" :key="issue.id">
+                        <a :href="issueHref(issue.id)" target="_blank" rel="noopener noreferrer" class="bg-slate-800/60 rounded-xl p-4 flex gap-4 border border-white/5 hover:border-brand-accent/50 hover:bg-slate-800 transition-all group">
+                            <div class="w-16 h-16 rounded-xl overflow-hidden shrink-0"><img :src="issue.coverImage" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-500 opacity-80 group-hover:opacity-100"></div>
+                            <div class="flex-1 min-w-0 flex flex-col justify-center">
+                                <div class="flex justify-between items-center mb-1"><span class="text-xs font-mono text-gray-500">No.<span x-text="issue.id"></span></span><span class="text-[10px] text-gray-600 border border-gray-700 px-1.5 rounded" x-text="issue.date"></span></div>
+                                <h4 class="text-white font-bold mb-1 line-clamp-1 group-hover:text-brand-light" x-text="issue.title"></h4>
+                                <p class="text-xs text-gray-500 line-clamp-1" x-text="issue.summary"></p>
+                            </div>
+                        </a>
+                    </template>
+                </div>
+            </section>
         </main>
         <footer class="text-slate-600 py-8 text-center border-t border-white/5 bg-slate-900"><p class="text-xs">© 2026 杭州乐其电商 · Internal Use Only</p></footer>
     </div>

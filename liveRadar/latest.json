@@ -1,0 +1,38 @@
+{
+  "updatedAt": "",
+  "nextRun": "",
+  "updateInterval": "2h",
+  "sourceSkill": "ebrun-original-news",
+  "channels": [
+    {
+      "id": "recommend",
+      "name": "推荐",
+      "items": []
+    },
+    {
+      "id": "future-retail",
+      "name": "未来零售",
+      "items": []
+    },
+    {
+      "id": "cross-border",
+      "name": "跨境电商",
+      "items": []
+    },
+    {
+      "id": "industrial-internet",
+      "name": "产业互联网",
+      "items": []
+    },
+    {
+      "id": "brand",
+      "name": "品牌",
+      "items": []
+    },
+    {
+      "id": "ai",
+      "name": "AI",
+      "items": []
+    }
+  ]
+}
