@@ -62,7 +62,12 @@
         html { -webkit-overflow-scrolling: touch; background: #f1f5f9; }
         .serif { font-family: 'Noto Serif SC', serif; }
         [x-cloak] { display: none !important; }
-        .portal-bg { background-color: #eef3f8; background-image: linear-gradient(180deg, #0f172a 0, #111c31 420px, #eef3f8 421px, #eef3f8 100%); min-height: 100vh; min-height: -webkit-fill-available; }
+        .portal-bg { position: relative; isolation: isolate; background-color: #eef3f8; background-image: linear-gradient(180deg, #0b1220 0, #111c31 420px, #eef3f8 421px, #eef3f8 100%); min-height: 100vh; min-height: -webkit-fill-available; }
+        .portal-bg::before, .portal-bg::after { content: ""; position: fixed; inset: 64px 0 auto 0; height: 356px; pointer-events: none; z-index: -1; }
+        .portal-bg::before { background-image: linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.10) 1px, transparent 1px), radial-gradient(circle at 18% 38%, rgba(56, 189, 248, 0.22), transparent 28%), radial-gradient(circle at 82% 12%, rgba(245, 158, 11, 0.16), transparent 24%); background-size: 44px 44px, 44px 44px, 100% 100%, 100% 100%; mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%); animation: portalGridDrift 22s linear infinite; }
+        .portal-bg::after { background: linear-gradient(105deg, transparent 0%, transparent 34%, rgba(125, 211, 252, 0.12) 42%, rgba(245, 158, 11, 0.10) 48%, transparent 58%, transparent 100%); transform: translateX(-42%); animation: portalScan 13s cubic-bezier(0.16, 1, 0.3, 1) infinite; mix-blend-mode: screen; }
+        @keyframes portalGridDrift { 0% { background-position: 0 0, 0 0, 0 0, 0 0; } 100% { background-position: 44px 44px, 44px 44px, 0 0, 0 0; } }
+        @keyframes portalScan { 0%, 18% { transform: translateX(-56%); opacity: 0; } 36% { opacity: 1; } 72%, 100% { transform: translateX(56%); opacity: 0; } }
         .card-hover { transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1), border-color 180ms ease; }
         .card-hover:hover { transform: translateY(-2px); box-shadow: 0 18px 30px -18px rgba(15, 23, 42, 0.24); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -88,7 +93,11 @@
         .industry-detail-panel { min-height: calc(100vh - 96px); max-height: calc(100vh - 96px); }
         .corporate-detail-panel { min-height: calc(100vh - 112px); max-height: calc(100vh - 112px); }
         .company-logo { filter: saturate(0.96); }
-        .portal-shell { border: 1px solid rgba(148, 163, 184, 0.28); background: rgba(255,255,255,0.92); box-shadow: 0 24px 60px -44px rgba(15, 23, 42, 0.42); }
+        .portal-shell { border: 1px solid rgba(148, 163, 184, 0.28); background: rgba(255,255,255,0.92); box-shadow: 0 24px 60px -44px rgba(15, 23, 42, 0.42); backdrop-filter: blur(14px); }
+        .tech-surface { position: relative; overflow: hidden; }
+        .tech-surface::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 28px 28px; opacity: 0.52; mask-image: linear-gradient(to bottom, #000, transparent 78%); }
+        .tech-surface::after { content: ""; position: absolute; left: -20%; right: -20%; top: 0; height: 2px; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.9), rgba(245, 158, 11, 0.75), transparent); animation: techLineSweep 7s ease-in-out infinite; }
+        @keyframes techLineSweep { 0%, 15% { transform: translateY(0); opacity: 0; } 35% { opacity: 1; } 80%, 100% { transform: translateY(260px); opacity: 0; } }
         .section-kicker { font-size: 10px; font-weight: 900; letter-spacing: 0.12em; color: #2563eb; }
         .live-radar-ticker { mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); }
         .live-radar-ticker-track { animation: liveRadarTicker 118s linear infinite; }
@@ -100,6 +109,7 @@
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
             .live-radar-ticker-track { animation: none !important; transform: none !important; }
+            .portal-bg::before, .portal-bg::after, .tech-surface::after { animation: none !important; }
         }
         @media (max-width: 640px) { .modal-content { height: 86vh; height: 86dvh; max-height: 86dvh; border-radius: 18px 18px 0 0; padding-bottom: env(safe-area-inset-bottom); } }
         nav { padding-top: env(safe-area-inset-top); }
