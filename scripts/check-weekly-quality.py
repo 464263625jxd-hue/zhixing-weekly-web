@@ -19,7 +19,8 @@ ALLOWED_CATEGORIES = ["宏观", "平台", "跨境", "数码科技", "美妆", "�
 ALLOWED_SET = set(ALLOWED_CATEGORIES)
 PUBLIC_TEXT_FIELDS = ("summary",)
 ITEM_REQUIRED_FIELDS = ("id", "category", "subCategory", "title", "content", "highlight", "isAlert")
-PRODUCER_TERMS = ("复查", "核对", "拆条", "扩充", "制作", "本期整理", "继续补充", "后续核对", "待补充", "待确认")
+PRODUCER_TERMS = ("本期整理", "继续补充", "后续核对", "待补充", "待确认", "待完善", "后续更新")
+SENTENCE_ENDINGS = "。！？.!?\"”）)》】]"
 
 
 def issue_id_from_path(path: Path) -> int:
@@ -31,6 +32,15 @@ def normalize_title(value: str) -> str:
     value = re.sub(r"\s+", "", value or "")
     value = re.sub(r"[，。、“”‘’：:；;！!？?（）()\[\]【】《》<>\-·.]", "", value)
     return value.lower()
+
+
+def normalize_public_text(value: str) -> str:
+    return re.sub(r"\s+", "", value or "")
+
+
+def has_sentence_ending(value: str) -> bool:
+    text = value.strip()
+    return not text or text[-1] in SENTENCE_ENDINGS
 
 
 def load_json(path: Path) -> dict:
@@ -75,6 +85,8 @@ def check_issue(path: Path) -> list[tuple[str, str]]:
     source_count = 0
     source_url_count = 0
     short_content = []
+    duplicate_summary_content = []
+    missing_sentence_endings = []
     missing_summary = 0
 
     for idx, item in enumerate(items):
@@ -89,6 +101,7 @@ def check_issue(path: Path) -> list[tuple[str, str]]:
         category = item.get("category")
         title = str(item.get("title", ""))
         content = str(item.get("content", ""))
+        summary = str(item.get("summary", ""))
         subcategory = item.get("subCategory")
 
         if category not in ALLOWED_SET:
@@ -100,10 +113,15 @@ def check_issue(path: Path) -> list[tuple[str, str]]:
 
         if title:
             normalized_titles[normalize_title(title)].append((idx, str(category), title))
-        if len(title) > 80:
-            add(findings, "WARN", f"data[{idx}] 标题偏长（{len(title)}字）：{title[:60]}")
+        if len(title) > 120:
+            add(findings, "INFO", f"data[{idx}] 标题较长（{len(title)}字）：{title[:60]}")
         if len(content.strip()) < 30:
             short_content.append((idx, title))
+        if summary and content and normalize_public_text(summary) == normalize_public_text(content):
+            duplicate_summary_content.append((idx, title))
+        for field, value in (("summary", summary), ("content", content)):
+            if value and not has_sentence_ending(value):
+                missing_sentence_endings.append((idx, field, title))
         if "summary" not in item:
             missing_summary += 1
         if item.get("source") or item.get("sourceTitle") or item.get("sourceName"):
@@ -135,10 +153,18 @@ def check_issue(path: Path) -> list[tuple[str, str]]:
         sample = "；".join(f"#{idx} {title[:20]}" for idx, title in short_content[:6])
         add(findings, "WARN", f"正文过短 {len(short_content)} 条：{sample}")
 
+    if duplicate_summary_content:
+        sample = "；".join(f"#{idx} {title[:20]}" for idx, title in duplicate_summary_content[:6])
+        add(findings, "ERROR", f"summary 与 content 完全重复 {len(duplicate_summary_content)} 条：{sample}")
+
+    if missing_sentence_endings:
+        sample = "；".join(f"#{idx} {field} {title[:18]}" for idx, field, title in missing_sentence_endings[:6])
+        add(findings, "WARN", f"summary/content 句末缺少标点 {len(missing_sentence_endings)} 处：{sample}")
+
     if missing_summary:
         add(findings, "INFO", f"有 {missing_summary} 条资讯没有 summary 字段，前端会回退显示正文摘要")
     if source_url_count == 0:
-        add(findings, "WARN", "本期没有 sourceUrl/url，详情页无法展示原文链接")
+        add(findings, "INFO", "本期没有 sourceUrl/url，详情页无法展示原文链接")
     elif source_url_count < len(items):
         add(findings, "INFO", f"仅 {source_url_count}/{len(items)} 条资讯有原文链接")
     if source_count == 0:

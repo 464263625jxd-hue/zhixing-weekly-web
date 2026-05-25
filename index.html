@@ -920,10 +920,17 @@
 
                 pickSectorRepresentative(items) {
                     if (!items || !items.length) return null;
-                    return items.find(item => !item.isAlert && !item.highlight && item.summary)
-                        || items.find(item => !item.isAlert && !item.highlight)
-                        || items.find(item => item.summary)
+                    return items.find(item => !item.isAlert && !item.highlight)
+                        || items.find(item => !item.highlight)
                         || items[0];
+                },
+
+                newsExcerpt(item) {
+                    if (!item) return '';
+                    const summary = (item.summary || '').trim();
+                    const content = (item.content || '').trim();
+                    if (summary && summary.replace(/\s+/g, '') !== content.replace(/\s+/g, '')) return summary;
+                    return content;
                 },
 
                 companyDomain(company) {
@@ -1630,12 +1637,16 @@ ${divider}
                                 </div>
                                 <a :href="issueNewsHref(sector.primary, latestIssue.id)" target="_blank" rel="noopener noreferrer" class="block rounded-lg bg-white border border-slate-200 px-3 py-2.5 hover:border-brand-light/60 transition-colors">
                                     <span class="text-xs font-black text-slate-900 line-clamp-2" x-text="sector.primary?.title"></span>
+                                    <span class="mt-1.5 block text-[11px] leading-5 text-slate-500 line-clamp-2" x-text="newsExcerpt(sector.primary)"></span>
                                 </a>
                                 <div class="mt-2 space-y-1.5 hidden sm:block">
                                     <template x-for="item in sector.secondary.slice(0, 1)" :key="item.id || item.title">
-                                        <a :href="issueNewsHref(item, latestIssue.id)" target="_blank" rel="noopener noreferrer" class="flex items-start gap-2 text-left text-xs text-slate-600 hover:text-brand-primary">
-                                            <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-300 shrink-0"></span>
-                                            <span class="line-clamp-2" x-text="item.title"></span>
+                                        <a :href="issueNewsHref(item, latestIssue.id)" target="_blank" rel="noopener noreferrer" class="block rounded-md px-1.5 py-1 text-left hover:bg-white/60">
+                                            <span class="flex items-start gap-2 text-xs text-slate-700 hover:text-brand-primary">
+                                                <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-300 shrink-0"></span>
+                                                <span class="line-clamp-2" x-text="item.title"></span>
+                                            </span>
+                                            <span class="ml-3.5 mt-0.5 block text-[11px] leading-4 text-slate-500 line-clamp-1" x-text="newsExcerpt(item)"></span>
                                         </a>
                                     </template>
                                 </div>
@@ -1755,7 +1766,7 @@ ${divider}
                     <div class="relative z-10 transform group-hover:-translate-y-2 transition-transform duration-300">
                         <div class="flex items-center gap-3 mb-4"><span class="bg-brand-accent text-brand-dark text-xs font-black px-3 py-1 rounded shadow-xl tracking-widest">COVER STORY</span><span class="text-gray-300 text-xs font-mono">本周头条</span></div>
                         <h2 class="text-3xl md:text-4xl font-black text-white mb-4 leading-tight shadow-black drop-shadow-xl" x-text="highlightedNews?.title"></h2>
-                        <p class="text-gray-200 text-sm md:text-base line-clamp-3 max-w-3xl leading-relaxed" x-text="highlightedNews?.summary || highlightedNews?.content"></p>
+                        <p class="text-gray-200 text-sm md:text-base line-clamp-3 max-w-3xl leading-relaxed" x-text="newsExcerpt(highlightedNews)"></p>
                     </div>
                 </div>
 
@@ -1820,6 +1831,7 @@ ${divider}
                                     <template x-for="alert in sector.alerts.slice(0, 2)" :key="alert.id || alert.title">
                                         <button type="button" @click="openHomeDetail(alert, 'guide')" class="block w-full text-left text-xs font-bold text-slate-800 bg-white border border-red-100 rounded-lg px-3 py-2 hover:border-red-300 hover:text-red-700 focus-ring">
                                             <span class="line-clamp-2" x-text="alert.title"></span>
+                                            <span class="mt-1 block text-[11px] font-normal leading-4 text-slate-500 line-clamp-2" x-text="newsExcerpt(alert)"></span>
                                         </button>
                                     </template>
                                 </div>
@@ -1827,12 +1839,16 @@ ${divider}
                                     <p :class="`text-[10px] font-black tracking-widest mb-2 ${sectorGuideTextClass(sector.name)}`">重点资讯</p>
                                     <button type="button" @click="openHomeDetail(sector.primary, 'guide')" class="block w-full text-left rounded-lg bg-white border border-slate-200 px-3 py-2 hover:border-brand-light/50 focus-ring">
                                         <span class="text-xs font-black text-slate-900 line-clamp-2" x-text="sector.primary?.title"></span>
+                                        <span class="mt-1 block text-[11px] font-normal leading-4 text-slate-500 line-clamp-2" x-text="newsExcerpt(sector.primary)"></span>
                                     </button>
                                     <div class="mt-3 space-y-2">
                                         <template x-for="item in sector.secondary" :key="item.id || item.title">
-                                            <button type="button" @click="openHomeDetail(item, 'guide')" class="flex w-full items-start gap-2 text-left text-xs text-slate-500 hover:text-brand-primary focus-ring">
-                                                <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-300 shrink-0"></span>
-                                                <span class="line-clamp-1" x-text="item.title"></span>
+                                            <button type="button" @click="openHomeDetail(item, 'guide')" class="block w-full rounded-md px-1.5 py-1 text-left text-xs text-slate-500 hover:bg-white hover:text-brand-primary focus-ring">
+                                                <span class="flex items-start gap-2">
+                                                    <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-300 shrink-0"></span>
+                                                    <span class="line-clamp-1 font-bold" x-text="item.title"></span>
+                                                </span>
+                                                <span class="ml-3.5 mt-0.5 block text-[11px] leading-4 text-slate-500 line-clamp-1" x-text="newsExcerpt(item)"></span>
                                             </button>
                                         </template>
                                     </div>
@@ -1876,7 +1892,7 @@ ${divider}
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="md:col-span-2 bg-white rounded-xl shadow-md border border-slate-200 p-6">
                         <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider mb-4 flex items-center"><span class="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span>重点关注 Key Alerts</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"><template x-for="item in alertNews.slice(0, 6)"><div @click="openHomeDetail(item, 'guide')" class="bg-red-50/50 p-3 rounded-xl border border-red-100 hover:bg-red-50 cursor-pointer transition-colors"><div class="flex items-center gap-2 mb-1"><span class="text-[10px] text-red-600 font-bold bg-red-100 px-1 rounded" x-text="item.category"></span><span class="text-[10px] text-gray-400" x-text="item.subCategory"></span></div><span class="text-xs font-bold text-gray-800 line-clamp-2" x-text="item.title"></span></div></template></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"><template x-for="item in alertNews.slice(0, 6)"><div @click="openHomeDetail(item, 'guide')" class="bg-red-50/50 p-3 rounded-xl border border-red-100 hover:bg-red-50 cursor-pointer transition-colors"><div class="flex items-center gap-2 mb-1"><span class="text-[10px] text-red-600 font-bold bg-red-100 px-1 rounded" x-text="item.category"></span><span class="text-[10px] text-gray-400" x-text="item.subCategory"></span></div><span class="text-xs font-bold text-gray-800 line-clamp-2" x-text="item.title"></span><p class="mt-1 text-[11px] leading-4 text-slate-500 line-clamp-2" x-text="newsExcerpt(item)"></p></div></template></div>
                     </div>
                     <div class="bg-slate-50 rounded-xl border border-slate-200 p-6 flex flex-col justify-center">
                         <h3 class="text-sm font-bold text-gray-400 uppercase mb-4">本期热词 Tags</h3>
@@ -1907,7 +1923,7 @@ ${divider}
                         <div @click="openDetail(item)" class="bg-white p-5 rounded-xl border border-slate-100 shadow-md hover:shadow-md cursor-pointer group transition-all transform hover:-translate-x-1">
                             <div class="flex flex-wrap items-center gap-2 mb-2"><span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded" x-text="item.category"></span><span class="text-[10px] text-brand-primary border border-brand-primary/20 px-1.5 rounded" x-text="item.subCategory"></span><span x-show="markLabel(item)" :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${markClass(item)}`" x-text="markLabel(item)"></span></div>
                             <h3 class="text-base font-bold text-gray-800 group-hover:text-brand-primary mb-2 leading-snug" x-text="item.title"></h3>
-                            <p class="text-xs text-gray-500 line-clamp-2" x-text="item.summary || item.content"></p>
+                            <p class="text-xs text-gray-500 line-clamp-2" x-text="newsExcerpt(item)"></p>
                         </div>
                     </template>
                     <div x-show="hasMore" class="text-center pt-8 pb-4"><button @click="loadMore()" class="px-8 py-2 bg-white border border-slate-200 text-slate-600 rounded-full text-sm font-bold hover:bg-brand-soft hover:text-brand-primary transition-colors shadow-md">加载更多资讯...</button></div>
@@ -2032,7 +2048,7 @@ ${divider}
                             <div @click="viewDetail({...item, issueId: period.issueId})" class="bg-white p-4 rounded-xl border border-slate-100 shadow-md hover:shadow-md hover:border-brand-light/30 transition-all cursor-pointer group flex flex-col h-full" :class="selectedIndustryNews && newsItemKey(selectedIndustryNews) === newsItemKey(item) && selectedIndustryNews.issueId === period.issueId ? 'ring-2 ring-brand-primary/25 border-brand-light/50' : ''">
                                 <div class="flex flex-wrap items-center justify-between gap-2 mb-2"><span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded" x-text="item.subCategory"></span><span x-show="markLabel(item)" :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${markClass(item)}`" x-text="markLabel(item)"></span></div>
                                 <h4 class="text-sm font-bold text-slate-800 leading-snug mb-2 group-hover:text-brand-primary line-clamp-2 cursor-pointer" x-text="item.title"></h4>
-                                <p class="text-xs text-gray-500 line-clamp-2 mt-auto" x-text="item.summary || item.content"></p>
+                                <p class="text-xs text-gray-500 line-clamp-2 mt-auto" x-text="newsExcerpt(item)"></p>
                             </div>
                         </template>
                     </div>
@@ -2184,7 +2200,7 @@ ${divider}
                                         <span x-show="markLabel(item)" :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${markClass(item)}`" x-text="markLabel(item)"></span>
                                     </div>
                                     <h5 class="text-sm font-bold text-slate-800 leading-snug line-clamp-2" x-text="item.title"></h5>
-                                    <p class="text-xs text-slate-500 line-clamp-2 mt-2" x-text="item.summary || item.content"></p>
+                                    <p class="text-xs text-slate-500 line-clamp-2 mt-2" x-text="newsExcerpt(item)"></p>
                                 </button>
                             </template>
                         </div>
@@ -2243,7 +2259,7 @@ ${divider}
                     <div @click="openSearchResult(item)" class="p-4 hover:bg-brand-soft cursor-pointer border-b border-gray-100 transition-colors group">
                         <div class="flex items-center justify-between mb-1"><div class="flex items-center gap-2"><span class="text-[10px] bg-brand-dark text-white px-1.5 rounded font-mono" x-text="'No.' + item.issueId"></span><span class="text-xs font-bold text-brand-primary" x-text="item.category"></span></div><span class="text-[10px] text-gray-400" x-text="item.date"></span></div>
                         <h4 class="text-sm font-bold text-gray-800 mb-1 group-hover:text-brand-light" x-text="item.title"></h4>
-                        <p class="text-xs text-gray-500 line-clamp-1" x-text="item.content"></p>
+                        <p class="text-xs text-gray-500 line-clamp-1" x-text="newsExcerpt(item)"></p>
                     </div>
                 </template>
                 <div x-show="globalSearchQuery && globalSearchResults.length === 0" class="p-8 text-center text-gray-400 text-sm">未找到相关资讯</div>
