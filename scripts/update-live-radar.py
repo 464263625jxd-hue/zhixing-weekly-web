@@ -94,6 +94,11 @@ def clean_reader_text(value):
     return text.replace("亿邦动力董事长、亿邦智库院长", "行业调研团队")
 
 
+def contains_forbidden_reader_words(*values):
+    text = " ".join(str(value or "") for value in values)
+    return any(word in text for word in FORBIDDEN_READER_WORDS)
+
+
 def is_alert(title, summary):
     text = f"{title} {summary}"
     return any(word in text for word in ALERT_WORDS)
@@ -114,6 +119,8 @@ def build_ebrun_group():
             if not title or not url:
                 continue
             summary = clean_reader_text(article.get("summary", ""))
+            if contains_forbidden_reader_words(title, summary):
+                continue
             items.append(
                 {
                     "id": item_id("ebrun", channel_id, len(items)),
@@ -162,6 +169,8 @@ def build_36kr_group():
         summary = clean_reader_text(article.get("content", ""))
         url = str(article.get("url", "")).strip()
         if not title or not url:
+            continue
+        if contains_forbidden_reader_words(title, summary):
             continue
         channel["items"].append(
             {
