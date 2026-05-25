@@ -62,8 +62,8 @@
         html { -webkit-overflow-scrolling: touch; background: #f1f5f9; }
         .serif { font-family: 'Noto Serif SC', serif; }
         [x-cloak] { display: none !important; }
-        .portal-bg { position: relative; isolation: isolate; background-color: #eef3f8; background-image: linear-gradient(180deg, #0b1220 0, #111c31 420px, #eef3f8 421px, #eef3f8 100%); min-height: 100vh; min-height: -webkit-fill-available; }
-        .portal-bg::before, .portal-bg::after { content: ""; position: fixed; inset: 64px 0 auto 0; height: 356px; pointer-events: none; z-index: -1; }
+        .portal-bg { position: relative; isolation: isolate; background-color: #eef3f8; background-image: linear-gradient(180deg, #0b1220 0, #111c31 360px, #eef3f8 361px, #eef3f8 100%); min-height: 100vh; min-height: -webkit-fill-available; }
+        .portal-bg::before, .portal-bg::after { content: ""; position: fixed; inset: 64px 0 auto 0; height: 300px; pointer-events: none; z-index: -1; }
         .portal-bg::before { background-image: linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.10) 1px, transparent 1px), radial-gradient(circle at 18% 38%, rgba(56, 189, 248, 0.22), transparent 28%), radial-gradient(circle at 82% 12%, rgba(245, 158, 11, 0.16), transparent 24%); background-size: 44px 44px, 44px 44px, 100% 100%, 100% 100%; mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%); animation: portalGridDrift 22s linear infinite; }
         .portal-bg::after { background: linear-gradient(105deg, transparent 0%, transparent 34%, rgba(125, 211, 252, 0.12) 42%, rgba(245, 158, 11, 0.10) 48%, transparent 58%, transparent 100%); transform: translateX(-42%); animation: portalScan 13s cubic-bezier(0.16, 1, 0.3, 1) infinite; mix-blend-mode: screen; }
         @keyframes portalGridDrift { 0% { background-position: 0 0, 0 0, 0 0, 0 0; } 100% { background-position: 44px 44px, 44px 44px, 0 0, 0 0; } }
@@ -93,7 +93,7 @@
         .industry-detail-panel { min-height: calc(100vh - 96px); max-height: calc(100vh - 96px); }
         .corporate-detail-panel { min-height: calc(100vh - 112px); max-height: calc(100vh - 112px); }
         .company-logo { filter: saturate(0.96); }
-        .portal-shell { border: 1px solid rgba(148, 163, 184, 0.28); background: rgba(255,255,255,0.92); box-shadow: 0 24px 60px -44px rgba(15, 23, 42, 0.42); backdrop-filter: blur(14px); }
+        .portal-shell { border: 1px solid rgba(148, 163, 184, 0.28); background: rgba(255,255,255,0.92); box-shadow: 0 18px 42px -34px rgba(15, 23, 42, 0.38); backdrop-filter: blur(14px); }
         .tech-surface { position: relative; overflow: hidden; }
         .tech-surface::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 28px 28px; opacity: 0.52; mask-image: linear-gradient(to bottom, #000, transparent 78%); }
         .tech-surface::after { content: ""; position: absolute; left: -20%; right: -20%; top: 0; height: 2px; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.9), rgba(245, 158, 11, 0.75), transparent); animation: techLineSweep 7s ease-in-out infinite; }
@@ -437,7 +437,7 @@
                         this.selectedCompany = null;
                         this.currentCorporateCategory = decodeURIComponent(parts[1]);
                         this.view = 'corporate';
-                        this.scheduleHistoryIssueLoad();
+                        await this.loadRemainingIssues();
                         document.body.style.overflow = 'auto';
                         window.scrollTo({ top: 0, behavior: 'instant' });
                         return;
@@ -446,7 +446,7 @@
                         const category = decodeURIComponent(parts[1]);
                         this.currentIndustry = category;
                         this.view = 'industry';
-                        this.scheduleHistoryIssueLoad();
+                        await this.loadRemainingIssues();
                         this.selectedNews = null;
                         if (parts[2] === 'detail' && parts[3] && parts[4]) {
                             const issueId = parseInt(parts[3], 10);
@@ -699,11 +699,20 @@
                 get industryTimeline() {
                     if (!this.currentIndustry) return [];
                     return this.issueDB.map(issue => {
-                        const news = issue.data ? issue.data.filter(item => item.category === this.currentIndustry) : [];
+                        const news = issue.data ? this.prioritizeMarkedNews(issue.data.filter(item => item.category === this.currentIndustry)) : [];
                         const insight = issue.insight ? issue.insight[this.currentIndustry] : null;
                         if (news.length === 0 && !insight) return null;
                         return { issueId: issue.id, date: issue.date, insight: insight, news: news };
                     }).filter(item => item !== null);
+                },
+
+                prioritizeMarkedNews(items) {
+                    return [...(items || [])].sort((a, b) => {
+                        const rank = item => item.highlight ? 0 : (item.isAlert ? 1 : 2);
+                        const diff = rank(a) - rank(b);
+                        if (diff !== 0) return diff;
+                        return Number(a.id || 0) - Number(b.id || 0);
+                    });
                 },
 
                 // 全局搜索逻辑
@@ -925,12 +934,24 @@
                         || items[0];
                 },
 
-                newsExcerpt(item) {
+                briefText(value, maxLength = 88) {
+                    const text = String(value || '').replace(/\s+/g, ' ').trim();
+                    if (!text || text.length <= maxLength) return text;
+                    const trimmed = text.slice(0, maxLength).replace(/[，、；：:,.!?！？。]$/, '');
+                    return trimmed + '...';
+                },
+
+                issueExcerpt(issue, maxLength = 120) {
+                    if (!issue) return '';
+                    return this.briefText(issue.summary || issue.title || '', maxLength);
+                },
+
+                newsExcerpt(item, maxLength = 88) {
                     if (!item) return '';
                     const summary = (item.summary || '').trim();
                     const content = (item.content || '').trim();
-                    if (summary && summary.replace(/\s+/g, '') !== content.replace(/\s+/g, '')) return summary;
-                    return content;
+                    const source = summary && summary.replace(/\s+/g, '') !== content.replace(/\s+/g, '') ? summary : content;
+                    return this.briefText(source, maxLength);
                 },
 
                 companyDomain(company) {
@@ -1450,7 +1471,7 @@ ${divider}
      ════════════════════════════════════════════════════════════ -->
     <div x-show="view === 'portal' && !isLoading" x-transition:enter="transition ease-out duration-500 transform" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" class="min-h-screen pb-12">
         <nav class="bg-brand-dark/90 text-white shadow-xl sticky top-0 z-50 backdrop-blur-md border-b border-white/10">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="max-w-[1500px] mx-auto px-4 sm:px-6 xl:px-10 h-16 flex items-center justify-between">
                 <div class="flex items-center space-x-3 cursor-pointer" @click="goHome()">
                     <div class="w-8 h-8 bg-brand-accent rounded-2xl flex items-center justify-center text-brand-dark font-black text-lg shadow-[0_0_15px_rgba(245,158,11,0.5)]">Z</div>
                     <span class="font-bold text-xl tracking-wide">知行数字化知识库</span>
@@ -1477,7 +1498,7 @@ ${divider}
             </div>
         </nav>
 
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6">
+        <main class="max-w-[1500px] mx-auto px-4 sm:px-6 xl:px-10 py-5 flex flex-col gap-5">
             <section id="live-radar" class="order-2 portal-shell rounded-2xl overflow-hidden">
                 <div class="grid grid-cols-1 xl:grid-cols-[240px_minmax(0,1fr)]">
                     <div class="bg-slate-950 p-4 text-white relative overflow-hidden">
@@ -1594,63 +1615,51 @@ ${divider}
                 </div>
             </section>
 
-            <section class="order-1 grid grid-cols-1 lg:grid-cols-[390px_minmax(0,1fr)] gap-5 items-start">
-                <a :href="issueHref(latestIssue.id)" target="_blank" rel="noopener noreferrer" class="group block rounded-2xl overflow-hidden bg-slate-950 border border-white/10 shadow-2xl hover:border-brand-accent/60 transition-colors">
-                    <div class="h-32 sm:h-52 overflow-hidden relative">
+            <section class="order-1 grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] xl:grid-cols-[320px_minmax(0,1fr)] gap-4 items-stretch">
+                <a :href="issueHref(latestIssue.id)" target="_blank" rel="noopener noreferrer" class="group flex h-full flex-col rounded-2xl overflow-hidden bg-slate-950 border border-white/10 shadow-2xl hover:border-brand-accent/60 transition-colors">
+                    <div class="h-24 sm:h-36 overflow-hidden relative">
                         <img :src="latestIssue.coverImage" class="w-full h-full object-cover opacity-75 group-hover:scale-[1.03] transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/35 to-transparent"></div>
                         <span class="absolute top-4 left-4 bg-brand-accent text-brand-dark text-[10px] font-black px-3 py-1 rounded-full tracking-widest">LATEST No.<span x-text="latestIssue.id"></span></span>
                     </div>
-                    <div class="p-4 sm:p-5">
+                    <div class="p-3.5 flex flex-1 flex-col">
                         <div class="text-brand-light font-mono text-xs mb-2" x-text="latestIssue.date"></div>
-                        <h2 class="text-xl sm:text-3xl font-black text-white mb-2 sm:mb-3 leading-tight group-hover:text-brand-accent transition-colors" x-text="latestIssue.title"></h2>
-                        <p class="text-sm text-slate-300 leading-6 line-clamp-2 sm:line-clamp-3 mb-3 sm:mb-4" x-text="latestIssue.summary"></p>
-                        <div class="grid grid-cols-3 gap-2 mb-3 sm:mb-4">
+                        <h2 class="text-xl sm:text-2xl font-black text-white mb-2 leading-tight group-hover:text-brand-accent transition-colors" x-text="latestIssue.title"></h2>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-5 line-clamp-2 mb-3" x-text="issueExcerpt(latestIssue, 92)"></p>
+                        <div class="grid grid-cols-3 gap-2 mb-3">
                             <div class="rounded-lg bg-white/10 border border-white/10 px-3 py-2"><div class="text-base sm:text-lg font-black text-white" x-text="issueStats(latestIssue).total"></div><div class="text-[10px] text-slate-400">资讯</div></div>
                             <div class="rounded-lg bg-red-500/10 border border-red-300/10 px-3 py-2"><div class="text-base sm:text-lg font-black text-red-200" x-text="issueStats(latestIssue).alerts"></div><div class="text-[10px] text-slate-400">预警</div></div>
                             <div class="rounded-lg bg-sky-500/10 border border-sky-300/10 px-3 py-2"><div class="text-base sm:text-lg font-black text-sky-200" x-text="issueStats(latestIssue).categories"></div><div class="text-[10px] text-slate-400">板块</div></div>
                         </div>
-                        <div class="flex items-center text-brand-accent text-sm font-black">阅读本期 <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
+                        <div class="mt-auto flex items-center text-brand-accent text-sm font-black">阅读本期 <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
                     </div>
                 </a>
 
-                <div class="portal-shell rounded-2xl overflow-hidden">
-                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 bg-slate-50">
+                <div class="portal-shell rounded-2xl overflow-hidden h-full flex flex-col">
+                    <div class="px-4 py-2.5 border-b border-slate-200 bg-slate-50/90">
                         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
                             <div>
-                                <p class="text-[10px] font-black text-brand-primary tracking-widest mb-1 sm:mb-2">CURRENT ISSUE GUIDE</p>
-                                <h3 class="text-lg sm:text-2xl font-black text-slate-900">本期赛道导读</h3>
+                                <p class="text-[10px] font-black text-brand-primary tracking-widest mb-1">CURRENT ISSUE GUIDE</p>
+                                <h3 class="text-lg sm:text-xl font-black text-slate-900">本期赛道导读</h3>
                             </div>
                             <p class="text-xs text-slate-500 hidden sm:block">点击资讯将在新页面打开阅读详情</p>
                         </div>
                     </div>
-                    <div class="p-4 sm:p-5 flex gap-3 overflow-x-auto no-scrollbar md:grid md:grid-cols-2 xl:grid-cols-4 md:overflow-visible">
+                    <div class="p-3 sm:p-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 auto-rows-[132px] gap-2.5 flex-1">
                         <template x-for="sector in portalSectorOverview" :key="sector.name">
-                            <div :class="`w-[210px] sm:w-[240px] md:w-auto shrink-0 rounded-xl border p-3 flex flex-col min-h-[130px] sm:min-h-[160px] ${sectorGuideCardClass(sector.name)}`">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span :class="`font-black ${sectorGuideTextClass(sector.name)}`" x-text="sector.name"></span>
-                                    <span class="text-xs font-bold text-slate-500" x-text="sector.count + ' 条'"></span>
-                                </div>
-                                <div class="flex flex-wrap gap-2 mb-2">
-                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-white text-slate-500 font-bold" x-text="sector.subCount + ' 个主题'"></span>
-                                    <span x-show="sector.alertCount" class="text-[10px] px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-black" x-text="'预警 ' + sector.alertCount"></span>
-                                </div>
-                                <a :href="issueNewsHref(sector.primary, latestIssue.id)" target="_blank" rel="noopener noreferrer" class="block rounded-lg bg-white border border-slate-200 px-3 py-2.5 hover:border-brand-light/60 transition-colors">
-                                    <span class="text-xs font-black text-slate-900 line-clamp-2" x-text="sector.primary?.title"></span>
-                                    <span class="mt-1.5 block text-[11px] leading-5 text-slate-500 line-clamp-2" x-text="newsExcerpt(sector.primary)"></span>
+                            <div :class="`rounded-xl border px-3 py-2.5 h-full flex flex-col overflow-hidden ${sectorGuideCardClass(sector.name)}`">
+                                <a :href="industryHref(sector.name)" target="_blank" rel="noopener noreferrer" class="mb-2 flex items-center justify-between gap-2 group">
+                                    <span :class="`text-sm font-black leading-tight group-hover:underline ${sectorGuideTextClass(sector.name)}`" x-text="sector.name"></span>
+                                    <span class="text-[10px] font-bold text-slate-400" x-text="sector.subCount + ' 题'"></span>
                                 </a>
-                                <div class="mt-2 space-y-1.5 hidden sm:block">
-                                    <template x-for="item in sector.secondary.slice(0, 1)" :key="item.id || item.title">
-                                        <a :href="issueNewsHref(item, latestIssue.id)" target="_blank" rel="noopener noreferrer" class="block rounded-md px-1.5 py-1 text-left hover:bg-white/60">
-                                            <span class="flex items-start gap-2 text-xs text-slate-700 hover:text-brand-primary">
-                                                <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-300 shrink-0"></span>
-                                                <span class="line-clamp-2" x-text="item.title"></span>
-                                            </span>
-                                            <span class="ml-3.5 mt-0.5 block text-[11px] leading-4 text-slate-500 line-clamp-1" x-text="newsExcerpt(item)"></span>
-                                        </a>
-                                    </template>
-                                </div>
-                                <a :href="industryHref(sector.name)" target="_blank" rel="noopener noreferrer" class="mt-auto pt-3 text-xs font-black text-brand-primary hover:text-brand-light">查看赛道 →</a>
+                                <a :href="issueNewsHref(sector.primary, latestIssue.id)" target="_blank" rel="noopener noreferrer" class="flex items-start gap-1.5 rounded-md bg-white/85 border border-white/80 px-2 py-1.5 hover:border-brand-light/60 transition-colors">
+                                    <span class="shrink-0 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-black text-amber-700">重点</span>
+                                    <span class="min-w-0 text-xs font-black leading-snug text-slate-900 line-clamp-2" x-text="sector.primary?.title"></span>
+                                </a>
+                                <a x-show="sector.alerts?.length" :href="issueNewsHref(sector.alerts?.[0], latestIssue.id)" target="_blank" rel="noopener noreferrer" class="mt-1.5 flex items-center gap-1.5 rounded-md bg-red-50/70 border border-red-100/80 px-2 py-1 hover:border-red-200 transition-colors">
+                                    <span class="shrink-0 rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-black text-red-700">预警</span>
+                                    <span class="min-w-0 text-xs font-bold leading-snug text-slate-800 truncate" x-text="sector.alerts?.[0]?.title"></span>
+                                </a>
                             </div>
                         </template>
                     </div>
@@ -1699,7 +1708,7 @@ ${divider}
                             <div class="flex-1 min-w-0 flex flex-col justify-center">
                                 <div class="flex justify-between items-center mb-1"><span class="text-xs font-mono text-gray-500">No.<span x-text="issue.id"></span></span><span class="text-[10px] text-gray-600 border border-gray-700 px-1.5 rounded" x-text="issue.date"></span></div>
                                 <h4 class="text-white font-bold mb-1 line-clamp-1 group-hover:text-brand-light" x-text="issue.title"></h4>
-                                <p class="text-xs text-gray-500 line-clamp-1" x-text="issue.summary"></p>
+                                <p class="text-xs text-gray-500 line-clamp-1" x-text="issueExcerpt(issue, 80)"></p>
                             </div>
                         </a>
                     </template>
@@ -1766,7 +1775,7 @@ ${divider}
                     <div class="relative z-10 transform group-hover:-translate-y-2 transition-transform duration-300">
                         <div class="flex items-center gap-3 mb-4"><span class="bg-brand-accent text-brand-dark text-xs font-black px-3 py-1 rounded shadow-xl tracking-widest">COVER STORY</span><span class="text-gray-300 text-xs font-mono">本周头条</span></div>
                         <h2 class="text-3xl md:text-4xl font-black text-white mb-4 leading-tight shadow-black drop-shadow-xl" x-text="highlightedNews?.title"></h2>
-                        <p class="text-gray-200 text-sm md:text-base line-clamp-3 max-w-3xl leading-relaxed" x-text="newsExcerpt(highlightedNews)"></p>
+                        <p class="text-gray-200 text-sm md:text-base line-clamp-3 max-w-3xl leading-relaxed" x-text="newsExcerpt(highlightedNews, 150)"></p>
                     </div>
                 </div>
 
@@ -1831,7 +1840,7 @@ ${divider}
                                     <template x-for="alert in sector.alerts.slice(0, 2)" :key="alert.id || alert.title">
                                         <button type="button" @click="openHomeDetail(alert, 'guide')" class="block w-full text-left text-xs font-bold text-slate-800 bg-white border border-red-100 rounded-lg px-3 py-2 hover:border-red-300 hover:text-red-700 focus-ring">
                                             <span class="line-clamp-2" x-text="alert.title"></span>
-                                            <span class="mt-1 block text-[11px] font-normal leading-4 text-slate-500 line-clamp-2" x-text="newsExcerpt(alert)"></span>
+                                            <span class="mt-1 block text-[11px] font-normal leading-4 text-slate-500 line-clamp-2" x-text="newsExcerpt(alert, 58)"></span>
                                         </button>
                                     </template>
                                 </div>
@@ -1839,7 +1848,7 @@ ${divider}
                                     <p :class="`text-[10px] font-black tracking-widest mb-2 ${sectorGuideTextClass(sector.name)}`">重点资讯</p>
                                     <button type="button" @click="openHomeDetail(sector.primary, 'guide')" class="block w-full text-left rounded-lg bg-white border border-slate-200 px-3 py-2 hover:border-brand-light/50 focus-ring">
                                         <span class="text-xs font-black text-slate-900 line-clamp-2" x-text="sector.primary?.title"></span>
-                                        <span class="mt-1 block text-[11px] font-normal leading-4 text-slate-500 line-clamp-2" x-text="newsExcerpt(sector.primary)"></span>
+                                        <span class="mt-1 block text-[11px] font-normal leading-4 text-slate-500 line-clamp-2" x-text="newsExcerpt(sector.primary, 58)"></span>
                                     </button>
                                     <div class="mt-3 space-y-2">
                                         <template x-for="item in sector.secondary" :key="item.id || item.title">
@@ -1848,7 +1857,7 @@ ${divider}
                                                     <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-300 shrink-0"></span>
                                                     <span class="line-clamp-1 font-bold" x-text="item.title"></span>
                                                 </span>
-                                                <span class="ml-3.5 mt-0.5 block text-[11px] leading-4 text-slate-500 line-clamp-1" x-text="newsExcerpt(item)"></span>
+                                                <span class="ml-3.5 mt-0.5 block text-[11px] leading-4 text-slate-500 line-clamp-1" x-text="newsExcerpt(item, 36)"></span>
                                             </button>
                                         </template>
                                     </div>
@@ -1892,7 +1901,7 @@ ${divider}
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="md:col-span-2 bg-white rounded-xl shadow-md border border-slate-200 p-6">
                         <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider mb-4 flex items-center"><span class="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span>重点关注 Key Alerts</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"><template x-for="item in alertNews.slice(0, 6)"><div @click="openHomeDetail(item, 'guide')" class="bg-red-50/50 p-3 rounded-xl border border-red-100 hover:bg-red-50 cursor-pointer transition-colors"><div class="flex items-center gap-2 mb-1"><span class="text-[10px] text-red-600 font-bold bg-red-100 px-1 rounded" x-text="item.category"></span><span class="text-[10px] text-gray-400" x-text="item.subCategory"></span></div><span class="text-xs font-bold text-gray-800 line-clamp-2" x-text="item.title"></span><p class="mt-1 text-[11px] leading-4 text-slate-500 line-clamp-2" x-text="newsExcerpt(item)"></p></div></template></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"><template x-for="item in alertNews.slice(0, 6)"><div @click="openHomeDetail(item, 'guide')" class="bg-red-50/50 p-3 rounded-xl border border-red-100 hover:bg-red-50 cursor-pointer transition-colors"><div class="flex items-center gap-2 mb-1"><span class="text-[10px] text-red-600 font-bold bg-red-100 px-1 rounded" x-text="item.category"></span><span class="text-[10px] text-gray-400" x-text="item.subCategory"></span></div><span class="text-xs font-bold text-gray-800 line-clamp-2" x-text="item.title"></span><p class="mt-1 text-[11px] leading-4 text-slate-500 line-clamp-2" x-text="newsExcerpt(item, 64)"></p></div></template></div>
                     </div>
                     <div class="bg-slate-50 rounded-xl border border-slate-200 p-6 flex flex-col justify-center">
                         <h3 class="text-sm font-bold text-gray-400 uppercase mb-4">本期热词 Tags</h3>
@@ -1923,7 +1932,7 @@ ${divider}
                         <div @click="openDetail(item)" class="bg-white p-5 rounded-xl border border-slate-100 shadow-md hover:shadow-md cursor-pointer group transition-all transform hover:-translate-x-1">
                             <div class="flex flex-wrap items-center gap-2 mb-2"><span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded" x-text="item.category"></span><span class="text-[10px] text-brand-primary border border-brand-primary/20 px-1.5 rounded" x-text="item.subCategory"></span><span x-show="markLabel(item)" :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${markClass(item)}`" x-text="markLabel(item)"></span></div>
                             <h3 class="text-base font-bold text-gray-800 group-hover:text-brand-primary mb-2 leading-snug" x-text="item.title"></h3>
-                            <p class="text-xs text-gray-500 line-clamp-2" x-text="newsExcerpt(item)"></p>
+                            <p class="text-xs text-gray-500 line-clamp-2" x-text="newsExcerpt(item, 76)"></p>
                         </div>
                     </template>
                     <div x-show="hasMore" class="text-center pt-8 pb-4"><button @click="loadMore()" class="px-8 py-2 bg-white border border-slate-200 text-slate-600 rounded-full text-sm font-bold hover:bg-brand-soft hover:text-brand-primary transition-colors shadow-md">加载更多资讯...</button></div>
@@ -2048,7 +2057,7 @@ ${divider}
                             <div @click="viewDetail({...item, issueId: period.issueId})" class="bg-white p-4 rounded-xl border border-slate-100 shadow-md hover:shadow-md hover:border-brand-light/30 transition-all cursor-pointer group flex flex-col h-full" :class="selectedIndustryNews && newsItemKey(selectedIndustryNews) === newsItemKey(item) && selectedIndustryNews.issueId === period.issueId ? 'ring-2 ring-brand-primary/25 border-brand-light/50' : ''">
                                 <div class="flex flex-wrap items-center justify-between gap-2 mb-2"><span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded" x-text="item.subCategory"></span><span x-show="markLabel(item)" :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${markClass(item)}`" x-text="markLabel(item)"></span></div>
                                 <h4 class="text-sm font-bold text-slate-800 leading-snug mb-2 group-hover:text-brand-primary line-clamp-2 cursor-pointer" x-text="item.title"></h4>
-                                <p class="text-xs text-gray-500 line-clamp-2 mt-auto" x-text="newsExcerpt(item)"></p>
+                                <p class="text-xs text-gray-500 line-clamp-2 mt-auto" x-text="newsExcerpt(item, 76)"></p>
                             </div>
                         </template>
                     </div>
@@ -2200,7 +2209,7 @@ ${divider}
                                         <span x-show="markLabel(item)" :class="`text-[10px] font-black border px-1.5 py-0.5 rounded ${markClass(item)}`" x-text="markLabel(item)"></span>
                                     </div>
                                     <h5 class="text-sm font-bold text-slate-800 leading-snug line-clamp-2" x-text="item.title"></h5>
-                                    <p class="text-xs text-slate-500 line-clamp-2 mt-2" x-text="newsExcerpt(item)"></p>
+                                    <p class="text-xs text-slate-500 line-clamp-2 mt-2" x-text="newsExcerpt(item, 76)"></p>
                                 </button>
                             </template>
                         </div>
@@ -2259,7 +2268,7 @@ ${divider}
                     <div @click="openSearchResult(item)" class="p-4 hover:bg-brand-soft cursor-pointer border-b border-gray-100 transition-colors group">
                         <div class="flex items-center justify-between mb-1"><div class="flex items-center gap-2"><span class="text-[10px] bg-brand-dark text-white px-1.5 rounded font-mono" x-text="'No.' + item.issueId"></span><span class="text-xs font-bold text-brand-primary" x-text="item.category"></span></div><span class="text-[10px] text-gray-400" x-text="item.date"></span></div>
                         <h4 class="text-sm font-bold text-gray-800 mb-1 group-hover:text-brand-light" x-text="item.title"></h4>
-                        <p class="text-xs text-gray-500 line-clamp-1" x-text="newsExcerpt(item)"></p>
+                        <p class="text-xs text-gray-500 line-clamp-1" x-text="newsExcerpt(item, 76)"></p>
                     </div>
                 </template>
                 <div x-show="globalSearchQuery && globalSearchResults.length === 0" class="p-8 text-center text-gray-400 text-sm">未找到相关资讯</div>

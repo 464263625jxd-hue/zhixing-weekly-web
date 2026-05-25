@@ -80,7 +80,7 @@
       "subCategory": "治理",
       "title": "抖音整治“僵尸商品”，限制商家SKU数量",
       "content": "抖音即时零售新规：每个品牌总店在架商品不超50万，单店不超5万。上架超60天无曝光/销售的商品将自动下架，长期闲置将被永久删除。旨在解决海量“僵尸商品”问题，为货架“瘦身”。",
-      "isAlert": true,
+      "isAlert": false,
       "id": 3,
       "highlight": false
     },
@@ -89,7 +89,7 @@
       "subCategory": "大促",
       "title": "拼多多开启“春节不打烊”招商",
       "content": "拼多多上线“春节不打烊”活动（2026.2.7-2.24），商家设置服务标即可参与。平台将对参与商品在搜索、推荐流、首页等位置进行流量加权，奖励春节期间坚守经营的商家。",
-      "isAlert": true,
+      "isAlert": false,
       "id": 4,
       "highlight": false
     },
@@ -98,7 +98,7 @@
       "subCategory": "物流",
       "title": "抖音开放春节延迟发货，除夕订单最晚初八发",
       "content": "抖音电商将于1月29日至2月24日开放“春节延迟发货”。若未配置，除夕至初四订单需在初八前发货。周期配送、鲜花、苹果自营等不支持延迟发货。",
-      "isAlert": true,
+      "isAlert": false,
       "id": 5,
       "highlight": false
     },
@@ -153,7 +153,7 @@
       "title": "2025年社消零总额超50万亿",
       "content": "2025年社会消费品零售总额50.12万亿元，增长3.7%。规模以上工业增加值增长5.9%，固定资产投资下降3.8%，其中房地产开发投资下降17.2%。",
       "id": 11,
-      "isAlert": false,
+      "isAlert": true,
       "highlight": false
     },
     {
@@ -441,7 +441,7 @@
       "title": "戴可思回应“食品级”宣传被立案",
       "content": "戴可思因唇膏宣传“食品级”被无锡市监局立案。品牌回应已整改删除不当用语，强调产品安全。",
       "id": 43,
-      "isAlert": false,
+      "isAlert": true,
       "highlight": false
     },
     {
@@ -693,7 +693,7 @@
       "title": "Lactalis全球召回Picot奶粉",
       "content": "因ARA原料可能受污染，Lactalis在18个国家召回Picot品牌奶粉。HOCHDORF也宣布召回部分羊奶粉。",
       "id": 71,
-      "isAlert": false,
+      "isAlert": true,
       "highlight": false
     },
     {
