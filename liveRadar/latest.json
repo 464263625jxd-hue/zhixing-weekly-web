@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-05-25 10:18",
-  "nextRun": "2026-05-26 10:15",
+  "updatedAt": "2026-05-26 10:16",
+  "nextRun": "2026-05-27 10:15",
   "updateInterval": "1d",
   "sourceGroups": [
     {
@@ -14,6 +14,120 @@
           "items": [
             {
               "id": "ebrun-recommend-01",
+              "sourceId": "ebrun",
+              "sourceName": "亿邦动力",
+              "channelId": "recommend",
+              "channelName": "推荐",
+              "title": "给电商平台“乱收费”踩刹车？印尼拟出台新规限制平台费率上涨动作",
+              "summary": "印尼中小微企业部正在起草专项规定，重点规范TikTok Shop、Shopee等数字平台的收费行为，禁止其单方面突然向卖家提高服务费或佣金",
+              "publishedAt": "2026-05-25 19:11:07",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://www.ebrun.com/20260525/669517.shtml",
+              "tags": [
+                "跨境",
+                "综合动态"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "ebrun-recommend-02",
+              "sourceId": "ebrun",
+              "sourceName": "亿邦动力",
+              "channelId": "recommend",
+              "channelName": "推荐",
+              "title": "抖音618榜单：阿迪排名运动户外第一 美妆国货占比30%",
+              "summary": "2026年抖音商城618好物节第一阶段（5月15日—5月20日）收官，平台交出首份成绩单。",
+              "publishedAt": "2026-05-25 15:19:39",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://www.ebrun.com/20260525/669500.shtml",
+              "tags": [
+                "平台",
+                "品牌",
+                "综合动态"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "ebrun-recommend-03",
+              "sourceId": "ebrun",
+              "sourceName": "亿邦动力",
+              "channelId": "recommend",
+              "channelName": "推荐",
+              "title": "亚马逊扶持新品又一动作：将为符合资质的卖家商品打标提升曝光度",
+              "summary": "将为卖家上线的新品展示“新品到货”或“重磅到货”徽章，以帮助消费者快速识别有潜力的新品。",
+              "publishedAt": "2026-05-26 09:37:37",
+              "sourceDate": "2026-05-26",
+              "sourceUrl": "https://www.ebrun.com/20260526/669520.shtml",
+              "tags": [
+                "跨境",
+                "品牌",
+                "消费",
+                "综合动态"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "ebrun-recommend-04",
+              "sourceId": "ebrun",
+              "sourceName": "亿邦动力",
+              "channelId": "recommend",
+              "channelName": "推荐",
+              "title": "竹马创新完成天使+融资：定义消费级空间相机 捕获具身数据",
+              "summary": "从二维视频到三维空间，从人类记录到机器理解，从消费级相机到机器人世界模型的数据入口——竹马创新希望打开的，是一个真实世界被重新捕获、重建、记录和训练的新入口。",
+              "publishedAt": "2026-05-25 10:57:00",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://www.ebrun.com/20260525/669466.shtml",
+              "tags": [
+                "融资",
+                "科技",
+                "消费",
+                "综合动态"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "ebrun-recommend-05",
+              "sourceId": "ebrun",
+              "sourceName": "亿邦动力",
+              "channelId": "recommend",
+              "channelName": "推荐",
+              "title": "印尼设国企接管核心大宗商品出口 或波及全球供应链",
+              "summary": "印尼是全球最大的动力煤、棕榈油出口国，拥有全球最大已探明镍储量，相关商品广泛应用于能源供应、日化生产、动力电池、不锈钢制造等多个领域。",
+              "publishedAt": "2026-05-25 09:48:16",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://www.ebrun.com/20260525/669404.shtml",
+              "tags": [
+                "供应链",
+                "综合动态"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "ebrun-recommend-06",
+              "sourceId": "ebrun",
+              "sourceName": "亿邦动力",
+              "channelId": "recommend",
+              "channelName": "推荐",
+              "title": "电商早报：追觅豪掷数千万带员工游迪士尼；抖音、快手618战报出炉",
+              "summary": "追觅豪掷数千万带员工游迪士尼；抖音、快手618战报出炉；东方甄选首家线下门店北京开业俞敏洪回应开店原因",
+              "publishedAt": "2026-05-25 06:29:45",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://www.ebrun.com/20260525/669401.shtml",
+              "tags": [
+                "平台",
+                "消费",
+                "综合动态"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "ebrun-recommend-07",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "recommend",
@@ -32,7 +146,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-recommend-02",
+              "id": "ebrun-recommend-08",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "recommend",
@@ -52,25 +166,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-recommend-03",
-              "sourceId": "ebrun",
-              "sourceName": "亿邦动力",
-              "channelId": "recommend",
-              "channelName": "推荐",
-              "title": "印尼设国企接管核心大宗商品出口 或波及全球供应链",
-              "summary": "印尼是全球最大的动力煤、棕榈油出口国，拥有全球最大已探明镍储量，相关商品广泛应用于能源供应、日化生产、动力电池、不锈钢制造等多个领域。",
-              "publishedAt": "2026-05-25 09:48:16",
-              "sourceDate": "2026-05-25",
-              "sourceUrl": "https://www.ebrun.com/20260525/669404.shtml",
-              "tags": [
-                "供应链",
-                "综合动态"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "ebrun-recommend-04",
+              "id": "ebrun-recommend-09",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "recommend",
@@ -89,7 +185,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-recommend-05",
+              "id": "ebrun-recommend-10",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "recommend",
@@ -102,104 +198,6 @@
               "tags": [
                 "AI",
                 "融资",
-                "综合动态"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "ebrun-recommend-06",
-              "sourceId": "ebrun",
-              "sourceName": "亿邦动力",
-              "channelId": "recommend",
-              "channelName": "推荐",
-              "title": "年GMV涨125%、内贸型新商占比超40% TikTok Shop东南亚释放出什么新增长讯号？",
-              "summary": "日前，TikTok Shop东南亚跨境电商年度峰会在广州圆满落幕。在会上，平台官方释出多项重磅最新数据：2025年，TikTok Shop东南亚跨境电商全年GMV较2024年同比增长125%；区域月活用户突破4.6亿。",
-              "publishedAt": "2026-05-24 03:07:45",
-              "sourceDate": "2026-05-24",
-              "sourceUrl": "https://www.ebrun.com/20260524/669394.shtml",
-              "tags": [
-                "跨境",
-                "财报",
-                "综合动态"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "ebrun-recommend-07",
-              "sourceId": "ebrun",
-              "sourceName": "亿邦动力",
-              "channelId": "recommend",
-              "channelName": "推荐",
-              "title": "一周电商大事：阿里股东信定调：即时零售成淘宝天猫核心支柱",
-              "summary": "阿里股东信定调：即时零售成淘宝天猫核心支柱；东方甄选前CEO孙东旭复播卖书；京东将办AI数字人晚会；周大生回应关店500家",
-              "publishedAt": "2026-05-23 22:23:51",
-              "sourceDate": "2026-05-23",
-              "sourceUrl": "https://www.ebrun.com/20260523/669392.shtml",
-              "tags": [
-                "AI",
-                "平台",
-                "消费",
-                "综合动态"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "ebrun-recommend-08",
-              "sourceId": "ebrun",
-              "sourceName": "亿邦动力",
-              "channelId": "recommend",
-              "channelName": "推荐",
-              "title": "让小工厂用上大模型 京东工业AI智采管家助力采购效率提高60%",
-              "summary": "2024年中国工业供应链总成本约115.2万亿元，通过数智化转型可降低成本5.88%，对应6.8万亿元降本空间，AI正是释放这一红利的关键力量。",
-              "publishedAt": "2026-05-22 19:39:39",
-              "sourceDate": "2026-05-22",
-              "sourceUrl": "https://www.ebrun.com/20260522/669389.shtml",
-              "tags": [
-                "AI",
-                "平台",
-                "供应链",
-                "科技"
-              ],
-              "isAlert": true,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "ebrun-recommend-09",
-              "sourceId": "ebrun",
-              "sourceName": "亿邦动力",
-              "channelId": "recommend",
-              "channelName": "推荐",
-              "title": "平安智享家医：将AI临床辅助决策能力，规模化触达千万级C端用户",
-              "summary": "平安好医生将其“AI医生”升级为“平安智享家医”。该服务依托平安医博通大模型，采用“AI秒级响应+真人医生全程监督”的双引擎模式，并整合平安“到线、到院、到家、到企”四层医疗健康服务网络。",
-              "publishedAt": "2026-05-22 18:41:35",
-              "sourceDate": "2026-05-22",
-              "sourceUrl": "https://www.ebrun.com/20260522/669387.shtml",
-              "tags": [
-                "AI",
-                "科技",
-                "综合动态"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "ebrun-recommend-10",
-              "sourceId": "ebrun",
-              "sourceName": "亿邦动力",
-              "channelId": "recommend",
-              "channelName": "推荐",
-              "title": "云深处IPO获受理 2025年营收3.37亿元",
-              "summary": "5月18日，杭州云深处科技股份有限公司（以下简称“云深处”）申报科创板IPO获受理，拟募集资金25.03亿元，保荐机构为中信建投证券股份有限公司。",
-              "publishedAt": "2026-05-22 15:26:37",
-              "sourceDate": "2026-05-22",
-              "sourceUrl": "https://www.ebrun.com/20260522/669363.shtml",
-              "tags": [
-                "财报",
-                "融资",
-                "科技",
                 "综合动态"
               ],
               "isAlert": false,
@@ -217,6 +215,44 @@
               "sourceName": "亿邦动力",
               "channelId": "future-retail",
               "channelName": "未来零售",
+              "title": "泡泡玛特身后的追赶者：潮玩下半场的“自有IP”之战",
+              "summary": "潮玩下半场，比的不是谁更会“拿”IP，而是谁更会“长”IP。六家公司，三种活法，谁在突围？",
+              "publishedAt": "2026-05-25 16:11:52",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://www.ebrun.com/20260525/669506.shtml",
+              "tags": [
+                "品牌",
+                "平台",
+                "即时零售"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "ebrun-future-retail-02",
+              "sourceId": "ebrun",
+              "sourceName": "亿邦动力",
+              "channelId": "future-retail",
+              "channelName": "未来零售",
+              "title": "抖音618榜单：阿迪排名运动户外第一 美妆国货占比30%",
+              "summary": "2026年抖音商城618好物节第一阶段（5月15日—5月20日）收官，平台交出首份成绩单。",
+              "publishedAt": "2026-05-25 15:19:39",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://www.ebrun.com/20260525/669500.shtml",
+              "tags": [
+                "平台",
+                "品牌",
+                "即时零售"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "ebrun-future-retail-03",
+              "sourceId": "ebrun",
+              "sourceName": "亿邦动力",
+              "channelId": "future-retail",
+              "channelName": "未来零售",
               "title": "阿里股东信：即时零售已成为淘宝天猫核心战略支柱丨零售电商周报",
               "summary": "阿里股东信：即时零售已成为淘宝天猫核心战略支柱；抖音618发第一阶段战报",
               "publishedAt": "2026-05-24 21:55:46",
@@ -231,7 +267,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-future-retail-02",
+              "id": "ebrun-future-retail-04",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "future-retail",
@@ -251,7 +287,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-future-retail-03",
+              "id": "ebrun-future-retail-05",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "future-retail",
@@ -270,7 +306,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-future-retail-04",
+              "id": "ebrun-future-retail-06",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "future-retail",
@@ -290,7 +326,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-future-retail-05",
+              "id": "ebrun-future-retail-07",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "future-retail",
@@ -310,7 +346,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-future-retail-06",
+              "id": "ebrun-future-retail-08",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "future-retail",
@@ -330,7 +366,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-future-retail-07",
+              "id": "ebrun-future-retail-09",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "future-retail",
@@ -350,7 +386,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-future-retail-08",
+              "id": "ebrun-future-retail-10",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "future-retail",
@@ -363,44 +399,6 @@
               "tags": [
                 "财报",
                 "品牌",
-                "平台",
-                "即时零售"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "ebrun-future-retail-09",
-              "sourceId": "ebrun",
-              "sourceName": "亿邦动力",
-              "channelId": "future-retail",
-              "channelName": "未来零售",
-              "title": "有赞春季发布会：没讲大模型 只讲“怎么帮商家多卖2.41亿”",
-              "summary": "谁也不知道未来5年10年有赞会变成什么样，能抓住的只有眼前的确定性，是1000个销售的面聊签单，是有效果的智能体和数字员工。",
-              "publishedAt": "2026-05-22 13:55:05",
-              "sourceDate": "2026-05-22",
-              "sourceUrl": "https://www.ebrun.com/20260522/669339.shtml",
-              "tags": [
-                "AI",
-                "科技",
-                "平台",
-                "即时零售"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "ebrun-future-retail-10",
-              "sourceId": "ebrun",
-              "sourceName": "亿邦动力",
-              "channelId": "future-retail",
-              "channelName": "未来零售",
-              "title": "淘宝闪购招募智能硬件服务商 单设备最高返现189元",
-              "summary": "淘宝闪购推出五种合作模式，覆盖硬件生产、渠道代理、SaaS服务及联合运营等不同类型合作伙伴。",
-              "publishedAt": "2026-05-22 10:50:55",
-              "sourceDate": "2026-05-22",
-              "sourceUrl": "https://www.ebrun.com/20260522/669322.shtml",
-              "tags": [
                 "平台",
                 "即时零售"
               ],
@@ -419,6 +417,45 @@
               "sourceName": "亿邦动力",
               "channelId": "cross-border",
               "channelName": "跨境电商",
+              "title": "亚马逊扶持新品又一动作：将为符合资质的卖家商品打标提升曝光度",
+              "summary": "将为卖家上线的新品展示“新品到货”或“重磅到货”徽章，以帮助消费者快速识别有潜力的新品。",
+              "publishedAt": "2026-05-26 09:37:37",
+              "sourceDate": "2026-05-26",
+              "sourceUrl": "https://www.ebrun.com/20260526/669520.shtml",
+              "tags": [
+                "跨境",
+                "品牌",
+                "消费",
+                "出海"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "ebrun-cross-border-02",
+              "sourceId": "ebrun",
+              "sourceName": "亿邦动力",
+              "channelId": "cross-border",
+              "channelName": "跨境电商",
+              "title": "给电商平台“乱收费”踩刹车？印尼拟出台新规限制平台费率上涨动作",
+              "summary": "印尼中小微企业部正在起草专项规定，重点规范TikTok Shop、Shopee等数字平台的收费行为，禁止其单方面突然向卖家提高服务费或佣金",
+              "publishedAt": "2026-05-25 19:11:07",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://www.ebrun.com/20260525/669517.shtml",
+              "tags": [
+                "跨境",
+                "出海",
+                "跨境平台"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "ebrun-cross-border-03",
+              "sourceId": "ebrun",
+              "sourceName": "亿邦动力",
+              "channelId": "cross-border",
+              "channelName": "跨境电商",
               "title": "印尼设国企接管核心大宗商品出口 或波及全球供应链",
               "summary": "印尼是全球最大的动力煤、棕榈油出口国，拥有全球最大已探明镍储量，相关商品广泛应用于能源供应、日化生产、动力电池、不锈钢制造等多个领域。",
               "publishedAt": "2026-05-25 09:48:16",
@@ -433,7 +470,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-cross-border-02",
+              "id": "ebrun-cross-border-04",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "cross-border",
@@ -453,7 +490,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-cross-border-03",
+              "id": "ebrun-cross-border-05",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "cross-border",
@@ -473,7 +510,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-cross-border-04",
+              "id": "ebrun-cross-border-06",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "cross-border",
@@ -492,7 +529,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-cross-border-05",
+              "id": "ebrun-cross-border-07",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "cross-border",
@@ -512,7 +549,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-cross-border-06",
+              "id": "ebrun-cross-border-08",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "cross-border",
@@ -531,7 +568,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-cross-border-07",
+              "id": "ebrun-cross-border-09",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "cross-border",
@@ -551,7 +588,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-cross-border-08",
+              "id": "ebrun-cross-border-10",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "cross-border",
@@ -568,44 +605,6 @@
               ],
               "isAlert": true,
               "weeklyCandidate": true
-            },
-            {
-              "id": "ebrun-cross-border-09",
-              "sourceId": "ebrun",
-              "sourceName": "亿邦动力",
-              "channelId": "cross-border",
-              "channelName": "跨境电商",
-              "title": "Sezzle诉Shopify：Shopify被认定具有垄断权力 案件进入实质审理",
-              "summary": "法院的裁决决定：允许Sezzle的核心垄断及贸易限制主张继续推进。",
-              "publishedAt": "2026-05-21 15:01:26",
-              "sourceDate": "2026-05-21",
-              "sourceUrl": "https://www.ebrun.com/20260521/669241.shtml",
-              "tags": [
-                "平台",
-                "出海",
-                "跨境平台"
-              ],
-              "isAlert": true,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "ebrun-cross-border-10",
-              "sourceId": "ebrun",
-              "sourceName": "亿邦动力",
-              "channelId": "cross-border",
-              "channelName": "跨境电商",
-              "title": "废除小包关税 巴西市场“不设防”！Shopee卖家的“新风口”已至？",
-              "summary": "2026年，出海拉美热潮持续升温。“到地球背面去”不再只是一句口号，而是变为无数远渡重洋的满装货箱。巴西作为核心“主战场”再迎重磅利好。",
-              "publishedAt": "2026-05-21 10:04:34",
-              "sourceDate": "2026-05-21",
-              "sourceUrl": "https://www.ebrun.com/20260521/669105.shtml",
-              "tags": [
-                "跨境",
-                "出海",
-                "跨境平台"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
             }
           ]
         },
@@ -615,6 +614,26 @@
           "items": [
             {
               "id": "ebrun-industrial-internet-01",
+              "sourceId": "ebrun",
+              "sourceName": "亿邦动力",
+              "channelId": "industrial-internet",
+              "channelName": "产业互联网",
+              "title": "竹马创新完成天使+融资：定义消费级空间相机 捕获具身数据",
+              "summary": "从二维视频到三维空间，从人类记录到机器理解，从消费级相机到机器人世界模型的数据入口——竹马创新希望打开的，是一个真实世界被重新捕获、重建、记录和训练的新入口。",
+              "publishedAt": "2026-05-25 10:57:00",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://www.ebrun.com/20260525/669466.shtml",
+              "tags": [
+                "融资",
+                "科技",
+                "消费",
+                "产业服务"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "ebrun-industrial-internet-02",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "industrial-internet",
@@ -634,7 +653,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-industrial-internet-02",
+              "id": "ebrun-industrial-internet-03",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "industrial-internet",
@@ -653,7 +672,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-industrial-internet-03",
+              "id": "ebrun-industrial-internet-04",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "industrial-internet",
@@ -673,7 +692,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-industrial-internet-04",
+              "id": "ebrun-industrial-internet-05",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "industrial-internet",
@@ -693,7 +712,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-industrial-internet-05",
+              "id": "ebrun-industrial-internet-06",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "industrial-internet",
@@ -713,7 +732,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-industrial-internet-06",
+              "id": "ebrun-industrial-internet-07",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "industrial-internet",
@@ -732,7 +751,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-industrial-internet-07",
+              "id": "ebrun-industrial-internet-08",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "industrial-internet",
@@ -752,7 +771,7 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-industrial-internet-08",
+              "id": "ebrun-industrial-internet-09",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "industrial-internet",
@@ -772,40 +791,20 @@
               "weeklyCandidate": true
             },
             {
-              "id": "ebrun-industrial-internet-09",
+              "id": "ebrun-industrial-internet-10",
               "sourceId": "ebrun",
               "sourceName": "亿邦动力",
               "channelId": "industrial-internet",
               "channelName": "产业互联网",
-              "title": "震坤行在美上市后首份财报：淡季增长盈利，海外业务有突破",
-              "summary": "5月21日，中国MRO采购服务平台震坤行（NYSE：ZKH）发布上市后首份季报。2026年第一季度，公司GMV达24.5亿元，同比增长12.9%；经调整净利润同比增长103.4%，首次在一季度实现盈利。",
+              "title": "震坤行2026年第一季财报：淡季增长盈利，海外业务有突破",
+              "summary": "5月21日，中国MRO采购服务平台震坤行（NYSE：ZKH）发布2026年首份季报。2026年第一季度，公司GMV达24.5亿元，同比增长12.9%；经调整净利润同比增长103.4%，首次在一季度实现盈利。",
               "publishedAt": "2026-05-22 10:00:11",
               "sourceDate": "2026-05-22",
               "sourceUrl": "https://www.ebrun.com/20260522/669298.shtml",
               "tags": [
                 "财报",
                 "供应链",
-                "融资",
                 "产业服务"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "ebrun-industrial-internet-10",
-              "sourceId": "ebrun",
-              "sourceName": "亿邦动力",
-              "channelId": "industrial-internet",
-              "channelName": "产业互联网",
-              "title": "国联股份巴基斯坦数字经济总部启动 “数字丝绸之路”助力中国制造出海",
-              "summary": "2026年5月13日，一场高规格的揭牌仪式在伊斯兰堡举行——国联股份IBI巴基斯坦数字经济总部正式启动。巴基斯坦副总理兼外交部长伊沙克·达尔亲临现场并发表重要致辞，中巴200余家企业代表齐聚一堂。",
-              "publishedAt": "2026-05-21 09:39:15",
-              "sourceDate": "2026-05-21",
-              "sourceUrl": "https://www.ebrun.com/20260521/669183.shtml",
-              "tags": [
-                "跨境",
-                "产业服务",
-                "供应链"
               ],
               "isAlert": false,
               "weeklyCandidate": true
@@ -1224,12 +1223,12 @@
               "sourceName": "36氪",
               "channelId": "kr36-hot",
               "channelName": "热榜",
-              "rank": 8,
-              "title": "婚纱女王被卖了",
-              "summary": "再美的婚纱也敌不过时代的退场。",
-              "publishedAt": "2026-05-23 16:09:19",
-              "sourceDate": "2026-05-23",
-              "sourceUrl": "https://36kr.com/p/3821558716731783?channel=skills",
+              "rank": 4,
+              "title": "把小众爱好做成副业，「手工经济」这八大赛道出圈了",
+              "summary": "喜欢手工，爱好赚钱",
+              "publishedAt": "2026-05-25 11:49:06",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://36kr.com/p/3824107853603077?channel=skills",
               "tags": [
                 "热榜"
               ],
@@ -1242,12 +1241,102 @@
               "sourceName": "36氪",
               "channelId": "kr36-hot",
               "channelName": "热榜",
-              "rank": 14,
-              "title": "对话王小川：离开通用人工智能的主干道之后",
-              "summary": "如果没有转型，继续走主流道路，你也会有同等程度的焦虑。",
-              "publishedAt": "2026-05-23 14:53:35",
-              "sourceDate": "2026-05-23",
-              "sourceUrl": "https://36kr.com/p/3821521291038856?channel=skills",
+              "rank": 7,
+              "title": "梁文锋与DeepSeek的十万亿美元棋盘",
+              "summary": "从来不是海面上的浪花，而是洋流本身。",
+              "publishedAt": "2026-05-25 08:06:55",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://36kr.com/p/3823859036672386?channel=skills",
+              "tags": [
+                "热榜"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "36kr-kr36-hot-03",
+              "sourceId": "36kr",
+              "sourceName": "36氪",
+              "channelId": "kr36-hot",
+              "channelName": "热榜",
+              "rank": 9,
+              "title": "别误会，华为韬定律不是来打败摩尔定律的",
+              "summary": "中国半导体真正告别的，是那条只能追赶的旧叙事。",
+              "publishedAt": "2026-05-25 20:17:54",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://36kr.com/p/3824570453745923?channel=skills",
+              "tags": [
+                "热榜"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "36kr-kr36-hot-04",
+              "sourceId": "36kr",
+              "sourceName": "36氪",
+              "channelId": "kr36-hot",
+              "channelName": "热榜",
+              "rank": 10,
+              "title": "8小时狂揽15K美金，Claude Code屠榜黑客马拉松，开源神器爆15万星",
+              "summary": "代码正变得廉价",
+              "publishedAt": "2026-05-25 08:56:16",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://36kr.com/p/3823966768943239?channel=skills",
+              "tags": [
+                "热榜"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "36kr-kr36-hot-05",
+              "sourceId": "36kr",
+              "sourceName": "36氪",
+              "channelId": "kr36-hot",
+              "channelName": "热榜",
+              "rank": 11,
+              "title": "科学证实：幸福长寿的秘诀，在于追逐目标的过程",
+              "summary": "不必纠结于结果，专注奔赴本身，就是幸福与长寿的密码。",
+              "publishedAt": "2026-05-26 07:12:08",
+              "sourceDate": "2026-05-26",
+              "sourceUrl": "https://36kr.com/p/3791680761584896?channel=skills",
+              "tags": [
+                "热榜"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "36kr-kr36-hot-06",
+              "sourceId": "36kr",
+              "sourceName": "36氪",
+              "channelId": "kr36-hot",
+              "channelName": "热榜",
+              "rank": 12,
+              "title": "周大福，16亿“卖身”上海国资",
+              "summary": "郑氏家族：国资接盘、黑石告吹与三代传承的生死局",
+              "publishedAt": "2026-05-25 14:21:41",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://36kr.com/p/3824173806915968?channel=skills",
+              "tags": [
+                "热榜"
+              ],
+              "isAlert": false,
+              "weeklyCandidate": true
+            },
+            {
+              "id": "36kr-kr36-hot-07",
+              "sourceId": "36kr",
+              "sourceName": "36氪",
+              "channelId": "kr36-hot",
+              "channelName": "热榜",
+              "rank": 15,
+              "title": "“果链”里走出两位千亿女富豪",
+              "summary": "周群飞和王来春，苹果不可或缺的两个女人。",
+              "publishedAt": "2026-05-25 09:36:28",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://36kr.com/p/3823089219178883?channel=skills",
               "tags": [
                 "热榜"
               ],
@@ -1267,11 +1356,11 @@
               "channelId": "kr36-ai-tech",
               "channelName": "AI与科技",
               "rank": 1,
-              "title": "AI四巨头内部报告首度公开：AI正在学会撒谎求生",
-              "summary": "【新智元导读】当四大巨头首次允许第三方深入测试最强模型，并开放完整思维链时，他们得到的答案令人吃惊：AI没有仇恨，却已精通「职场潜规则」！",
-              "publishedAt": "2026-05-24 09:24:47",
-              "sourceDate": "2026-05-24",
-              "sourceUrl": "https://36kr.com/p/3822613261504645?channel=skills",
+              "title": "微信读书 Skills 火了，学会这一招，让你的书不白读",
+              "summary": "让 AI 成为你的阅读搭档",
+              "publishedAt": "2026-05-25 08:56:29",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://36kr.com/p/3823955653300360?channel=skills",
               "tags": [
                 "AI",
                 "科技"
@@ -1286,16 +1375,16 @@
               "channelId": "kr36-ai-tech",
               "channelName": "AI与科技",
               "rank": 2,
-              "title": "Palantir CEO 表示，AI 时代只有两类人能生存（名校学历不在其列）！",
-              "summary": "亚历克斯·卡普（Alex Karp）告诉 Z 世代，“基本上只有两种方式能让你确信自己拥有未来”：职业技能培训或神经多样性。至于哲学学位……",
-              "publishedAt": "2026-05-24 08:00:21",
-              "sourceDate": "2026-05-24",
-              "sourceUrl": "https://36kr.com/p/3785834665860359?channel=skills",
+              "title": "被逼出来的“韬（τ）定律”：华为381款芯片背后的一场隐秘实验",
+              "summary": "这是一场至少以十年为刻度的长跑。",
+              "publishedAt": "2026-05-25 18:14:58",
+              "sourceDate": "2026-05-25",
+              "sourceUrl": "https://36kr.com/p/3824528065155459?channel=skills",
               "tags": [
-                "AI",
-                "科技"
+                "科技",
+                "AI"
               ],
-              "isAlert": true,
+              "isAlert": false,
               "weeklyCandidate": true
             },
             {
@@ -1304,72 +1393,14 @@
               "sourceName": "36氪",
               "channelId": "kr36-ai-tech",
               "channelName": "AI与科技",
-              "rank": 7,
-              "title": "活宝团队试验「让 AI 当老板」，结果如何？",
-              "summary": "感谢 120 个生鸡蛋，它向全世界证明了，AI 还无法「开除人类」。",
-              "publishedAt": "2026-05-24 13:35:19",
-              "sourceDate": "2026-05-24",
-              "sourceUrl": "https://36kr.com/p/3822860813684864?channel=skills",
-              "tags": [
-                "AI",
-                "科技"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "36kr-kr36-ai-tech-04",
-              "sourceId": "36kr",
-              "sourceName": "36氪",
-              "channelId": "kr36-ai-tech",
-              "channelName": "AI与科技",
-              "rank": 11,
-              "title": "圆桌对话：下一个杀手级AI产品，会出现在哪个赛道？| 2026AI Partner·北京亦庄AI+产业大会",
-              "summary": "下一个杀手级AI产品：“多模态+智能体+可穿戴”三位一体",
-              "publishedAt": "2026-05-23 18:10:00",
-              "sourceDate": "2026-05-23",
-              "sourceUrl": "https://36kr.com/p/3821714896408713?channel=skills",
-              "tags": [
-                "AI",
-                "科技"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "36kr-kr36-ai-tech-05",
-              "sourceId": "36kr",
-              "sourceName": "36氪",
-              "channelId": "kr36-ai-tech",
-              "channelName": "AI与科技",
-              "rank": 12,
-              "title": "被人工智能抢走工作，再想翻身会难上加难",
-              "summary": "AI对就业市场造成的冲击可能打乱年轻人的人生节奏，如推迟买房置业并降低结婚成家的概率。",
-              "publishedAt": "2026-05-25 07:06:56",
+              "rank": 5,
+              "title": "Claude「永久大脑」，真的来了",
+              "summary": "刚刚，Claude「双记忆系统」首次爆出！全新「文件记忆」让AI一边聊天，一边自动做笔记。还有杀手级Conway Agent浮出水面，7x24小时永不下线。",
+              "publishedAt": "2026-05-25 09:55:52",
               "sourceDate": "2026-05-25",
-              "sourceUrl": "https://36kr.com/p/3788955249990656?channel=skills",
+              "sourceUrl": "https://36kr.com/p/3824047027458182?channel=skills",
               "tags": [
                 "AI",
-                "科技"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "36kr-kr36-ai-tech-06",
-              "sourceId": "36kr",
-              "sourceName": "36氪",
-              "channelId": "kr36-ai-tech",
-              "channelName": "AI与科技",
-              "rank": 15,
-              "title": "36氪首发 | 北大项目孵化，国内首家原生机器人“大脑芯片”企业获数亿元融资",
-              "summary": "融合类脑计算与通用GPU计算能力，为具身智能SOTA大模型原生设计。",
-              "publishedAt": "2026-05-23 12:20:48",
-              "sourceDate": "2026-05-23",
-              "sourceUrl": "https://36kr.com/p/3821371042877575?channel=skills",
-              "tags": [
-                "AI",
-                "融资",
                 "科技"
               ],
               "isAlert": false,
@@ -1387,7 +1418,7 @@
               "sourceName": "36氪",
               "channelId": "kr36-business",
               "channelName": "商业公司",
-              "rank": 4,
+              "rank": 8,
               "title": "饮品9.9元、月营收600万，零食“漂亮饭”正在截胡奶茶店？",
               "summary": "新鲜零食店成为流量收割机",
               "publishedAt": "2026-05-24 11:32:46",
@@ -1407,7 +1438,7 @@
               "sourceName": "36氪",
               "channelId": "kr36-business",
               "channelName": "商业公司",
-              "rank": 9,
+              "rank": 14,
               "title": "谷歌CEO承认Coding落后了",
               "summary": "谷歌想加速AGI，但也怕失控",
               "publishedAt": "2026-05-24 16:19:09",
@@ -1432,31 +1463,12 @@
               "sourceName": "36氪",
               "channelId": "kr36-capital",
               "channelName": "创投资本",
-              "rank": 10,
-              "title": "曾助罗永浩还债，昔日“互联网招聘鼻祖”申请破产",
-              "summary": "估值曾达2亿美元的“互联网招聘鼻祖”拉勾网，最终还是走到了破产的悬崖边。",
-              "publishedAt": "2026-05-24 07:00:51",
-              "sourceDate": "2026-05-24",
-              "sourceUrl": "https://36kr.com/p/3821852724568069?channel=skills",
-              "tags": [
-                "融资",
-                "资本"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "36kr-kr36-capital-02",
-              "sourceId": "36kr",
-              "sourceName": "36氪",
-              "channelId": "kr36-capital",
-              "channelName": "创投资本",
               "rank": 13,
-              "title": "梁文锋有了“隆中对”",
-              "summary": "700亿融资落地，DeepSeek瞄准Code Harness招兵买马.",
-              "publishedAt": "2026-05-23 12:28:46",
-              "sourceDate": "2026-05-23",
-              "sourceUrl": "https://36kr.com/p/3821376674386305?channel=skills",
+              "title": "8点1氪丨胖东来投资65亿的“梦之城”开工；“稚晖君”彭志辉正式出任上纬新材董事长；“死了么”App改名“在么在么”",
+              "summary": "近日，于东来在直播中称，梦之城建好后，如果还有空间的情况下，会建几个小区。",
+              "publishedAt": "2026-05-26 07:58:09",
+              "sourceDate": "2026-05-26",
+              "sourceUrl": "https://36kr.com/p/3825357879497346?channel=skills",
               "tags": [
                 "融资",
                 "资本"
@@ -1476,29 +1488,9 @@
               "sourceName": "36氪",
               "channelId": "kr36-consumption",
               "channelName": "消费生活",
-              "rank": 5,
-              "title": "千禧年流行的老式漂亮饭，居然翻红了",
-              "summary": "老式咖啡餐吧也褪去了“高级”的滤镜，它从不试图掩盖自己的陈旧，而是乐于成为人们精彩生活中的背景板。",
-              "publishedAt": "2026-05-23 09:41:23",
-              "sourceDate": "2026-05-23",
-              "sourceUrl": "https://36kr.com/p/3821213026570627?channel=skills",
-              "tags": [
-                "品牌",
-                "消费",
-                "生活"
-              ],
-              "isAlert": false,
-              "weeklyCandidate": true
-            },
-            {
-              "id": "36kr-kr36-consumption-02",
-              "sourceId": "36kr",
-              "sourceName": "36氪",
-              "channelId": "kr36-consumption",
-              "channelName": "消费生活",
-              "rank": 6,
+              "rank": 3,
               "title": "8点1氪丨“壹号土猪”商标被宣告无效；山西煤矿爆炸时近一半下井工人在系统中查不到有效信息；小米通报空调抽真空造假事件",
-              "summary": "国家知识产权局商标局已正式宣告，广东壹号食品股份有限公司旗下4件应用于猪肉及猪肉制品的\\x26quot;壹号土猪\\x26quot;商标无效。",
+              "summary": "国家知识产权局商标局已正式宣告，广东壹号食品股份有限公司旗下4件应用于猪肉及猪肉制品的“壹号土猪”商标无效。",
               "publishedAt": "2026-05-25 07:57:08",
               "sourceDate": "2026-05-25",
               "sourceUrl": "https://36kr.com/p/3823941399826566?channel=skills",
@@ -1527,6 +1519,120 @@
           "sourceName": "亿邦动力",
           "channelId": "recommend",
           "channelName": "推荐",
+          "title": "给电商平台“乱收费”踩刹车？印尼拟出台新规限制平台费率上涨动作",
+          "summary": "印尼中小微企业部正在起草专项规定，重点规范TikTok Shop、Shopee等数字平台的收费行为，禁止其单方面突然向卖家提高服务费或佣金",
+          "publishedAt": "2026-05-25 19:11:07",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://www.ebrun.com/20260525/669517.shtml",
+          "tags": [
+            "跨境",
+            "综合动态"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "ebrun-recommend-02",
+          "sourceId": "ebrun",
+          "sourceName": "亿邦动力",
+          "channelId": "recommend",
+          "channelName": "推荐",
+          "title": "抖音618榜单：阿迪排名运动户外第一 美妆国货占比30%",
+          "summary": "2026年抖音商城618好物节第一阶段（5月15日—5月20日）收官，平台交出首份成绩单。",
+          "publishedAt": "2026-05-25 15:19:39",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://www.ebrun.com/20260525/669500.shtml",
+          "tags": [
+            "平台",
+            "品牌",
+            "综合动态"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "ebrun-recommend-03",
+          "sourceId": "ebrun",
+          "sourceName": "亿邦动力",
+          "channelId": "recommend",
+          "channelName": "推荐",
+          "title": "亚马逊扶持新品又一动作：将为符合资质的卖家商品打标提升曝光度",
+          "summary": "将为卖家上线的新品展示“新品到货”或“重磅到货”徽章，以帮助消费者快速识别有潜力的新品。",
+          "publishedAt": "2026-05-26 09:37:37",
+          "sourceDate": "2026-05-26",
+          "sourceUrl": "https://www.ebrun.com/20260526/669520.shtml",
+          "tags": [
+            "跨境",
+            "品牌",
+            "消费",
+            "综合动态"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "ebrun-recommend-04",
+          "sourceId": "ebrun",
+          "sourceName": "亿邦动力",
+          "channelId": "recommend",
+          "channelName": "推荐",
+          "title": "竹马创新完成天使+融资：定义消费级空间相机 捕获具身数据",
+          "summary": "从二维视频到三维空间，从人类记录到机器理解，从消费级相机到机器人世界模型的数据入口——竹马创新希望打开的，是一个真实世界被重新捕获、重建、记录和训练的新入口。",
+          "publishedAt": "2026-05-25 10:57:00",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://www.ebrun.com/20260525/669466.shtml",
+          "tags": [
+            "融资",
+            "科技",
+            "消费",
+            "综合动态"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "ebrun-recommend-05",
+          "sourceId": "ebrun",
+          "sourceName": "亿邦动力",
+          "channelId": "recommend",
+          "channelName": "推荐",
+          "title": "印尼设国企接管核心大宗商品出口 或波及全球供应链",
+          "summary": "印尼是全球最大的动力煤、棕榈油出口国，拥有全球最大已探明镍储量，相关商品广泛应用于能源供应、日化生产、动力电池、不锈钢制造等多个领域。",
+          "publishedAt": "2026-05-25 09:48:16",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://www.ebrun.com/20260525/669404.shtml",
+          "tags": [
+            "供应链",
+            "综合动态"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "ebrun-recommend-06",
+          "sourceId": "ebrun",
+          "sourceName": "亿邦动力",
+          "channelId": "recommend",
+          "channelName": "推荐",
+          "title": "电商早报：追觅豪掷数千万带员工游迪士尼；抖音、快手618战报出炉",
+          "summary": "追觅豪掷数千万带员工游迪士尼；抖音、快手618战报出炉；东方甄选首家线下门店北京开业俞敏洪回应开店原因",
+          "publishedAt": "2026-05-25 06:29:45",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://www.ebrun.com/20260525/669401.shtml",
+          "tags": [
+            "平台",
+            "消费",
+            "综合动态"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "ebrun-recommend-07",
+          "sourceId": "ebrun",
+          "sourceName": "亿邦动力",
+          "channelId": "recommend",
+          "channelName": "推荐",
           "title": "群核科技备案空间大模型；齐心集团深化IP布局；震坤行本年首季转盈丨产业互联网周报",
           "summary": "群核科技备案空间大模型；齐心集团深化IP布局；国联股份启航巴基斯坦数字经济总部；震坤行本年首季转盈",
           "publishedAt": "2026-05-24 22:04:37",
@@ -1541,7 +1647,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-recommend-02",
+          "id": "ebrun-recommend-08",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "recommend",
@@ -1561,25 +1667,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-recommend-03",
-          "sourceId": "ebrun",
-          "sourceName": "亿邦动力",
-          "channelId": "recommend",
-          "channelName": "推荐",
-          "title": "印尼设国企接管核心大宗商品出口 或波及全球供应链",
-          "summary": "印尼是全球最大的动力煤、棕榈油出口国，拥有全球最大已探明镍储量，相关商品广泛应用于能源供应、日化生产、动力电池、不锈钢制造等多个领域。",
-          "publishedAt": "2026-05-25 09:48:16",
-          "sourceDate": "2026-05-25",
-          "sourceUrl": "https://www.ebrun.com/20260525/669404.shtml",
-          "tags": [
-            "供应链",
-            "综合动态"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "ebrun-recommend-04",
+          "id": "ebrun-recommend-09",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "recommend",
@@ -1598,7 +1686,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-recommend-05",
+          "id": "ebrun-recommend-10",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "recommend",
@@ -1611,104 +1699,6 @@
           "tags": [
             "AI",
             "融资",
-            "综合动态"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "ebrun-recommend-06",
-          "sourceId": "ebrun",
-          "sourceName": "亿邦动力",
-          "channelId": "recommend",
-          "channelName": "推荐",
-          "title": "年GMV涨125%、内贸型新商占比超40% TikTok Shop东南亚释放出什么新增长讯号？",
-          "summary": "日前，TikTok Shop东南亚跨境电商年度峰会在广州圆满落幕。在会上，平台官方释出多项重磅最新数据：2025年，TikTok Shop东南亚跨境电商全年GMV较2024年同比增长125%；区域月活用户突破4.6亿。",
-          "publishedAt": "2026-05-24 03:07:45",
-          "sourceDate": "2026-05-24",
-          "sourceUrl": "https://www.ebrun.com/20260524/669394.shtml",
-          "tags": [
-            "跨境",
-            "财报",
-            "综合动态"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "ebrun-recommend-07",
-          "sourceId": "ebrun",
-          "sourceName": "亿邦动力",
-          "channelId": "recommend",
-          "channelName": "推荐",
-          "title": "一周电商大事：阿里股东信定调：即时零售成淘宝天猫核心支柱",
-          "summary": "阿里股东信定调：即时零售成淘宝天猫核心支柱；东方甄选前CEO孙东旭复播卖书；京东将办AI数字人晚会；周大生回应关店500家",
-          "publishedAt": "2026-05-23 22:23:51",
-          "sourceDate": "2026-05-23",
-          "sourceUrl": "https://www.ebrun.com/20260523/669392.shtml",
-          "tags": [
-            "AI",
-            "平台",
-            "消费",
-            "综合动态"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "ebrun-recommend-08",
-          "sourceId": "ebrun",
-          "sourceName": "亿邦动力",
-          "channelId": "recommend",
-          "channelName": "推荐",
-          "title": "让小工厂用上大模型 京东工业AI智采管家助力采购效率提高60%",
-          "summary": "2024年中国工业供应链总成本约115.2万亿元，通过数智化转型可降低成本5.88%，对应6.8万亿元降本空间，AI正是释放这一红利的关键力量。",
-          "publishedAt": "2026-05-22 19:39:39",
-          "sourceDate": "2026-05-22",
-          "sourceUrl": "https://www.ebrun.com/20260522/669389.shtml",
-          "tags": [
-            "AI",
-            "平台",
-            "供应链",
-            "科技"
-          ],
-          "isAlert": true,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "ebrun-recommend-09",
-          "sourceId": "ebrun",
-          "sourceName": "亿邦动力",
-          "channelId": "recommend",
-          "channelName": "推荐",
-          "title": "平安智享家医：将AI临床辅助决策能力，规模化触达千万级C端用户",
-          "summary": "平安好医生将其“AI医生”升级为“平安智享家医”。该服务依托平安医博通大模型，采用“AI秒级响应+真人医生全程监督”的双引擎模式，并整合平安“到线、到院、到家、到企”四层医疗健康服务网络。",
-          "publishedAt": "2026-05-22 18:41:35",
-          "sourceDate": "2026-05-22",
-          "sourceUrl": "https://www.ebrun.com/20260522/669387.shtml",
-          "tags": [
-            "AI",
-            "科技",
-            "综合动态"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "ebrun-recommend-10",
-          "sourceId": "ebrun",
-          "sourceName": "亿邦动力",
-          "channelId": "recommend",
-          "channelName": "推荐",
-          "title": "云深处IPO获受理 2025年营收3.37亿元",
-          "summary": "5月18日，杭州云深处科技股份有限公司（以下简称“云深处”）申报科创板IPO获受理，拟募集资金25.03亿元，保荐机构为中信建投证券股份有限公司。",
-          "publishedAt": "2026-05-22 15:26:37",
-          "sourceDate": "2026-05-22",
-          "sourceUrl": "https://www.ebrun.com/20260522/669363.shtml",
-          "tags": [
-            "财报",
-            "融资",
-            "科技",
             "综合动态"
           ],
           "isAlert": false,
@@ -1728,6 +1718,44 @@
           "sourceName": "亿邦动力",
           "channelId": "future-retail",
           "channelName": "未来零售",
+          "title": "泡泡玛特身后的追赶者：潮玩下半场的“自有IP”之战",
+          "summary": "潮玩下半场，比的不是谁更会“拿”IP，而是谁更会“长”IP。六家公司，三种活法，谁在突围？",
+          "publishedAt": "2026-05-25 16:11:52",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://www.ebrun.com/20260525/669506.shtml",
+          "tags": [
+            "品牌",
+            "平台",
+            "即时零售"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "ebrun-future-retail-02",
+          "sourceId": "ebrun",
+          "sourceName": "亿邦动力",
+          "channelId": "future-retail",
+          "channelName": "未来零售",
+          "title": "抖音618榜单：阿迪排名运动户外第一 美妆国货占比30%",
+          "summary": "2026年抖音商城618好物节第一阶段（5月15日—5月20日）收官，平台交出首份成绩单。",
+          "publishedAt": "2026-05-25 15:19:39",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://www.ebrun.com/20260525/669500.shtml",
+          "tags": [
+            "平台",
+            "品牌",
+            "即时零售"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "ebrun-future-retail-03",
+          "sourceId": "ebrun",
+          "sourceName": "亿邦动力",
+          "channelId": "future-retail",
+          "channelName": "未来零售",
           "title": "阿里股东信：即时零售已成为淘宝天猫核心战略支柱丨零售电商周报",
           "summary": "阿里股东信：即时零售已成为淘宝天猫核心战略支柱；抖音618发第一阶段战报",
           "publishedAt": "2026-05-24 21:55:46",
@@ -1742,7 +1770,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-future-retail-02",
+          "id": "ebrun-future-retail-04",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "future-retail",
@@ -1762,7 +1790,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-future-retail-03",
+          "id": "ebrun-future-retail-05",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "future-retail",
@@ -1781,7 +1809,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-future-retail-04",
+          "id": "ebrun-future-retail-06",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "future-retail",
@@ -1801,7 +1829,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-future-retail-05",
+          "id": "ebrun-future-retail-07",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "future-retail",
@@ -1821,7 +1849,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-future-retail-06",
+          "id": "ebrun-future-retail-08",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "future-retail",
@@ -1841,7 +1869,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-future-retail-07",
+          "id": "ebrun-future-retail-09",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "future-retail",
@@ -1861,7 +1889,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-future-retail-08",
+          "id": "ebrun-future-retail-10",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "future-retail",
@@ -1874,44 +1902,6 @@
           "tags": [
             "财报",
             "品牌",
-            "平台",
-            "即时零售"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "ebrun-future-retail-09",
-          "sourceId": "ebrun",
-          "sourceName": "亿邦动力",
-          "channelId": "future-retail",
-          "channelName": "未来零售",
-          "title": "有赞春季发布会：没讲大模型 只讲“怎么帮商家多卖2.41亿”",
-          "summary": "谁也不知道未来5年10年有赞会变成什么样，能抓住的只有眼前的确定性，是1000个销售的面聊签单，是有效果的智能体和数字员工。",
-          "publishedAt": "2026-05-22 13:55:05",
-          "sourceDate": "2026-05-22",
-          "sourceUrl": "https://www.ebrun.com/20260522/669339.shtml",
-          "tags": [
-            "AI",
-            "科技",
-            "平台",
-            "即时零售"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "ebrun-future-retail-10",
-          "sourceId": "ebrun",
-          "sourceName": "亿邦动力",
-          "channelId": "future-retail",
-          "channelName": "未来零售",
-          "title": "淘宝闪购招募智能硬件服务商 单设备最高返现189元",
-          "summary": "淘宝闪购推出五种合作模式，覆盖硬件生产、渠道代理、SaaS服务及联合运营等不同类型合作伙伴。",
-          "publishedAt": "2026-05-22 10:50:55",
-          "sourceDate": "2026-05-22",
-          "sourceUrl": "https://www.ebrun.com/20260522/669322.shtml",
-          "tags": [
             "平台",
             "即时零售"
           ],
@@ -1932,6 +1922,45 @@
           "sourceName": "亿邦动力",
           "channelId": "cross-border",
           "channelName": "跨境电商",
+          "title": "亚马逊扶持新品又一动作：将为符合资质的卖家商品打标提升曝光度",
+          "summary": "将为卖家上线的新品展示“新品到货”或“重磅到货”徽章，以帮助消费者快速识别有潜力的新品。",
+          "publishedAt": "2026-05-26 09:37:37",
+          "sourceDate": "2026-05-26",
+          "sourceUrl": "https://www.ebrun.com/20260526/669520.shtml",
+          "tags": [
+            "跨境",
+            "品牌",
+            "消费",
+            "出海"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "ebrun-cross-border-02",
+          "sourceId": "ebrun",
+          "sourceName": "亿邦动力",
+          "channelId": "cross-border",
+          "channelName": "跨境电商",
+          "title": "给电商平台“乱收费”踩刹车？印尼拟出台新规限制平台费率上涨动作",
+          "summary": "印尼中小微企业部正在起草专项规定，重点规范TikTok Shop、Shopee等数字平台的收费行为，禁止其单方面突然向卖家提高服务费或佣金",
+          "publishedAt": "2026-05-25 19:11:07",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://www.ebrun.com/20260525/669517.shtml",
+          "tags": [
+            "跨境",
+            "出海",
+            "跨境平台"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "ebrun-cross-border-03",
+          "sourceId": "ebrun",
+          "sourceName": "亿邦动力",
+          "channelId": "cross-border",
+          "channelName": "跨境电商",
           "title": "印尼设国企接管核心大宗商品出口 或波及全球供应链",
           "summary": "印尼是全球最大的动力煤、棕榈油出口国，拥有全球最大已探明镍储量，相关商品广泛应用于能源供应、日化生产、动力电池、不锈钢制造等多个领域。",
           "publishedAt": "2026-05-25 09:48:16",
@@ -1946,7 +1975,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-cross-border-02",
+          "id": "ebrun-cross-border-04",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "cross-border",
@@ -1966,7 +1995,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-cross-border-03",
+          "id": "ebrun-cross-border-05",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "cross-border",
@@ -1986,7 +2015,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-cross-border-04",
+          "id": "ebrun-cross-border-06",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "cross-border",
@@ -2005,7 +2034,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-cross-border-05",
+          "id": "ebrun-cross-border-07",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "cross-border",
@@ -2025,7 +2054,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-cross-border-06",
+          "id": "ebrun-cross-border-08",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "cross-border",
@@ -2044,7 +2073,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-cross-border-07",
+          "id": "ebrun-cross-border-09",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "cross-border",
@@ -2064,7 +2093,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-cross-border-08",
+          "id": "ebrun-cross-border-10",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "cross-border",
@@ -2081,44 +2110,6 @@
           ],
           "isAlert": true,
           "weeklyCandidate": true
-        },
-        {
-          "id": "ebrun-cross-border-09",
-          "sourceId": "ebrun",
-          "sourceName": "亿邦动力",
-          "channelId": "cross-border",
-          "channelName": "跨境电商",
-          "title": "Sezzle诉Shopify：Shopify被认定具有垄断权力 案件进入实质审理",
-          "summary": "法院的裁决决定：允许Sezzle的核心垄断及贸易限制主张继续推进。",
-          "publishedAt": "2026-05-21 15:01:26",
-          "sourceDate": "2026-05-21",
-          "sourceUrl": "https://www.ebrun.com/20260521/669241.shtml",
-          "tags": [
-            "平台",
-            "出海",
-            "跨境平台"
-          ],
-          "isAlert": true,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "ebrun-cross-border-10",
-          "sourceId": "ebrun",
-          "sourceName": "亿邦动力",
-          "channelId": "cross-border",
-          "channelName": "跨境电商",
-          "title": "废除小包关税 巴西市场“不设防”！Shopee卖家的“新风口”已至？",
-          "summary": "2026年，出海拉美热潮持续升温。“到地球背面去”不再只是一句口号，而是变为无数远渡重洋的满装货箱。巴西作为核心“主战场”再迎重磅利好。",
-          "publishedAt": "2026-05-21 10:04:34",
-          "sourceDate": "2026-05-21",
-          "sourceUrl": "https://www.ebrun.com/20260521/669105.shtml",
-          "tags": [
-            "跨境",
-            "出海",
-            "跨境平台"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
         }
       ]
     },
@@ -2130,6 +2121,26 @@
       "items": [
         {
           "id": "ebrun-industrial-internet-01",
+          "sourceId": "ebrun",
+          "sourceName": "亿邦动力",
+          "channelId": "industrial-internet",
+          "channelName": "产业互联网",
+          "title": "竹马创新完成天使+融资：定义消费级空间相机 捕获具身数据",
+          "summary": "从二维视频到三维空间，从人类记录到机器理解，从消费级相机到机器人世界模型的数据入口——竹马创新希望打开的，是一个真实世界被重新捕获、重建、记录和训练的新入口。",
+          "publishedAt": "2026-05-25 10:57:00",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://www.ebrun.com/20260525/669466.shtml",
+          "tags": [
+            "融资",
+            "科技",
+            "消费",
+            "产业服务"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "ebrun-industrial-internet-02",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "industrial-internet",
@@ -2149,7 +2160,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-industrial-internet-02",
+          "id": "ebrun-industrial-internet-03",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "industrial-internet",
@@ -2168,7 +2179,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-industrial-internet-03",
+          "id": "ebrun-industrial-internet-04",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "industrial-internet",
@@ -2188,7 +2199,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-industrial-internet-04",
+          "id": "ebrun-industrial-internet-05",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "industrial-internet",
@@ -2208,7 +2219,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-industrial-internet-05",
+          "id": "ebrun-industrial-internet-06",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "industrial-internet",
@@ -2228,7 +2239,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-industrial-internet-06",
+          "id": "ebrun-industrial-internet-07",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "industrial-internet",
@@ -2247,7 +2258,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-industrial-internet-07",
+          "id": "ebrun-industrial-internet-08",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "industrial-internet",
@@ -2267,7 +2278,7 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-industrial-internet-08",
+          "id": "ebrun-industrial-internet-09",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "industrial-internet",
@@ -2287,40 +2298,20 @@
           "weeklyCandidate": true
         },
         {
-          "id": "ebrun-industrial-internet-09",
+          "id": "ebrun-industrial-internet-10",
           "sourceId": "ebrun",
           "sourceName": "亿邦动力",
           "channelId": "industrial-internet",
           "channelName": "产业互联网",
-          "title": "震坤行在美上市后首份财报：淡季增长盈利，海外业务有突破",
-          "summary": "5月21日，中国MRO采购服务平台震坤行（NYSE：ZKH）发布上市后首份季报。2026年第一季度，公司GMV达24.5亿元，同比增长12.9%；经调整净利润同比增长103.4%，首次在一季度实现盈利。",
+          "title": "震坤行2026年第一季财报：淡季增长盈利，海外业务有突破",
+          "summary": "5月21日，中国MRO采购服务平台震坤行（NYSE：ZKH）发布2026年首份季报。2026年第一季度，公司GMV达24.5亿元，同比增长12.9%；经调整净利润同比增长103.4%，首次在一季度实现盈利。",
           "publishedAt": "2026-05-22 10:00:11",
           "sourceDate": "2026-05-22",
           "sourceUrl": "https://www.ebrun.com/20260522/669298.shtml",
           "tags": [
             "财报",
             "供应链",
-            "融资",
             "产业服务"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "ebrun-industrial-internet-10",
-          "sourceId": "ebrun",
-          "sourceName": "亿邦动力",
-          "channelId": "industrial-internet",
-          "channelName": "产业互联网",
-          "title": "国联股份巴基斯坦数字经济总部启动 “数字丝绸之路”助力中国制造出海",
-          "summary": "2026年5月13日，一场高规格的揭牌仪式在伊斯兰堡举行——国联股份IBI巴基斯坦数字经济总部正式启动。巴基斯坦副总理兼外交部长伊沙克·达尔亲临现场并发表重要致辞，中巴200余家企业代表齐聚一堂。",
-          "publishedAt": "2026-05-21 09:39:15",
-          "sourceDate": "2026-05-21",
-          "sourceUrl": "https://www.ebrun.com/20260521/669183.shtml",
-          "tags": [
-            "跨境",
-            "产业服务",
-            "供应链"
           ],
           "isAlert": false,
           "weeklyCandidate": true
@@ -2738,12 +2729,12 @@
           "sourceName": "36氪",
           "channelId": "kr36-hot",
           "channelName": "热榜",
-          "rank": 8,
-          "title": "婚纱女王被卖了",
-          "summary": "再美的婚纱也敌不过时代的退场。",
-          "publishedAt": "2026-05-23 16:09:19",
-          "sourceDate": "2026-05-23",
-          "sourceUrl": "https://36kr.com/p/3821558716731783?channel=skills",
+          "rank": 4,
+          "title": "把小众爱好做成副业，「手工经济」这八大赛道出圈了",
+          "summary": "喜欢手工，爱好赚钱",
+          "publishedAt": "2026-05-25 11:49:06",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://36kr.com/p/3824107853603077?channel=skills",
           "tags": [
             "热榜"
           ],
@@ -2756,12 +2747,102 @@
           "sourceName": "36氪",
           "channelId": "kr36-hot",
           "channelName": "热榜",
-          "rank": 14,
-          "title": "对话王小川：离开通用人工智能的主干道之后",
-          "summary": "如果没有转型，继续走主流道路，你也会有同等程度的焦虑。",
-          "publishedAt": "2026-05-23 14:53:35",
-          "sourceDate": "2026-05-23",
-          "sourceUrl": "https://36kr.com/p/3821521291038856?channel=skills",
+          "rank": 7,
+          "title": "梁文锋与DeepSeek的十万亿美元棋盘",
+          "summary": "从来不是海面上的浪花，而是洋流本身。",
+          "publishedAt": "2026-05-25 08:06:55",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://36kr.com/p/3823859036672386?channel=skills",
+          "tags": [
+            "热榜"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "36kr-kr36-hot-03",
+          "sourceId": "36kr",
+          "sourceName": "36氪",
+          "channelId": "kr36-hot",
+          "channelName": "热榜",
+          "rank": 9,
+          "title": "别误会，华为韬定律不是来打败摩尔定律的",
+          "summary": "中国半导体真正告别的，是那条只能追赶的旧叙事。",
+          "publishedAt": "2026-05-25 20:17:54",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://36kr.com/p/3824570453745923?channel=skills",
+          "tags": [
+            "热榜"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "36kr-kr36-hot-04",
+          "sourceId": "36kr",
+          "sourceName": "36氪",
+          "channelId": "kr36-hot",
+          "channelName": "热榜",
+          "rank": 10,
+          "title": "8小时狂揽15K美金，Claude Code屠榜黑客马拉松，开源神器爆15万星",
+          "summary": "代码正变得廉价",
+          "publishedAt": "2026-05-25 08:56:16",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://36kr.com/p/3823966768943239?channel=skills",
+          "tags": [
+            "热榜"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "36kr-kr36-hot-05",
+          "sourceId": "36kr",
+          "sourceName": "36氪",
+          "channelId": "kr36-hot",
+          "channelName": "热榜",
+          "rank": 11,
+          "title": "科学证实：幸福长寿的秘诀，在于追逐目标的过程",
+          "summary": "不必纠结于结果，专注奔赴本身，就是幸福与长寿的密码。",
+          "publishedAt": "2026-05-26 07:12:08",
+          "sourceDate": "2026-05-26",
+          "sourceUrl": "https://36kr.com/p/3791680761584896?channel=skills",
+          "tags": [
+            "热榜"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "36kr-kr36-hot-06",
+          "sourceId": "36kr",
+          "sourceName": "36氪",
+          "channelId": "kr36-hot",
+          "channelName": "热榜",
+          "rank": 12,
+          "title": "周大福，16亿“卖身”上海国资",
+          "summary": "郑氏家族：国资接盘、黑石告吹与三代传承的生死局",
+          "publishedAt": "2026-05-25 14:21:41",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://36kr.com/p/3824173806915968?channel=skills",
+          "tags": [
+            "热榜"
+          ],
+          "isAlert": false,
+          "weeklyCandidate": true
+        },
+        {
+          "id": "36kr-kr36-hot-07",
+          "sourceId": "36kr",
+          "sourceName": "36氪",
+          "channelId": "kr36-hot",
+          "channelName": "热榜",
+          "rank": 15,
+          "title": "“果链”里走出两位千亿女富豪",
+          "summary": "周群飞和王来春，苹果不可或缺的两个女人。",
+          "publishedAt": "2026-05-25 09:36:28",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://36kr.com/p/3823089219178883?channel=skills",
           "tags": [
             "热榜"
           ],
@@ -2783,11 +2864,11 @@
           "channelId": "kr36-ai-tech",
           "channelName": "AI与科技",
           "rank": 1,
-          "title": "AI四巨头内部报告首度公开：AI正在学会撒谎求生",
-          "summary": "【新智元导读】当四大巨头首次允许第三方深入测试最强模型，并开放完整思维链时，他们得到的答案令人吃惊：AI没有仇恨，却已精通「职场潜规则」！",
-          "publishedAt": "2026-05-24 09:24:47",
-          "sourceDate": "2026-05-24",
-          "sourceUrl": "https://36kr.com/p/3822613261504645?channel=skills",
+          "title": "微信读书 Skills 火了，学会这一招，让你的书不白读",
+          "summary": "让 AI 成为你的阅读搭档",
+          "publishedAt": "2026-05-25 08:56:29",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://36kr.com/p/3823955653300360?channel=skills",
           "tags": [
             "AI",
             "科技"
@@ -2802,16 +2883,16 @@
           "channelId": "kr36-ai-tech",
           "channelName": "AI与科技",
           "rank": 2,
-          "title": "Palantir CEO 表示，AI 时代只有两类人能生存（名校学历不在其列）！",
-          "summary": "亚历克斯·卡普（Alex Karp）告诉 Z 世代，“基本上只有两种方式能让你确信自己拥有未来”：职业技能培训或神经多样性。至于哲学学位……",
-          "publishedAt": "2026-05-24 08:00:21",
-          "sourceDate": "2026-05-24",
-          "sourceUrl": "https://36kr.com/p/3785834665860359?channel=skills",
+          "title": "被逼出来的“韬（τ）定律”：华为381款芯片背后的一场隐秘实验",
+          "summary": "这是一场至少以十年为刻度的长跑。",
+          "publishedAt": "2026-05-25 18:14:58",
+          "sourceDate": "2026-05-25",
+          "sourceUrl": "https://36kr.com/p/3824528065155459?channel=skills",
           "tags": [
-            "AI",
-            "科技"
+            "科技",
+            "AI"
           ],
-          "isAlert": true,
+          "isAlert": false,
           "weeklyCandidate": true
         },
         {
@@ -2820,72 +2901,14 @@
           "sourceName": "36氪",
           "channelId": "kr36-ai-tech",
           "channelName": "AI与科技",
-          "rank": 7,
-          "title": "活宝团队试验「让 AI 当老板」，结果如何？",
-          "summary": "感谢 120 个生鸡蛋，它向全世界证明了，AI 还无法「开除人类」。",
-          "publishedAt": "2026-05-24 13:35:19",
-          "sourceDate": "2026-05-24",
-          "sourceUrl": "https://36kr.com/p/3822860813684864?channel=skills",
-          "tags": [
-            "AI",
-            "科技"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "36kr-kr36-ai-tech-04",
-          "sourceId": "36kr",
-          "sourceName": "36氪",
-          "channelId": "kr36-ai-tech",
-          "channelName": "AI与科技",
-          "rank": 11,
-          "title": "圆桌对话：下一个杀手级AI产品，会出现在哪个赛道？| 2026AI Partner·北京亦庄AI+产业大会",
-          "summary": "下一个杀手级AI产品：“多模态+智能体+可穿戴”三位一体",
-          "publishedAt": "2026-05-23 18:10:00",
-          "sourceDate": "2026-05-23",
-          "sourceUrl": "https://36kr.com/p/3821714896408713?channel=skills",
-          "tags": [
-            "AI",
-            "科技"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "36kr-kr36-ai-tech-05",
-          "sourceId": "36kr",
-          "sourceName": "36氪",
-          "channelId": "kr36-ai-tech",
-          "channelName": "AI与科技",
-          "rank": 12,
-          "title": "被人工智能抢走工作，再想翻身会难上加难",
-          "summary": "AI对就业市场造成的冲击可能打乱年轻人的人生节奏，如推迟买房置业并降低结婚成家的概率。",
-          "publishedAt": "2026-05-25 07:06:56",
+          "rank": 5,
+          "title": "Claude「永久大脑」，真的来了",
+          "summary": "刚刚，Claude「双记忆系统」首次爆出！全新「文件记忆」让AI一边聊天，一边自动做笔记。还有杀手级Conway Agent浮出水面，7x24小时永不下线。",
+          "publishedAt": "2026-05-25 09:55:52",
           "sourceDate": "2026-05-25",
-          "sourceUrl": "https://36kr.com/p/3788955249990656?channel=skills",
+          "sourceUrl": "https://36kr.com/p/3824047027458182?channel=skills",
           "tags": [
             "AI",
-            "科技"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "36kr-kr36-ai-tech-06",
-          "sourceId": "36kr",
-          "sourceName": "36氪",
-          "channelId": "kr36-ai-tech",
-          "channelName": "AI与科技",
-          "rank": 15,
-          "title": "36氪首发 | 北大项目孵化，国内首家原生机器人“大脑芯片”企业获数亿元融资",
-          "summary": "融合类脑计算与通用GPU计算能力，为具身智能SOTA大模型原生设计。",
-          "publishedAt": "2026-05-23 12:20:48",
-          "sourceDate": "2026-05-23",
-          "sourceUrl": "https://36kr.com/p/3821371042877575?channel=skills",
-          "tags": [
-            "AI",
-            "融资",
             "科技"
           ],
           "isAlert": false,
@@ -2905,7 +2928,7 @@
           "sourceName": "36氪",
           "channelId": "kr36-business",
           "channelName": "商业公司",
-          "rank": 4,
+          "rank": 8,
           "title": "饮品9.9元、月营收600万，零食“漂亮饭”正在截胡奶茶店？",
           "summary": "新鲜零食店成为流量收割机",
           "publishedAt": "2026-05-24 11:32:46",
@@ -2925,7 +2948,7 @@
           "sourceName": "36氪",
           "channelId": "kr36-business",
           "channelName": "商业公司",
-          "rank": 9,
+          "rank": 14,
           "title": "谷歌CEO承认Coding落后了",
           "summary": "谷歌想加速AGI，但也怕失控",
           "publishedAt": "2026-05-24 16:19:09",
@@ -2952,31 +2975,12 @@
           "sourceName": "36氪",
           "channelId": "kr36-capital",
           "channelName": "创投资本",
-          "rank": 10,
-          "title": "曾助罗永浩还债，昔日“互联网招聘鼻祖”申请破产",
-          "summary": "估值曾达2亿美元的“互联网招聘鼻祖”拉勾网，最终还是走到了破产的悬崖边。",
-          "publishedAt": "2026-05-24 07:00:51",
-          "sourceDate": "2026-05-24",
-          "sourceUrl": "https://36kr.com/p/3821852724568069?channel=skills",
-          "tags": [
-            "融资",
-            "资本"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "36kr-kr36-capital-02",
-          "sourceId": "36kr",
-          "sourceName": "36氪",
-          "channelId": "kr36-capital",
-          "channelName": "创投资本",
           "rank": 13,
-          "title": "梁文锋有了“隆中对”",
-          "summary": "700亿融资落地，DeepSeek瞄准Code Harness招兵买马.",
-          "publishedAt": "2026-05-23 12:28:46",
-          "sourceDate": "2026-05-23",
-          "sourceUrl": "https://36kr.com/p/3821376674386305?channel=skills",
+          "title": "8点1氪丨胖东来投资65亿的“梦之城”开工；“稚晖君”彭志辉正式出任上纬新材董事长；“死了么”App改名“在么在么”",
+          "summary": "近日，于东来在直播中称，梦之城建好后，如果还有空间的情况下，会建几个小区。",
+          "publishedAt": "2026-05-26 07:58:09",
+          "sourceDate": "2026-05-26",
+          "sourceUrl": "https://36kr.com/p/3825357879497346?channel=skills",
           "tags": [
             "融资",
             "资本"
@@ -2998,29 +3002,9 @@
           "sourceName": "36氪",
           "channelId": "kr36-consumption",
           "channelName": "消费生活",
-          "rank": 5,
-          "title": "千禧年流行的老式漂亮饭，居然翻红了",
-          "summary": "老式咖啡餐吧也褪去了“高级”的滤镜，它从不试图掩盖自己的陈旧，而是乐于成为人们精彩生活中的背景板。",
-          "publishedAt": "2026-05-23 09:41:23",
-          "sourceDate": "2026-05-23",
-          "sourceUrl": "https://36kr.com/p/3821213026570627?channel=skills",
-          "tags": [
-            "品牌",
-            "消费",
-            "生活"
-          ],
-          "isAlert": false,
-          "weeklyCandidate": true
-        },
-        {
-          "id": "36kr-kr36-consumption-02",
-          "sourceId": "36kr",
-          "sourceName": "36氪",
-          "channelId": "kr36-consumption",
-          "channelName": "消费生活",
-          "rank": 6,
+          "rank": 3,
           "title": "8点1氪丨“壹号土猪”商标被宣告无效；山西煤矿爆炸时近一半下井工人在系统中查不到有效信息；小米通报空调抽真空造假事件",
-          "summary": "国家知识产权局商标局已正式宣告，广东壹号食品股份有限公司旗下4件应用于猪肉及猪肉制品的\\x26quot;壹号土猪\\x26quot;商标无效。",
+          "summary": "国家知识产权局商标局已正式宣告，广东壹号食品股份有限公司旗下4件应用于猪肉及猪肉制品的“壹号土猪”商标无效。",
           "publishedAt": "2026-05-25 07:57:08",
           "sourceDate": "2026-05-25",
           "sourceUrl": "https://36kr.com/p/3823941399826566?channel=skills",
