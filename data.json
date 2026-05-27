@@ -1,9 +1,9 @@
 {
   "_meta": {
     "version": "1.0",
-    "totalIssues": 18,
-    "totalNews": 2600,
-    "updatedAt": "2026-05-25 13:33"
+    "totalIssues": 19,
+    "totalNews": 2768,
+    "updatedAt": "2026-05-27 10:44"
   },
   "companies": {
     "美妆": [
@@ -298,6 +298,7 @@
     ]
   },
   "issueIds": [
+    79,
     78,
     77,
     76,
